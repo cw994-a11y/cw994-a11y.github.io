@@ -2,6 +2,7 @@ const demonstrations=[...document.querySelectorAll('.hero-video, .video-grid vid
 const filmDialog=document.querySelector('#film-dialog');
 const fullFilm=document.querySelector('#full-film');
 prepareVideoPreviews(demonstrations);
+document.querySelector('.hero-context').parentElement.classList.add('hero-context-media');
 demonstrations.forEach(video=>{video.muted=true;video.defaultMuted=true;});
 function resumeClips(){if(!document.hidden&&!filmDialog.open)demonstrations.forEach(video=>video.play().catch(()=>{}));}
 resumeClips();

@@ -13,3 +13,8 @@
 .hero a:hover{color:#b5e9fa}.hero .text-link,.hero-top a,.hero-foot{border-color:#ffffff66}
 @media(max-width:700px){.hero{min-height:700px}.hero::before{mask-image:linear-gradient(180deg,#000,transparent 80%)}.hero::after{background:linear-gradient(180deg,rgba(6,8,12,.72),rgba(6,8,12,.58) 52%,rgba(6,8,12,.15))}.hero-video{object-position:58% center}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.hero-media{background-position:left center}.hero-media:not(.hero-context-media){left:24%;width:85%;mask-image:linear-gradient(90deg,transparent,#000 22%)}.hero-video{object-position:left center}.hero-context-media{filter:blur(12px);transform:scale(1.04)}
+.video-grid .video-preview{overflow:hidden;background-size:cover;background-position:center}.video-grid video{object-fit:cover;border:0;transform:scale(1.04)}
+.video-grid article:nth-child(3) video{object-position:57% center}.video-grid article:nth-child(3) .video-preview{background-position:57% center}
+.video-grid article:nth-child(-n+2) video{aspect-ratio:16/9;object-fit:contain;transform:none}.video-grid article:nth-child(-n+2) .video-preview{background-size:contain}
+@media(max-width:700px){.hero-media:not(.hero-context-media){left:0;width:100%;mask-image:none}.hero-video{object-position:45% center}.hero-media{background-position:45% center}.video-grid video{aspect-ratio:16/10}}
