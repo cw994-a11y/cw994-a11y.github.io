@@ -11,7 +11,7 @@ function render(){
  scene.style.setProperty('--copy-opacity',copy.toFixed(3));scene.style.setProperty('--copy-z',(-160*retreat).toFixed(1)+'px');scene.style.setProperty('--copy-events',copy>.3?'auto':'none');
  scene.style.setProperty('--work-heading',ease((progress-.72)/.15).toFixed(3));scene.style.setProperty('--work-events',progress>.82?'auto':'none');
  intro.inert=!reducedMotion.matches&&progress>.3;work.inert=!reducedMotion.matches&&progress<=.82;
- const width=stage.clientWidth,height=stage.clientHeight,cardWidth=Math.min(250,width*(mobile?.4:.225));
+ const width=stage.clientWidth,height=stage.clientHeight,gap=height*(mobile?.235:.26),cardWidth=Math.min(250,width*(mobile?.4:.225),(gap-32)*(mobile?1.3:1.5));
  stage.style.setProperty('--project-width',cardWidth+'px');
  projects.forEach((project,i)=>{
   const side=i%2===0?-1:1,row=Math.floor(i/2),arrive=ease((progress-.22)/.48);
