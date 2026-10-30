@@ -1,6 +1,6 @@
 (() => {
  function mountHeroPullback(scene) {
-  const viewport=scene.querySelector('.scene-viewport'),content=scene.querySelector('.hero-content'),background=scene.querySelector('.scene-background'),copy=content.querySelector('.intro-copy'),portrait=content.querySelector('.intro-portrait');
+  const viewport=scene.querySelector('.scene-viewport'),content=scene.querySelector('.hero-content'),background=scene.querySelector('.scene-background');
   const motionPreference=matchMedia('(prefers-reduced-motion:reduce)'),shortScreen=matchMedia('(max-width:900px) and (max-height:600px)');
   const events=new AbortController(),clamp=value=>Math.max(0,Math.min(1,value));
   let target=0,progress=0,animationFrame=null,destroyed=false;
@@ -10,8 +10,7 @@
    progress+=(target-progress)*.085;
    if(Math.abs(target-progress)<.0001)progress=target;
    const eased=progress*progress*(3-2*progress);
-   copy.style.transform=staticLayout()?'none':'translateY('+(-eased*4)+'%) scale('+(1-eased*.68)+')';
-   portrait.style.transform=staticLayout()?'none':'translateY('+(-eased*7)+'%) scale('+(1-eased*.48)+')';
+   content.style.transform=staticLayout()?'none':'translateY('+(-eased*4)+'%) scale('+(1-eased*.68)+')';
    background.style.opacity=staticLayout()?'0':String(clamp(progress*1.8));
    if(progress!==target)animationFrame=requestAnimationFrame(render);
   }
@@ -33,7 +32,7 @@
   return () => {
    destroyed=true;events.abort();observer.disconnect();
    if(animationFrame!==null)cancelAnimationFrame(animationFrame);
-   scene.classList.remove('is-active','is-static');copy.style.removeProperty('transform');portrait.style.removeProperty('transform');background.style.removeProperty('opacity');
+   scene.classList.remove('is-active','is-static');content.style.removeProperty('transform');background.style.removeProperty('opacity');
   };
  }
  const scene=document.querySelector('.scroll-scene');
