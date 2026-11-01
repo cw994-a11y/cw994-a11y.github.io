@@ -1,48 +1,688 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Chunho (Jerry) Wong is a Cornell design student working across product design and VR. Explore interactive prototypes and research in human-computer interaction.">
-<meta name="theme-color" content="#eaeae8">
-<title>Chunho Wong — Design & Research</title>
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%233b35be'/%3E%3Ctext x='4' y='22' font-family='Arial' font-size='18' font-weight='bold' fill='white'%3Ecw%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="vendor/bootstrap.min.css">
-<link rel="stylesheet" href="home.css">
-<link rel="stylesheet" href="home-motion.css?v=5">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Chunho Wong — product design, VR design and human–computer interaction research at Cornell University.">
+<title>Chunho Wong Portfolio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* Layout: a scroll-pinned stage (dark hero pulls back into a light stage with an icon pill carousel), then the site's own sections on a quiet paper ground. */
+:root{
+  --bg:#eaeae8; --fg:#16161a; --muted:#5b5b64; --line:rgba(22,22,26,.16); --card:#f4f4f2; --accent:#2b45e0;
+  --stage-bg:#c9c8cb; --stage-ink:#050508; --stage-line:rgba(5,5,8,.18);
+  --sans:'Instrument Sans','Helvetica Neue',Arial,sans-serif;
+  --serif:'Instrument Serif','Times New Roman',serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0e0e12;--fg:#ecebea;--muted:#a3a3ad;--line:rgba(236,235,234,.17);--card:#17171d;--accent:#8396ff;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e0e12;--fg:#ecebea;--muted:#a3a3ad;--line:rgba(236,235,234,.17);--card:#17171d;--accent:#8396ff;color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.55 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* ---------- nav ---------- */
+#nav{position:fixed;left:0;right:0;top:0;z-index:50;display:flex;justify-content:space-between;align-items:baseline;gap:16px;
+  padding:calc(18px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) 0 max(20px,env(safe-area-inset-left,0px));
+  color:#fff;transition:color .35s;pointer-events:none;font-size:14px;letter-spacing:.01em}
+#nav[data-m="stage"]{color:#16161a}
+#nav[data-m="page"]{color:var(--fg)}
+#nav a{pointer-events:auto;text-decoration:none}
+#nav .brand b{font-weight:600}
+#nav .brand span{opacity:.7;margin-left:8px}
+#nav nav{display:flex;gap:22px}
+#nav nav a:hover{text-decoration:underline;text-underline-offset:4px}
+@media(max-width:560px){#nav .brand span{display:none}#nav nav{gap:14px}}
+
+/* ---------- pinned stage ---------- */
+#scroller{position:relative;height:560vh}
+#sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#c9c8cb;contain:layout paint}
+#darkBg{position:absolute;inset:0;background:#050508;will-change:opacity}
+#stage{position:absolute;left:50%;top:50%;width:1600px;height:900px;transform-origin:50% 50%;color:#fff}
+#stage *{-webkit-tap-highlight-color:transparent}
+
+#glowWrap{position:absolute;inset:0;opacity:0;pointer-events:none}
+.glow,.rings{position:absolute;left:100px;top:120px;width:1400px;height:1500px;pointer-events:none}
+.glow{opacity:0;transition:opacity 1s ease;will-change:opacity}
+.glow.on{opacity:1}
+.rings{background:repeating-radial-gradient(ellipse 700px 520px at 50% 780px,transparent 0 46px,rgba(255,255,255,.08) 46px 56px);
+  -webkit-mask-image:radial-gradient(ellipse 700px 520px at 50% 780px,#000 10%,transparent 100%);mask-image:radial-gradient(ellipse 700px 520px at 50% 780px,#000 10%,transparent 100%);}
+
+#hero{position:absolute;left:0;top:0;width:1600px;height:900px;will-change:clip-path}
+#heroBg{position:absolute;left:0;top:0;width:1600px;height:900px;background:#05060c}
+#blueBg{position:absolute;left:0;top:0;width:1600px;height:900px;opacity:0;will-change:opacity;
+  background:radial-gradient(ellipse 900px 520px at 50% 50%,#5a6ff4 0%,#2f43dc 55%,#1c2bb8 100%)}
+#haze{position:absolute;left:0;top:0;width:1600px;height:2600px;
+  background:radial-gradient(ellipse 620px 300px at 52% 900px,rgba(60,70,190,.55),transparent 70%),radial-gradient(ellipse 500px 380px at 40% 360px,rgba(120,70,170,.22),transparent 70%)}
+#flowerWrap{position:absolute;left:0;top:0;width:1600px;height:900px;opacity:0}
+#flowerWrap.ready{animation:flowerIn 2.4s cubic-bezier(.16,.8,.2,1) both}
+#flowerWrap canvas{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;will-change:transform,opacity;pointer-events:none}
+@keyframes flowerIn{from{transform:translateX(-520px) rotate(-7deg) scale(.88);opacity:0}60%{opacity:1}to{transform:none;opacity:1}}
+
+#textLayer,#uiLayer{position:absolute;left:0;top:0;width:1600px;height:900px;pointer-events:none}
+#uiLayer a,#uiLayer button{pointer-events:auto}
+#stage{--padL:56px;--padR:1544px;--ts:1}
+.t{position:absolute;white-space:nowrap;line-height:1;opacity:0;transform:translateY(16px);transition:opacity 1s ease,transform 1.1s var(--ease)}
+.in .t,.in .u{opacity:1;transform:none}
+.t.sans{font:300 calc(112px*var(--ts))/1 var(--sans);letter-spacing:-.02em}
+.t.ser{font:italic 400 calc(124px*var(--ts))/1 var(--serif);letter-spacing:-.01em}
+#tImag{font-size:calc(108px*var(--ts))}
+#tNew{left:var(--padL);top:40px;transition-delay:.9s}
+#tFree{left:calc(var(--padL) + 92px*var(--ts));top:calc(40px + 112px*var(--ts)*.92);transition-delay:1.2s}
+#tImag{right:calc(1600px - var(--padR));top:600px;text-align:right;transition-delay:1.5s;clip-path:inset(0 100% 0 0);transition:opacity 1s 1.5s ease,clip-path 1.5s 1.5s var(--ease)}
+.in #tImag{clip-path:inset(0 -2% 0 0)}
+.u{position:absolute;opacity:0;transform:translateY(12px);transition:opacity 1s ease,transform 1.1s var(--ease)}
+#para{left:var(--padL);top:calc(900px - 330px);width:calc(470px*var(--ts) + 40px);font:400 17px/1.45 var(--sans);color:rgba(255,255,255,.82);transition-delay:1.9s}
+#para small{display:block;margin-top:10px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+#eyebrow{left:var(--padL);top:524px;font:500 13px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.62);transition-delay:1.7s;white-space:nowrap}
+#logo{left:var(--padL);top:806px;transition-delay:2.1s;line-height:1}
+#logo b{display:block;font:italic 400 40px/1 var(--serif);color:#fff}
+#logo span{display:block;margin-top:6px;font:700 12px var(--sans);letter-spacing:.2em}
+#btn{right:calc(1600px - var(--padR));top:786px;height:60px;padding:0 30px;border-radius:999px;background:#fff;color:#0a0a0e;font:500 18px/60px var(--sans);text-decoration:none;transition-delay:2.3s,2.3s}
+#btn:hover{background:#e8e8ee}
+
+#manWrap{position:absolute;left:0;top:0;width:1600px;height:900px;pointer-events:none;animation:manIn 1.6s .4s ease both}
+@keyframes manIn{from{opacity:0}to{opacity:1}}
+#man{position:absolute;left:0;top:0;width:473px;height:1731px;transform-origin:0 0;will-change:transform}
+#man svg{position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden}
+#manRim{will-change:opacity}
+.who{opacity:0;transition:opacity .7s ease}
+.who.on{opacity:1}
+.who .rim{fill:none;stroke:#e2d0ff;stroke-width:.5;stroke-opacity:.6}
+.who .lit{opacity:.55}
+
+#pillRow{position:absolute;left:800px;top:441px;width:0;height:0;opacity:0;pointer-events:none}
+#pillRow.live{pointer-events:auto}
+.orb{position:absolute;left:0;top:0;width:40px;height:40px;border:0;padding:0;background:none;color:inherit;font:inherit;cursor:pointer;
+  transition:transform .95s var(--ease),width .95s var(--ease),height .95s var(--ease),opacity .6s ease}
+.bubble{position:absolute;inset:0;border-radius:999px;background:transparent;transition:background .6s ease,box-shadow .6s ease}
+.orb.sel .bubble{background:var(--pc);box-shadow:0 14px 34px -12px rgba(10,10,20,.45),inset 0 1px 0 rgba(255,255,255,.28)}
+.ico{position:absolute;left:0;top:0;width:40px;height:40px;transition:all .95s var(--ease);filter:drop-shadow(0 3px 5px rgba(20,20,40,.22))}
+.ico svg{width:100%;height:100%;display:block}
+.orb:not(.sel):hover .ico{transform:scale(1.18)}
+.orb.far .ico{transform:scale(.8)}
+.orb.sel .ico{left:4px;top:6px;width:58px;height:58px}
+.lbl{position:absolute;left:72px;top:0;bottom:0;display:flex;align-items:center;gap:10px;white-space:nowrap;font:500 25px var(--sans);color:#fff;opacity:0;transition:opacity .4s ease}
+.orb.sel .lbl{opacity:1;transition-delay:.35s}
+.orb.light .lbl{color:#1a1a20}
+.caret{display:inline-block;width:2px;height:.95em;background:currentColor;margin-left:2px;animation:blink 1s steps(2) infinite;vertical-align:-.1em}
+@keyframes blink{50%{opacity:0}}
+.go{opacity:0;transition:opacity .4s ease;font-weight:400}
+.go.show{opacity:.85}
+
+#hint{position:absolute;left:386px;top:520px;opacity:0;transition:opacity .8s ease;pointer-events:none;font:400 21px var(--sans);color:var(--stage-ink)}
+#hint.show{opacity:.85}
+#hint svg{position:absolute;left:92px;top:-58px;width:70px;height:60px;overflow:visible}
+
+#stage.narrow #eyebrow,#stage.narrow #btn{display:none}
+#stage.narrow #tImag{right:auto;left:var(--padL);text-align:left;top:660px}
+#stage.narrow #para{top:490px;width:330px;font-size:16px}
+#stage.narrow #logo{top:806px}
+#cue{position:absolute;left:0;right:0;bottom:calc(26px + env(safe-area-inset-bottom,0px));text-align:center;color:rgba(255,255,255,.72);font:500 13px var(--sans);letter-spacing:.16em;text-transform:uppercase;pointer-events:none;transition:opacity .3s}
+#cue.off i{animation:none}
+#cue i{display:block;width:1px;height:34px;margin:10px auto 0;background:linear-gradient(rgba(255,255,255,.7),transparent);animation:drip 2s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ---------- content sections ---------- */
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+section.s{position:relative;padding-block:clamp(72px,11vw,140px)}
+#work{padding-top:0}
+#work::before{content:"";display:block;height:180px;background:linear-gradient(var(--stage-bg),var(--bg));margin-bottom:clamp(40px,6vw,80px)}
+.eyebrow{font:500 13px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 18px}
+h2{font:400 clamp(40px,6.4vw,84px)/1.02 var(--serif);letter-spacing:-.015em;margin:0;text-wrap:balance}
+h2 em{font-style:italic}
+.head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:clamp(32px,5vw,56px)}
+.head p{margin:0;color:var(--muted);max-width:34ch}
+
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,2.4vw,32px)}
+@media(max-width:700px){.grid{grid-template-columns:1fr}}
+.card{display:flex;flex-direction:column;gap:16px;text-decoration:none;min-width:0}
+.viz{position:relative;aspect-ratio:16/10;max-width:100%;overflow:hidden;border-radius:10px;background:var(--stage-bg);isolation:isolate}
+.viz::before{content:"";position:absolute;left:-10%;right:-10%;bottom:-70%;height:130%;background:radial-gradient(ellipse 50% 50% at 50% 50%,var(--c),transparent 72%);opacity:.9;transition:transform .8s var(--ease)}
+.viz::after{content:"";position:absolute;inset:0;background:repeating-radial-gradient(ellipse 60% 90% at 50% 130%,transparent 0 26px,rgba(255,255,255,.1) 26px 31px);z-index:-1}
+.card:hover .viz::before{transform:translateY(-10%) scale(1.06)}
+.viz .orbi{position:absolute;left:50%;top:44%;width:76px;height:76px;transform:translate(-50%,-50%);filter:drop-shadow(0 8px 14px rgba(20,20,40,.25));transition:transform .8s var(--ease)}
+.card:hover .viz .orbi{transform:translate(-50%,-60%) scale(1.08)}
+.viz .num{position:absolute;left:16px;top:14px;font:500 13px var(--sans);letter-spacing:.1em;color:var(--stage-ink);opacity:.7}
+.card.wip .viz{background:transparent;border:1px dashed var(--line)}
+.card.wip .viz::before,.card.wip .viz::after{display:none}
+.card.wip .viz .num{color:var(--muted)}
+.meta{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.meta h3{font:400 clamp(26px,3vw,36px)/1.1 var(--serif);margin:0}
+.meta .arrow{font-size:22px;transition:transform .4s var(--ease)}
+.card:hover .arrow{transform:translate(4px,-4px)}
+.type{margin:0;color:var(--muted);font-size:15px}
+.card.wip{opacity:.7;cursor:default}
+
+.cols{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,6vw,96px)}
+@media(max-width:860px){.cols{grid-template-columns:1fr}}
+.lead{font:400 clamp(24px,2.6vw,34px)/1.25 var(--serif);margin:0 0 28px;text-wrap:pretty}
+.body p{margin:0 0 18px;max-width:62ch}
+.steps{list-style:none;margin:36px 0 0;padding:0;display:grid;gap:0;border-top:1px solid var(--line)}
+.steps li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:14px;padding:20px 0;border-bottom:1px solid var(--line)}
+.steps b{font:500 14px var(--sans);color:var(--muted);padding-top:3px;font-variant-numeric:tabular-nums}
+.steps h4{font:400 26px/1.15 var(--serif);margin:0 0 4px}
+.steps p{margin:0;color:var(--muted);max-width:56ch}
+
+.portrait{position:relative;aspect-ratio:4/5;max-width:100%;border-radius:10px;overflow:hidden;background:var(--stage-bg);isolation:isolate}
+.portrait::before{content:"";position:absolute;left:-20%;right:-20%;bottom:-40%;height:90%;background:radial-gradient(ellipse 50% 50% at 50% 50%,#8a9be8,transparent 72%)}
+.portrait svg.sil{position:absolute;left:12%;bottom:0;width:76%;height:auto}
+.portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.facts{display:grid;gap:0;margin-top:22px;border-top:1px solid var(--line)}
+.facts div{display:flex;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line);font-size:15px}
+.facts span{color:var(--muted)}
+
+.xp{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.xp li{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:8px 32px;padding:26px 0;border-bottom:1px solid var(--line)}
+@media(max-width:700px){.xp li{grid-template-columns:1fr}}
+.xp h4{font:400 26px/1.15 var(--serif);margin:0}
+.xp small{display:block;margin-top:4px;color:var(--muted);font:500 13px var(--sans);letter-spacing:.06em;text-transform:uppercase}
+.xp p{margin:0;max-width:60ch}
+
+#contact{text-align:left}
+#contact h2{font-size:clamp(52px,10vw,148px)}
+.mail{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;margin-top:36px}
+.mail code{font:500 clamp(18px,2.4vw,26px) var(--sans);user-select:all;overflow-wrap:anywhere}
+.btn{appearance:none;border:1px solid var(--fg);background:transparent;color:var(--fg);padding:11px 20px;border-radius:999px;font:500 15px var(--sans);cursor:pointer;text-decoration:none;display:inline-flex;gap:8px;transition:background .3s,color .3s}
+.btn:hover{background:var(--fg);color:var(--bg)}
+footer{padding-block:36px 56px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important;transition-delay:0s!important}
+  #tImag{clip-path:none!important}
+}
+
+/* Personal portfolio assets share the reference's animation layers. */
+#man .man-photo{position:absolute;left:-120px;top:-100px;width:760px;height:760px;object-fit:contain;clip-path:polygon(49.04% 13.399999999999999%,55.76% 14%,60.56% 16%,63.44% 21%,64.59% 26%,64.50% 32%,64.69% 35%,62.96% 40.5%,61.33% 45%,59.12% 49.8%,59.22% 51.5%,60.56% 54.5%,63.06% 56.4%,80.43% 62.7%,81.97% 65.3%,83.60% 72%,88.88% 100%,11.60% 100%,16.98% 73%,18.51% 67.2%,19.95% 63.5%,21.20% 62.6%,37.14% 56.8%,39.44% 55.5%,40.88% 52.9%,42.03% 51.5%,41.84% 49.8%,38.96% 44.7%,37.52% 41%,36.56% 39.5%,35.60% 35%,35.89% 33%,35.60% 30.3%,35.50% 25%,36.08% 20.5%,38.48% 17.5%,40.40% 14.2%,45.20% 14.2%)}
+.viz .project-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.viz .project-photo[src="assets/droplet/hero.png"]{object-fit:contain;padding:20px}
+.card:hover .project-photo{transform:scale(1.04)}
+.viz .num{z-index:1;background:rgba(244,244,242,.85);padding:4px 8px;border-radius:999px}
+</style>
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to content</a>
-<div class="site-shell">
-<header class="site-header"><a class="wordmark" href="#main">Chunho Wong<span>Design & Research</span></a><nav aria-label="Main navigation"><a href="#work">Work</a><a href="#research">Research</a><a href="#about">About</a><a href="mailto:cw994@cornell.edu">Contact</a></nav></header>
-<main id="main">
-<div class="scroll-scene"><div class="scene-viewport">
-<div class="scene-background" aria-hidden="true"></div>
-<section class="intro hero-content" aria-labelledby="intro-title">
-<div class="intro-copy"><p class="eyebrow">Cornell University · Designer & undergraduate researcher</p><h1 id="intro-title">I’m Chunho.<br>I make ideas<br><em>interactive.</em></h1><p class="design-focus">Product design <span>×</span> VR design</p><p class="intro-description">I design hands-on products and immersive environments, using prototypes to explore how people perceive, interact and connect.</p><p class="focus-line"><span>My research focus</span>Human–computer interaction · Virtual–physical prototyping</p><div class="intro-links"><a class="text-link" href="#work">Explore my work ↗</a><a class="text-link" href="#about">Get to know me</a></div></div>
-<figure class="intro-portrait"><div class="portrait-frame"><img src="assets/chunho-wong-headshot.jpeg" width="3729" height="3730" fetchpriority="high" alt="Portrait of Chunho (Jerry) Wong."></div><figcaption><div><span>Chunho (Jerry) Wong</span><p>Design + Environmental Analysis</p></div><p>Cornell University<br>Class of 2027</p></figcaption></figure>
-</section>
-</div></div>
-<section class="work-section" id="work" aria-labelledby="work-title">
-<div class="section-heading"><div><p class="eyebrow">A developing body of work</p><h2 id="work-title">Selected work<span> / 01—06</span></h2></div><p>Product and virtual design,<br> connected by human-centered inquiry.</p></div>
-<p class="draft-note">Portfolio in progress · Explore LooMi, Droplet, Urban and Sensorless Tangible VR. Two project spaces are reserved for forthcoming material.</p>
-<div class="project-grid">
-<div class="grid-note"><p class="eyebrow">One practice / Multiple forms</p><h3>MAKE.<br>TEST.<br>REFINE.</h3><p>Physical objects and virtual environments offer complementary ways to ask questions about interaction.</p></div>
-<a class="project-tile project-live loomi-photo-tile" href="loomi.html"><div class="tile-meta"><span>01 / Product design</span><span>2025</span></div><div class="tile-image"><img src="assets/loomi-real-cover.jpg" alt="Original photograph of the working LooMi prototype, with rainbow LEDs, OLED screen and physical controls."></div><div class="tile-caption"><div><h3>LooMi</h3><p>Light, touch & emotional connection</p></div><span class="view-label">View case study</span></div></a>
-<a class="project-tile project-live" href="droplet.html"><div class="tile-meta"><span>02 / Product design</span><span>Physical computing</span></div><div class="tile-image"><img src="assets/droplet/hero.png" width="1400" height="1840" style="width:auto;max-height:230px;max-width:100%;object-fit:contain" alt="Droplet prototype with a curved LED matrix display."></div><div class="tile-caption"><div><h3>Droplet</h3><p>Turning physical movement into light</p></div><span class="view-label">View case study</span></div></a>
-<a class="project-tile project-live urban-tile" href="urban.html"><div class="tile-meta"><span>03 / Virtual design</span><span>Unity</span></div><div class="tile-image"><img src="assets/urban/scene-09.jpg" loading="lazy" alt="High-rise street in the Unity urban comparison environment."></div><div class="tile-caption"><div><h3>Urban</h3><p>A matched environment for research</p></div><span class="view-label">View case study</span></div></a>
-<a class="project-tile project-live handlink-tile" href="handlink.html"><div class="tile-meta"><span>04 / Virtual–physical</span><span>Research prototype</span></div><div class="tile-image"><img src="assets/handlink/demo-poster.jpg" loading="lazy" alt="Sensorless Tangible VR prototype: hand motion driving a virtual hand and object in Unity."></div><div class="tile-caption"><div><h3>Sensorless Tangible VR</h3><p>Hand tracking · Physical interaction</p></div><span class="view-label">View case study</span></div></a>
-<article class="project-tile project-pending" aria-label="Reserved product design project, content not yet added"><div class="tile-meta"><span>05 / Product design</span><span>Reserved</span></div><span class="slot-number" aria-hidden="true">05</span><div class="tile-caption"><div><h3>Product project 03</h3><p>Project material to be added</p></div></div></article>
-<div class="grid-note research-note"><p class="eyebrow">The connecting thread</p><h3>INTERACTION<br>AS A<br>QUESTION.</h3><p>What changes when an experience is made physical, simulated virtually, or tested with people?</p><a class="text-link" href="#research">Research direction</a></div>
-<article class="project-tile project-pending" aria-label="Reserved virtual design project, content not yet added"><div class="tile-meta"><span>06 / Virtual design</span><span>Reserved</span></div><span class="slot-number" aria-hidden="true">06</span><div class="tile-caption"><div><h3>Virtual project 03</h3><p>Project material to be added</p></div></div></article>
+
+<!-- shared icon art -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="gPale" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#cfd3da"/></radialGradient>
+    <radialGradient id="gWarm" cx=".38" cy=".3" r=".85"><stop offset="0" stop-color="#fff4c8"/><stop offset=".55" stop-color="#f9c25c"/><stop offset="1" stop-color="#ef9a3b"/></radialGradient>
+    <radialGradient id="gSky" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#b3c8e8"/></radialGradient>
+    <linearGradient id="gLotus" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86a8ff"/><stop offset="1" stop-color="#2639d4"/></linearGradient>
+    <linearGradient id="gWing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5b5b62"/><stop offset=".6" stop-color="#17171b"/><stop offset="1" stop-color="#000"/></linearGradient>
+    <symbol id="i-feather" viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="url(#gPale)"/><path d="M45 13C29 15 18 27 18 44l-3 6 7-4c16 0 24-14 23-33z" fill="#fff" stroke="#9a9fab" stroke-width="1.6" stroke-linejoin="round"/><path d="M20 47C27 36 34 27 43 18" fill="none" stroke="#9a9fab" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-bulb" viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="url(#gWarm)"/><path d="M32 15a11 11 0 0 1 6.5 19.9V40H25.5v-5.1A11 11 0 0 1 32 15z" fill="#fff" opacity=".92"/><rect x="26" y="42" width="12" height="3.2" rx="1.6" fill="#fff" opacity=".9"/></symbol>
+    <symbol id="i-flower" viewBox="0 0 64 64"><g transform="translate(32 33)"><g id="lp"><ellipse cx="0" cy="-15" rx="8.5" ry="15" fill="url(#gLotus)"/></g><use href="#lp" transform="rotate(60)"/><use href="#lp" transform="rotate(120)"/><use href="#lp" transform="rotate(180)"/><use href="#lp" transform="rotate(240)"/><use href="#lp" transform="rotate(300)"/><circle r="5" fill="#dfe8ff"/></g></symbol>
+    <symbol id="i-wing" viewBox="0 0 64 64"><path d="M8 42C11 21 33 7 57 12c-9 3-15 9-16 14 6-2 11-2 16 1-10 4-17 10-19 17 6-2 10-1 14 1C38 54 20 54 8 42z" fill="url(#gWing)"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="url(#gSky)"/><path d="M21 42a8 8 0 0 1-.6-16 11 11 0 0 1 21.2-2A9.5 9.5 0 0 1 43 42z" fill="#fff" stroke="#9db4d8" stroke-width="1.4"/></symbol>
+  </defs>
+</svg>
+
+<header id="nav">
+  <a class="brand" href="#top"><b>Chunho Wong</b><span>Design &amp; Research</span></a>
+  <nav aria-label="Primary"><a href="#work">Work</a><a href="#research">Research</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+</header>
+
+<main id="top">
+<div id="scroller">
+  <div id="sticky">
+    <div id="darkBg"></div>
+    <div id="stage">
+
+      <div id="glowWrap">
+        <div class="glow" data-g="blue"   style="background:radial-gradient(ellipse 700px 520px at 50% 780px,rgba(112,134,236,.96) 0%,rgba(122,142,230,.62) 38%,rgba(140,155,225,.2) 68%,rgba(140,155,225,0) 100%)"></div>
+        <div class="glow" data-g="orange" style="background:radial-gradient(ellipse 700px 520px at 50% 780px,rgba(246,150,52,1) 0%,rgba(240,162,84,.66) 38%,rgba(236,170,110,.2) 68%,rgba(236,170,110,0) 100%)"></div>
+        <div class="glow" data-g="red"    style="background:radial-gradient(ellipse 700px 520px at 50% 780px,rgba(236,78,88,1) 0%,rgba(232,98,106,.66) 38%,rgba(228,120,124,.2) 68%,rgba(228,120,124,0) 100%)"></div>
+        <div class="glow" data-g="green"  style="background:radial-gradient(ellipse 700px 520px at 50% 780px,rgba(62,160,62,1) 0%,rgba(92,172,86,.66) 38%,rgba(130,178,120,.2) 68%,rgba(130,178,120,0) 100%)"></div>
+        <div class="rings"></div>
+      </div>
+
+      <div id="hero">
+        <div id="heroBg"></div>
+        <div id="haze"></div>
+        <div id="blueBg"></div>
+        <div id="flowerWrap"></div>
+        <div id="flowerTpl" hidden>
+          <svg id="flowerSvg" xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" aria-hidden="true">
+            <defs>
+              <linearGradient id="petalG" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="-270">
+                <stop offset="0" stop-color="#fff3f8"/><stop offset=".3" stop-color="#f8b9d8"/><stop offset=".68" stop-color="#c3a6f4"/><stop offset="1" stop-color="#6f9cff"/>
+              </linearGradient>
+              <linearGradient id="petalW" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="-270">
+                <stop offset="0" stop-color="#ffe9f1"/><stop offset=".45" stop-color="#f2a6c6"/><stop offset="1" stop-color="#a9a2f4"/>
+              </linearGradient>
+              <linearGradient id="budG" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="-110"><stop offset="0" stop-color="#9fb9ff"/><stop offset="1" stop-color="#4f83ff"/></linearGradient>
+              <linearGradient id="orG" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="0" y2="-150"><stop offset="0" stop-color="#ffb28a"/><stop offset="1" stop-color="#d4503f"/></linearGradient>
+              <linearGradient id="stemG" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#7f9a8e"/><stop offset="1" stop-color="#bfe4c8"/></linearGradient>
+              <radialGradient id="ctrG"><stop offset="0" stop-color="#ffd27a"/><stop offset=".55" stop-color="#ff8f55"/><stop offset="1" stop-color="#ff8f55" stop-opacity="0"/></radialGradient>
+              <filter id="b1" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.4"/></filter>
+              <filter id="b6" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7"/></filter>
+              <filter id="b3" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+              <path id="petal" d="M0 0C-88-56-120-192 0-272C120-192 88-56 0 0Z"/>
+              <path id="vein" d="M0-14C-9-96-6-176 0-236" fill="none" stroke="#fff" stroke-opacity=".38" stroke-width="2.2" stroke-linecap="round"/>
+            </defs>
+            <g id="flowerG">
+              <g transform="translate(120 500) rotate(-18)" filter="url(#b6)" opacity=".95">
+                <use href="#petal" transform="rotate(-24) scale(.55)" fill="url(#orG)"/>
+                <use href="#petal" transform="rotate(14) scale(.5)" fill="url(#orG)"/>
+                <use href="#petal" transform="rotate(48) scale(.38)" fill="#ff9d70"/>
+              </g>
+              <path d="M820 470C900 390 985 300 1092 150" stroke="url(#stemG)" stroke-width="9" fill="none" stroke-linecap="round" filter="url(#b1)"/>
+              <g transform="translate(1094 138) rotate(30)" filter="url(#b1)">
+                <use href="#petal" transform="rotate(-18) scale(.38)" fill="url(#budG)"/>
+                <use href="#petal" transform="rotate(18) scale(.34)" fill="url(#budG)"/>
+              </g>
+              <g transform="translate(700 332)">
+                <use href="#petal" transform="rotate(40) scale(1.0)" fill="url(#petalW)" opacity=".9"/>
+                <use href="#petal" transform="rotate(165) scale(.82)" fill="url(#petalW)" opacity=".85"/>
+                <use href="#petal" transform="rotate(-160) scale(.74)" fill="url(#petalW)" opacity=".85"/>
+                <use href="#petal" transform="rotate(3) scale(1.12)" fill="url(#petalG)" filter="url(#b1)"/>
+                <use href="#vein" transform="rotate(3) scale(1.12)"/>
+                <use href="#petal" transform="rotate(-39) scale(1.16)" fill="url(#petalG)" filter="url(#b1)"/>
+                <use href="#vein" transform="rotate(-39) scale(1.16)"/>
+                <use href="#petal" transform="rotate(-84) scale(1.0)" fill="url(#petalG)" filter="url(#b1)"/>
+                <use href="#vein" transform="rotate(-84) scale(1.0)"/>
+                <use href="#petal" transform="rotate(-126) scale(.95)" fill="url(#petalG)" filter="url(#b1)"/>
+                <use href="#vein" transform="rotate(-126) scale(.95)"/>
+                <circle id="ctr" r="42" fill="url(#ctrG)" filter="url(#b3)"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <div id="textLayer">
+          <div class="t sans" id="tNew">I make</div>
+          <div class="t ser" id="tFree">ideas</div>
+          <div class="t ser" id="tImag">interactive.</div>
+        </div>
+        <div id="uiLayer">
+          <div class="u" id="eyebrow">Cornell University · Designer &amp; undergraduate researcher</div>
+          <div class="u" id="para">Product design × VR design. I design hands-on products and immersive environments, using prototypes to study how people perceive, interact, and connect.<small>Human–computer interaction · Virtual–physical prototyping</small></div>
+          <div class="u" id="logo"><b>Chunho Wong</b><span>DESIGN &amp; RESEARCH</span></div>
+          <a class="u" id="btn" href="#work">Explore my work ↗</a>
+        </div>
+      </div>
+
+      <div id="manWrap">
+        <div id="man">
+          <img class="man-photo" src="assets/chunho-wong-headshot.jpeg" width="3729" height="3730" fetchpriority="high" alt="Chunho (Jerry) Wong">
+          <div id="manRim" aria-hidden="true"></div>
+        </div>
+      </div>
+
+      <div id="pillRow" role="tablist" aria-label="Sections" inert></div>
+      <div id="hint" aria-hidden="true">Try click
+        <svg viewBox="0 0 70 60"><path d="M4 56C26 52 46 40 54 8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M45 14l9-8 5 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+    <div id="cue">Scroll to explore<i></i></div>
+  </div>
 </div>
+
+<section class="s" id="work">
+  <div class="wrap">
+    <div class="head">
+      <div><p class="eyebrow">Selected work</p><h2>Things I have <em>built</em>, 01—06.</h2></div>
+      <p>A portfolio in progress. Four projects are live, two more are on the way.</p>
+    </div>
+    <div class="grid">
+      <a class="card" href="loomi.html">
+        <div class="viz" style="--c:#6f86f0"><span class="num">01</span><img class="project-photo" src="assets/loomi-real-cover.jpg" alt="Working LooMi prototype with LEDs, OLED display and physical controls" loading="lazy"></div>
+        <div class="meta"><h3>LooMi</h3><span class="arrow">↗</span></div><p class="type">Product design · Light, touch & emotional connection</p>
+      </a>
+      <a class="card" href="droplet.html">
+        <div class="viz" style="--c:#f59a3c"><span class="num">02</span><img class="project-photo" src="assets/droplet/hero.png" alt="Droplet curved LED matrix prototype" loading="lazy"></div>
+        <div class="meta"><h3>Droplet</h3><span class="arrow">↗</span></div><p class="type">Physical computing · Turning movement into light</p>
+      </a>
+      <a class="card" href="urban.html">
+        <div class="viz" style="--c:#4fa84f"><span class="num">03</span><img class="project-photo" src="assets/urban/scene-09.jpg" alt="Unity urban comparison environment" loading="lazy"></div>
+        <div class="meta"><h3>Urban</h3><span class="arrow">↗</span></div><p class="type">Unity · A matched environment for research</p>
+      </a>
+      <a class="card" href="handlink.html">
+        <div class="viz" style="--c:#e8606a"><span class="num">04</span><img class="project-photo" src="assets/handlink/demo-poster.jpg" alt="Sensorless Tangible VR hand interaction prototype" loading="lazy"></div>
+        <div class="meta"><h3>Sensorless Tangible VR</h3><span class="arrow">↗</span></div><p class="type">Virtual–physical interaction · Research prototype</p>
+      </a>
+      <div class="card wip">
+        <div class="viz"><span class="num">05</span></div>
+        <div class="meta"><h3>Product project</h3></div><p class="type">Work in progress · Coming next</p>
+      </div>
+      <div class="card wip">
+        <div class="viz"><span class="num">06</span></div>
+        <div class="meta"><h3>Virtual project</h3></div><p class="type">Work in progress · Coming next</p>
+      </div>
+    </div>
+  </div>
 </section>
-<section class="research-section" id="research" aria-labelledby="research-title"><div class="research-heading"><p class="eyebrow">Research direction</p><h2 id="research-title">Virtual–physical<br>prototyping.</h2><p>How does the way we interact—through an object, an avatar or our hands in VR—shape our experience?</p></div><div class="research-body"><p>My honors thesis at DUET Lab compares desktop avatar-based shopping with immersive hand-tracking VR. I built both environments and designed a controlled study with matched products, layouts and tasks.</p><div class="method-flow" aria-label="Research approach"><div><span>01 / Prototype</span><h3>Make it testable.</h3><p>Build interactions in Unity and Spatial.io, or with Arduino and fabricated parts.</p></div><div><span>02 / Study</span><h3>Observe people.</h3><p>Use controlled tasks, behavioral data, think-aloud testing and usability surveys.</p></div><div><span>03 / Iterate</span><h3>Refine through evidence.</h3><p>LooMi evolved through three prototype generations and evaluation with five participants.</p></div></div></div></section>
-<section class="about-section" id="about" aria-labelledby="about-title"><div class="about-title"><p class="eyebrow">Behind the prototypes</p><h2 id="about-title">Designer.<br>Maker.<br>Researcher<span>.</span></h2><p>Chunho (Jerry) Wong<br>Cornell University · Ithaca, New York</p></div><div class="about-copy"><p class="about-lead">I’m a Design + Environmental Analysis student at Cornell, working across product design, VR and human–computer interaction.</p><p>My practice moves between the workshop and virtual environments: wiring sensors, fabricating enclosures, developing hand-tracking interactions, and studying how people use what I build. I also teach digital fabrication as a student technician at Cornell.</p><dl class="background"><div><dt>Education</dt><dd>B.S. Design + Environmental Analysis<br><span>Cornell University · Expected May 2027</span></dd></div><div><dt>Immersive research</dt><dd>DUET Lab · Cornell Lab of Ornithology<br><span>Independent honors research in virtual shopping; development of an interactive urban environment for a comparative research project.</span></dd></div><div><dt>Physical prototyping</dt><dd>Human Resonance · Meta Design & Technology Lab<br><span>Designed and prototyped an interactive Fire installation using Arduino, mist, airflow and dynamic lighting.</span></dd></div><div><dt>Working with people</dt><dd>DAIL Lab · Human-centered design studies<br><span>Facilitated VR wayfinding experiments with 15 participants; used cultural probes, think-aloud testing, UX surveys and SUS in LooMi.</span></dd></div><div><dt>Design in practice</dt><dd>VR development intern, SoReal · Summer 2025<br><span>Unity / XR · Hand tracking · Arduino · 3D printing · Laser cutting</span></dd></div></dl><a class="contact-link" href="mailto:cw994@cornell.edu">Let’s talk ↗ cw994@cornell.edu</a></div></section>
+
+<section class="s" id="research">
+  <div class="wrap cols">
+    <div><p class="eyebrow">Research direction</p><h2>Virtual–physical <em>prototyping</em></h2></div>
+    <div class="body">
+      <p class="lead">How does interacting through an object, an avatar, or one's hands in VR shape the experience?</p>
+      <p>My honors thesis at the DUET Lab compares avatar-based desktop shopping with immersive hand-tracking VR. I built both environments and designed a controlled study with matched products, layouts, and tasks.</p>
+      <ol class="steps">
+        <li><b>01</b><div><h4>Prototype</h4><p>Build interactions in Unity and Spatial.io, or with Arduino and fabricated parts.</p></div></li>
+        <li><b>02</b><div><h4>Study</h4><p>Use controlled tasks, behavioral data, think-aloud testing, and usability surveys.</p></div></li>
+        <li><b>03</b><div><h4>Iterate</h4><p>LooMi went through three prototype generations and evaluation with five participants.</p></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="about">
+  <div class="wrap cols">
+    <div>
+      <div class="portrait">
+        <svg class="sil" viewBox="40 14 100 170" aria-hidden="true"><path d="M126.2,146.8C125.3,144.4 122.8,137.9 121.0,132.3C119.2,126.8 117.0,117.6 115.7,113.7C114.3,109.7 114.0,110.0 113.0,108.5C112.0,107.0 111.1,106.7 109.7,104.8C108.2,102.9 105.3,98.6 104.5,97.2C103.7,95.7 104.1,97.0 104.7,96.0C105.2,95.0 107.1,92.5 107.8,91.2C108.6,89.8 108.4,89.0 109.0,87.8C109.6,86.7 111.0,85.2 111.5,84.2C112.0,83.1 111.6,82.5 111.8,81.7C112.1,80.9 112.2,80.1 113.0,79.3C113.8,78.5 114.9,77.3 116.5,76.8C118.1,76.3 121.3,76.5 122.7,76.3C124.0,76.1 124.1,76.1 124.7,75.7C125.3,75.3 126.0,74.6 126.3,74.0C126.6,73.4 126.7,73.1 126.5,72.3C126.3,71.6 125.1,70.3 125.0,69.3C124.9,68.4 125.7,67.5 125.7,66.7C125.6,65.9 124.8,65.3 124.7,64.5C124.6,63.7 125.1,62.6 125.0,61.8C124.9,61.1 124.2,60.3 124.0,59.8C123.8,59.4 123.7,59.5 124.0,59.0C124.3,58.5 125.5,57.4 125.8,56.8C126.2,56.2 126.3,55.9 126.2,55.3C126.0,54.8 125.6,54.2 124.8,53.7C124.1,53.1 123.0,52.8 121.8,52.0C120.7,51.2 118.6,49.5 117.8,48.7C117.0,47.8 117.2,47.8 117.0,46.8C116.8,45.8 117.5,44.4 116.5,42.7C115.5,40.9 112.5,37.9 110.8,36.3C109.2,34.8 107.2,34.1 106.5,33.3C105.8,32.6 106.2,32.1 106.3,31.7C106.5,31.2 107.6,31.4 107.3,30.5C107.1,29.6 105.8,27.2 104.8,26.2C103.9,25.1 103.2,24.3 101.8,24.2C100.5,24.1 98.6,25.5 96.8,25.5C95.1,25.5 92.4,24.5 91.2,24.3C90.0,24.2 90.0,24.4 89.7,24.5C89.3,24.6 89.1,24.9 89.2,25.2C89.3,25.4 90.2,25.6 90.3,25.8C90.4,26.1 90.3,26.8 89.8,26.8C89.4,26.8 88.3,25.8 87.7,25.8C87.1,25.9 86.7,26.3 86.2,27.0C85.7,27.7 85.6,29.3 84.7,29.8C83.8,30.4 81.8,30.0 80.7,30.3C79.6,30.7 79.3,30.9 78.2,31.8C77.0,32.7 74.9,34.1 73.8,35.7C72.8,37.3 72.9,39.4 71.8,41.5C70.8,43.6 68.3,46.8 67.5,48.3C66.7,49.9 66.9,49.6 67.2,50.8C67.4,52.0 68.6,54.0 68.8,55.5C69.1,57.0 68.6,58.9 68.7,60.0C68.8,61.1 68.7,60.9 69.3,62.0C70.0,63.1 71.2,65.1 72.5,66.7C73.8,68.2 75.6,69.7 76.8,71.3C78.1,73.0 79.2,75.3 80.2,76.5C81.1,77.7 81.9,78.0 82.7,78.3C83.4,78.7 84.2,78.3 84.7,78.5C85.1,78.7 85.3,79.1 85.5,79.5C85.7,79.9 85.8,80.7 85.7,81.2C85.5,81.7 85.4,82.3 84.7,82.5C83.9,82.7 82.2,81.1 81.3,82.5C80.4,83.9 81.9,87.7 79.2,91.2C76.4,94.7 68.8,99.3 65.0,103.5C61.2,107.7 58.0,113.7 56.3,116.2C54.7,118.7 55.5,117.4 55.2,118.5C54.8,119.6 54.4,121.2 54.2,122.8C53.9,124.4 54.1,126.5 53.8,128.2C53.6,129.8 53.0,129.7 52.8,132.8C52.6,135.9 52.7,144.5 52.7,146.8L52.7,550.0L126.2,550.0Z" fill="#06060a"/></svg>
+        <img src="assets/chunho-wong-headshot.jpeg" alt="Portrait of Chunho (Jerry) Wong." onerror="this.remove()">
+      </div>
+      <div class="facts">
+        <div><span>Based in</span>Ithaca, New York</div>
+        <div><span>Studying</span>Design + Environmental Analysis</div>
+        <div><span>Graduating</span>May 2027</div>
+      </div>
+    </div>
+    <div class="body">
+      <p class="eyebrow">About</p>
+      <h2 style="margin-bottom:32px">Designer. Maker. <em>Researcher.</em></h2>
+      <p class="lead">I'm Chunho, a Cornell student working across product design, VR, and HCI.</p>
+      <p>My work spans wiring sensors, fabricating enclosures, developing hand-tracking interactions, and studying use. I also teach digital fabrication as a student technician at Cornell.</p>
+    </div>
+  </div>
+</section>
+
+<section class="s" id="experience" style="padding-top:0">
+  <div class="wrap">
+    <div class="head"><div><p class="eyebrow">Experience</p><h2>Labs &amp; <em>studios</em></h2></div></div>
+    <ul class="xp">
+      <li><div><h4>DUET Lab</h4><small>Cornell Lab of Ornithology</small></div><p>Independent honors research on virtual shopping, and an interactive urban environment for a comparative research project.</p></li>
+      <li><div><h4>Human Resonance</h4><small>Meta Design &amp; Technology Lab</small></div><p>Designed and prototyped an interactive Fire installation using Arduino, mist, airflow, and dynamic lighting.</p></li>
+      <li><div><h4>DAIL Lab</h4><small>Human-centered design studies</small></div><p>Facilitated VR wayfinding experiments with 15 participants. Used cultural probes, think-aloud testing, UX surveys, and SUS for LooMi.</p></li>
+      <li><div><h4>VR Development Intern</h4><small>SoReal · Summer 2025</small></div><p>Unity/XR, hand tracking, Arduino, 3D printing, laser cutting.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section class="s" id="contact" style="padding-top:0">
+  <div class="wrap">
+    <p class="eyebrow">Contact</p>
+    <h2>Let's <em>talk</em> ↗</h2>
+    <div class="mail">
+      <code id="mailText">cw994@cornell.edu</code>
+      <button class="btn" id="copyMail" type="button">Copy address</button>
+      <a class="btn" href="mailto:cw994@cornell.edu">Open in mail ↗</a>
+    </div>
+  </div>
+</section>
 </main>
-<footer class="site-footer"><span>Chunho Wong / Design & Research</span><p>Selected work in progress · 2026</p><a href="#main">Back to top</a></footer>
-<p class="image-credit">LooMi cover: original prototype photograph. Explore the case study for interaction footage, research and fabrication.</p>
-</div>
-<script src="home-motion.js?v=5" defer></script>
+<footer><div class="wrap"><span>Chunho Wong / Design &amp; Research</span><span>Selected work in progress · 2026</span></div></footer>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var sticky=$('#sticky'), scroller=$('#scroller'), stage=$('#stage'), hero=$('#hero'), nav=$('#nav');
+  var man=$('#man'), manRim=$('#manRim'), blueBg=$('#blueBg'), heroBg=$('#heroBg'), darkBg=$('#darkBg'), flowerWrap=$('#flowerWrap');
+  var textLayer=$('#textLayer'), uiLayer=$('#uiLayer'), glowWrap=$('#glowWrap'), row=$('#pillRow'), hint=$('#hint'), cue=$('#cue');
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fPink=null, fBlue=null;
+
+  var c01=function(v){return Math.min(1,Math.max(0,v))};
+  var lerp=function(a,b,t){return a+(b-a)*t};
+  var ez=function(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2};
+
+  var items=[
+    {k:'feather',who:'A',glow:'red',   color:'#e4545f',light:false,text:'Designer. Maker. Researcher.',      to:'#about'},
+    {k:'bulb',   who:'C',glow:'orange',color:'#ef8a2c',light:false,text:'Virtual–physical prototyping',       to:'#research'},
+    {k:'flower', who:'A',glow:'blue',  color:'#2b43e0',light:false,text:'Selected work · 4 projects',          to:'#work'},
+    {k:'wing',   who:'B',glow:null,    color:'#ffffff',light:true, text:'Let’s talk · cw994@cornell.edu', to:'#contact'},
+    {k:'cloud',  who:'B',glow:'green', color:'#3d9a42',light:false,text:'DUET · Meta DTL · DAIL · SoReal',    to:'#experience'}
+  ];
+  var sel=2, interacted=false, active=false, typeTimer=null, typeDelay=null, arrowDelay=null, autoTimer=null, lastUser=0, hovering=false;
+  var pw=[], els=[], W2=480;
+
+  items.forEach(function(it,i){
+    var b=document.createElement('button');
+    b.className='orb'; b.type='button'; b.style.setProperty('--pc',it.color);
+    b.setAttribute('role','tab'); b.setAttribute('aria-label',it.text);
+    b.innerHTML='<span class="bubble"></span><span class="ico"><svg viewBox="0 0 64 64"><use href="#i-'+it.k+'"/></svg></span><span class="lbl"><span class="tx"></span><span class="go">↗</span></span>';
+    if(it.light) b.classList.add('light');
+    b.addEventListener('click',function(){
+      if(i===sel){ if(active){ var t=document.querySelector(it.to); if(t) t.scrollIntoView({behavior:reduce?'auto':'smooth'}); } }
+      else select(i,true);
+    });
+    row.appendChild(b); els.push(b);
+  });
+  row.addEventListener('mouseenter',function(){hovering=true});
+  row.addEventListener('mouseleave',function(){hovering=false});
+
+  function measure(){
+    var m=document.createElement('span');
+    m.style.cssText='position:absolute;visibility:hidden;white-space:nowrap;font:500 25px "Instrument Sans",Helvetica,Arial,sans-serif';
+    document.body.appendChild(m);
+    pw=items.map(function(it){m.textContent=it.text;return Math.ceil(72+m.getBoundingClientRect().width+22+34)});
+    document.body.removeChild(m);
+    W2=pw[sel];
+  }
+
+  function layoutPills(){
+    var Ws=pw[sel];
+    row.style.transform='scale('+Math.min(1,(visW-48)/(Ws+376))+')';
+    els.forEach(function(b,i){
+      var d=(((i-sel)%5)+5)%5; if(d>2) d-=5;
+      var sg=d<0?-1:1, ad=Math.abs(d);
+      var w=d===0?Ws:40, h=d===0?70:40;
+      var x=d===0?0:sg*(Ws/2+65+(ad===2?103:0));
+      b.style.width=w+'px'; b.style.height=h+'px';
+      b.style.transform='translate('+(x-w/2)+'px,'+(-h/2)+'px)';
+      b.style.opacity=ad===2?.5:1;
+      b.classList.toggle('sel',d===0); b.classList.toggle('far',ad===2);
+      b.setAttribute('aria-selected',d===0?'true':'false');
+      b.tabIndex=d===0||active?0:-1;
+    });
+    document.querySelectorAll('.glow').forEach(function(g){g.classList.toggle('on',g.dataset.g===items[sel].glow)});
+    document.querySelectorAll('.who').forEach(function(w){w.classList.toggle('on',w.dataset.w===items[sel].who)});
+  }
+
+  function typeLabel(){
+    clearInterval(typeTimer);
+    clearTimeout(typeDelay);clearTimeout(arrowDelay);
+    els.forEach(function(b){b.querySelector('.tx').textContent='';b.querySelector('.go').classList.remove('show')});
+    if(!active) return;
+    var b=els[sel], tx=b.querySelector('.tx'), go=b.querySelector('.go'), text=items[sel].text;
+    if(reduce){tx.textContent=text;go.classList.add('show');return}
+    var n=0, car=document.createElement('span'); car.className='caret';
+    typeDelay=setTimeout(function(){
+      tx.appendChild(car);
+      typeTimer=setInterval(function(){
+        n++; tx.textContent=text.slice(0,n); tx.appendChild(car);
+        if(n>=text.length){clearInterval(typeTimer);arrowDelay=setTimeout(function(){go.classList.add('show');if(car.parentNode)car.remove()},700)}
+      },28);
+    },380);
+  }
+
+  function select(i,user){
+    sel=i; if(user){interacted=true;lastUser=Date.now();hint.classList.remove('show')}
+    layoutPills(); typeLabel(); placeHint();
+  }
+  function startAuto(){
+    stopAuto();
+    if(reduce) return;
+    autoTimer=setInterval(function(){
+      if(hovering||Date.now()-lastUser<9000||document.hidden) return;
+      hint.classList.remove('show'); interacted=true;
+      select((sel+4)%5,false);
+    },4200);
+  }
+  function stopAuto(){clearInterval(autoTimer)}
+  function setActive(on){
+    if(on===active) return; active=on;
+    row.inert=!on;
+    row.classList.toggle('live',on);
+    hint.classList.toggle('show',on&&!interacted);
+    if(on){startAuto()}else{stopAuto()}
+    typeLabel(); layoutPills();
+  }
+  document.addEventListener('keydown',function(e){
+    if(!active) return;
+    if(e.key==='ArrowLeft'){select((sel+4)%5,true)}
+    else if(e.key==='ArrowRight'){select((sel+1)%5,true)}
+  });
+
+  /* ---------- layout (runs on resize only, never per frame) ---------- */
+  var S=1, visW=1600, visH=900, narrow=false, padLv=56, sTop=0, sTotal=1;
+  function placeHint(){
+    var bx=800-(pw[sel]||480)/2-65, want=bx-152, left=Math.max(want,padLv);
+    hint.style.left=left+'px';
+    var ar=hint.querySelector('svg'); if(ar) ar.style.left=(want-left+92)+'px';
+  }
+  function layout(){
+    var vw=sticky.clientWidth, vh=sticky.clientHeight, asp=vw/vh;
+    if(asp<0.8) S=vw/760;
+    else if(asp>=1.45) S=Math.min(vw/1600,vh/900);
+    else S=Math.max(Math.min(vw/1600,vh/900),Math.min(vw/1000,vh/760));
+    visW=vw/S; visH=vh/S;
+    stage.style.transform='translate3d(-50%,-50%,0) scale('+S+')';
+    var padL=visW>=1600?56:800-visW/2+Math.max(28,visW*0.04);
+    narrow=visW<1000; stage.classList.toggle('narrow',narrow); padLv=padL;
+    stage.style.setProperty('--padL',padL+'px'); stage.style.setProperty('--padR',(1600-padL)+'px');
+    var ts=visW>=1500?1:c01(.55+(visW-700)/800*.45); ts=Math.max(.6,ts);
+    stage.style.setProperty('--ts',ts);
+    [heroBg,blueBg].forEach(function(el){
+      el.style.left=(800-visW/2-60)+'px'; el.style.top=(450-visH/2-60)+'px';
+      el.style.width=(visW+120)+'px'; el.style.height=(visH+120)+'px';
+    });
+    var r=scroller.getBoundingClientRect();
+    sTop=r.top+window.scrollY; sTotal=Math.max(1,scroller.offsetHeight-vh);
+    layoutPills();placeHint();
+  }
+
+  /* ---------- pre-rasterise the flower once (pink + blue palettes) ---------- */
+  function buildFlower(done){
+    var svg=$('#flowerTpl svg'); var pink=new XMLSerializer().serializeToString(svg);
+    var map={'#fff3f8':'#eef4ff','#f8b9d8':'#a8c0ff','#c3a6f4':'#8b9df4','#6f9cff':'#4d7aff','#ffe9f1':'#e4edff','#f2a6c6':'#9db3f6','#a9a2f4':'#8d94f1','#ffd27a':'#e4ecff','#ff8f55':'#92a6ff'};
+    var blue=pink; Object.keys(map).forEach(function(k){blue=blue.split(k).join(map[k])});
+    var sc=narrow?1.25:1.5, W=Math.round(1600*sc), H=Math.round(900*sc), left=2, fin=false;
+    function mk(str){
+      var cv=document.createElement('canvas'); cv.width=W; cv.height=H; flowerWrap.appendChild(cv);
+      var img=new Image();
+      img.onload=function(){cv.getContext('2d').drawImage(img,0,0,W,H); if(--left===0&&!fin){fin=true;done()}};
+      img.onerror=function(){if(--left===0&&!fin){fin=true;done()}};
+      img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(str);
+      return cv;
+    }
+    fPink=mk(pink); fBlue=mk(blue); fBlue.style.opacity=0;
+  }
+
+  /* ---------- render ---------- */
+  var cur=0, target=0, last=-1, navMode='', frameId=0;
+  function readTarget(){
+    target=c01((window.scrollY-sTop)/sTotal);
+  }
+  function updateNav(p){
+    var m=p<.46?'hero':(window.scrollY<sTop+sTotal-60?'stage':'page');
+    if(m!==navMode){navMode=m;nav.dataset.m=m}
+  }
+
+  function render(p){
+    var E=function(a,b){return c01((p-a)/(b-a))};
+    var zoom=ez(E(.02,.30)), shrink=ez(E(.30,.66)), morph=ez(E(.66,.80));
+    var Ox=700,Oy=330;
+
+    var k=1+1.25*zoom+.15*shrink, sh=ez(E(.12,.62));
+    var cyw=lerp(lerp(450,413,shrink),441,morph);
+    var px=lerp(Ox,800,sh), py=lerp(Oy,cyw,sh);
+    var ft='translate3d('+(px-Ox*k)+'px,'+(py-Oy*k)+'px,0) scale('+k+')';
+    var b=ez(E(.30,.62));
+    if(fPink){fPink.style.transform=ft;fBlue.style.transform=ft;fPink.style.opacity=1-b;fBlue.style.opacity=b}
+    blueBg.style.opacity=b;
+
+    var fullW=visW+100, fullH=visH+100;
+    var w=lerp(lerp(fullW,700,shrink),W2,morph), h=lerp(lerp(fullH,330,shrink),70,morph);
+    var rad=lerp(lerp(0,56,shrink),35,morph);
+    var cyy=lerp(lerp(450,413,shrink),441,morph);
+    hero.style.clipPath='inset('+(cyy-h/2)+'px '+(1600-(800+w/2))+'px '+(900-(cyy+h/2))+'px '+(800-w/2)+'px round '+rad+'px)';
+    hero.style.opacity=1-ez(E(.80,.88));
+    hero.style.display=p>.9?'none':'';
+
+    textLayer.style.opacity=1-E(.12,.32);
+    uiLayer.style.opacity=1-E(.06,.22);
+    uiLayer.style.pointerEvents=p<.1?'auto':'none';
+    uiLayer.inert=p>=.1;
+
+    var mt=ez(E(.26,.66)), sc=lerp(narrow?3.3:4.73,2.703,mt), hx=lerp(narrow?975:870,800,mt), hy=lerp(narrow?250:225,513,mt);
+    man.style.transform='translate3d('+(hx-57*sc)+'px,'+(hy-10*sc)+'px,0) scale('+(sc/4.73)+')';
+    manRim.style.opacity=1-mt;
+
+    darkBg.style.opacity=1-ez(E(.30,.64));
+
+    row.style.opacity=ez(E(.76,.86));
+    glowWrap.style.opacity=ez(E(.80,1));
+    var cu=1-E(0,.04); cue.style.opacity=cu; cue.classList.toggle('off',cu<=0);
+    setActive(p>.9&&window.scrollY<sTop+sTotal+sticky.clientHeight);
+  }
+
+  /* event-driven loop: only runs while something is moving */
+  var running=false, lastT=0;
+  function frame(ts){
+    var dt=Math.min(.05,(ts-lastT)/1000||.016); lastT=ts;
+    readTarget();
+    cur=reduce?target:lerp(cur,target,1-Math.exp(-dt*11));
+    if(Math.abs(cur-target)<.0004) cur=target;
+    if(cur!==last){render(cur);last=cur;updateNav(cur)}
+    if(cur!==target){frameId=requestAnimationFrame(frame)}else{running=false}
+  }
+  function kick(){
+    updateNav(cur);
+    setActive(cur>.9&&window.scrollY<sTop+sTotal+sticky.clientHeight);
+    if(!running){running=true;lastT=performance.now();frameId=requestAnimationFrame(frame)}
+  }
+  window.addEventListener('scroll',kick,{passive:true});
+
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var id=a.getAttribute('href'); if(id==='#'||id==='#top') return;
+      var t=document.querySelector(id); if(!t) return;
+      e.preventDefault(); t.scrollIntoView({behavior:reduce?'auto':'smooth'});
+    });
+  });
+  var cb=$('#copyMail');
+  cb.addEventListener('click',function(){
+    var done=function(){cb.textContent='Copied';setTimeout(function(){cb.textContent='Copy address'},1600)};
+    var sel2=function(){var r=document.createRange();r.selectNodeContents($('#mailText'));var s=getSelection();s.removeAllRanges();s.addRange(r);cb.textContent='Press copy'};
+    try{navigator.clipboard.writeText('cw994@cornell.edu').then(done,sel2)}catch(e){sel2()}
+  });
+
+  function init(){
+    measure(); layout(); layoutPills();
+    readTarget(); cur=target; last=-1; render(cur); last=cur; updateNav(cur);
+    var started=false;
+    function reveal(){ if(started) return; started=true; flowerWrap.classList.add('ready'); requestAnimationFrame(function(){stage.classList.add('in')}); }
+    buildFlower(reveal); setTimeout(reveal,2500);
+  }
+  var rzT=null;
+  window.addEventListener('resize',function(){clearTimeout(rzT);rzT=setTimeout(function(){layout();last=-1;kick()},120)});
+  var started=false; function go(){if(started)return;started=true;init()}
+  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(go);setTimeout(go,1800)}else go();
+  window.addEventListener('pagehide',function(){
+    stopAuto();clearInterval(typeTimer);clearTimeout(typeDelay);clearTimeout(arrowDelay);clearTimeout(rzT);
+    cancelAnimationFrame(frameId);running=false;
+  });
+  window.addEventListener('pageshow',function(e){
+    if(e.persisted){layout();last=-1;kick();if(active)startAuto();typeLabel()}
+  });
+  matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change',function(e){
+    reduce=e.matches;last=-1;kick();if(active)startAuto();typeLabel();
+  });
+})();
+</script>
+
 </body>
 </html>
