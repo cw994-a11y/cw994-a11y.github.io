@@ -82,7 +82,7 @@ section{padding-block:clamp(56px,6vw,88px) 0}
 /* worlds in dashed frames */
 .worlds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,28px);margin-top:clamp(28px,3vw,40px)}
 @media(max-width:760px){.worlds{grid-template-columns:1fr}}
-.wf{position:relative;border:1.5px dashed rgba(110,110,119,.55);border-radius:4px;padding:14px}
+.wf{position:relative;border:1.5px solid var(--accent);border-radius:4px;padding:14px}
 .wf .no{position:absolute;left:14px;top:-14px;background:var(--bg);padding:0 8px;font:500 clamp(22px,2vw,28px)/1 var(--sans);letter-spacing:-.03em;color:var(--ink)}
 .wf .pic{aspect-ratio:3/4;overflow:hidden;border-radius:2px}
 .wf .pic img{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--ease)}
@@ -125,31 +125,19 @@ dialog .x{position:absolute;right:-6px;top:-46px;background:none;border:0;color:
 
 <main class="wrap">
   <section>
-    <div class="concept">
-      <div class="reveal"><h2>Concept<br><span class="soft">Your room, with a way out.</span></h2><p class="lede">Pinch a window into the wall of your real room. Behind it is another world. Step through, and mixed reality becomes VR.</p></div>
-      <div class="flow reveal" aria-label="Room and pinch are the inputs, another world is the output">
-        <div class="g"><span class="lab">Mixed reality</span><div class="row"><span class="bub">Room</span><span class="bub">Pinch</span></div></div>
-        <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
-        <div class="g"><span class="lab">VR</span><span class="bub out">World</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <h2 class="reveal">How it works<br><span class="soft">Three steps.</span></h2>
+    <h2 class="reveal">How it works<br><span class="soft">Open, step in, switch.</span></h2>
     <div class="steps" id="steps">
-      <svg class="path" id="path" aria-hidden="true"><path id="pathD" d=""/></svg>
       <div class="step reveal">
-        <div class="media"><video src="b/open.mp4" poster="b/open.jpg" muted loop playsinline preload="metadata" data-auto aria-label="Two pinches open a window in the wall"></video><span class="pin" style="left:44%;top:46%">!</span></div>
-        <div><p class="st">Step 1</p><h3>Pinch to open a window.</h3><p class="lede">Two pinches set the corners. The wall inside the frame turns into a city square.</p></div>
+        <div class="media"><video src="b/open.mp4" poster="b/open.jpg" muted loop playsinline preload="metadata" data-auto aria-label="Two pinches open a window in the wall"></video></div>
+        <div><h3>Pinch to open a window.</h3><p class="lede">Two pinches set the corners. The wall inside the frame turns into a city square.</p></div>
       </div>
       <div class="step r reveal">
-        <div class="media"><video src="b/step.mp4" poster="b/step.jpg" muted loop playsinline preload="metadata" data-auto aria-label="The window grows until the room becomes the city square"></video><span class="pin" style="left:52%;top:40%">!</span></div>
-        <div><p class="st">Step 2</p><h3>Step through.</h3><p class="lede">The window grows around you until the room is gone.</p></div>
+        <div class="media"><video src="b/step.mp4" poster="b/step.jpg" muted loop playsinline preload="metadata" data-auto aria-label="The window grows until the room becomes the city square"></video></div>
+        <div><h3>Step through.</h3><p class="lede">The window grows around you until the room is gone.</p></div>
       </div>
       <div class="step reveal">
-        <div class="media"><video src="b/switch.mp4" poster="b/switch.jpg" muted loop playsinline preload="metadata" data-auto aria-label="The world switches between office, sky and city"></video><span class="pin" style="left:62%;top:58%">!</span></div>
-        <div><p class="st">Step 3</p><h3>Switch worlds, or come back.</h3><p class="lede">One tap changes the world. A window back home shows your real room.</p></div>
+        <div class="media"><video src="b/switch.mp4" poster="b/switch.jpg" muted loop playsinline preload="metadata" data-auto aria-label="The world switches between office, sky and city"></video></div>
+        <div><h3>Switch worlds, or come back.</h3><p class="lede">One tap changes the world. A window back home shows your real room.</p></div>
       </div>
     </div>
   </section>
@@ -157,9 +145,9 @@ dialog .x{position:absolute;right:-6px;top:-46px;background:none;border:0;color:
   <section>
     <h2 class="reveal">Worlds<br><span class="soft">Behind the window.</span></h2>
     <div class="worlds">
-      <div class="wf reveal"><span class="no">#01</span><div class="pic"><img src="b/world-city.jpg" alt="A city square at night"></div><span class="tag">City square</span><p>Night, lamplight on wet stone.</p></div>
-      <div class="wf reveal"><span class="no">#02</span><div class="pic"><img src="b/world-sky.jpg" alt="Clouds over still water"></div><span class="tag">Open sky</span><p>Clouds over still water.</p></div>
-      <div class="wf reveal"><span class="no">#03</span><div class="pic"><img src="b/world-office.jpg" alt="A warm wood-panelled office"></div><span class="tag">Office</span><p>A warm room to work in.</p></div>
+      <div class="wf reveal"><div class="pic"><img src="b/world-city.jpg" alt="A city square at night"></div><span class="tag">City square</span><p>Night, lamplight on wet stone.</p></div>
+      <div class="wf reveal"><div class="pic"><img src="b/world-sky.jpg" alt="Clouds over still water"></div><span class="tag">Open sky</span><p>Clouds over still water.</p></div>
+      <div class="wf reveal"><div class="pic"><img src="b/world-office.jpg" alt="A warm wood-panelled office"></div><span class="tag">Office</span><p>A warm room to work in.</p></div>
     </div>
   </section>
 
@@ -194,17 +182,6 @@ dialog .x{position:absolute;right:-6px;top:-46px;background:none;border:0;color:
     var vo=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting) play(e.target); else e.target.pause()})},{threshold:.25});
     $$('video[data-auto]').forEach(function(v){vo.observe(v)});
   }
-  /* dashed red path through the three pins */
-  var wrap=$('#steps'), svg=$('#path'), d=$('#pathD');
-  function drawPath(){
-    var b=wrap.getBoundingClientRect(), pts=$$('#steps .pin').map(function(p){var r=p.getBoundingClientRect(); return [r.left+r.width/2-b.left, r.top+r.height/2-b.top]});
-    svg.setAttribute('viewBox','0 0 '+b.width+' '+b.height);
-    var s='M'+pts[0][0]+','+pts[0][1];
-    for(var i=1;i<pts.length;i++){var a=pts[i-1], c=pts[i], my=(a[1]+c[1])/2; s+=' C'+a[0]+','+my+' '+c[0]+','+my+' '+c[0]+','+c[1]}
-    d.setAttribute('d',s);
-  }
-  drawPath(); window.addEventListener('resize',drawPath); window.addEventListener('load',drawPath);
-  $$('.reveal').forEach(function(el){el.addEventListener('transitionend',drawPath)});
   var dlg=$('#film'), fv=$('#filmVideo');
   $('#playFilm').addEventListener('click',function(){ if(dlg.showModal){dlg.showModal(); play(fv)} });
   $('#closeFilm').addEventListener('click',function(){fv.pause();dlg.close()});
