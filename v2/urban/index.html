@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Urban — a Unity city built as the matched comparison condition for a nature VR study.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Urban</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: the city map is the page. Hero walkthrough, the brief in one line with three numbers, an interactive atlas (map ↔ zone video), the discovery interaction, a short closing. Type system shared with Droplet; this project's colour is the map's path amber. */
+:root{
+  --bg:#f5f5f7; --card:#ebebef; --paper:#ffffff; --ink:#111114; --muted:#6e6e77; --line:rgba(17,17,20,.12);
+  --accent:#d9700a; --panel:#16130f;
+  --sans:'Geist','Helvetica Neue',Helvetica,Arial,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1); --r:22px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0d0d10;--card:#17171c;--paper:#1c1c22;--ink:#f2f2f4;--muted:#9c9ca6;--line:rgba(255,255,255,.12);--accent:#ff9a3c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d0d10;--card:#17171c;--paper:#1c1c22;--ink:#f2f2f4;--muted:#9c9ca6;--line:rgba(255,255,255,.12);--accent:#ff9a3c;color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+img,video{display:block;max-width:100%}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+
+h1{margin:0;font:600 clamp(68px,10.5vw,184px)/.86 var(--sans);letter-spacing:-.06em;color:#fff;text-shadow:0 2px 30px rgba(20,16,10,.3)}
+h2{margin:0;font:500 clamp(38px,4.6vw,64px)/1.02 var(--sans);letter-spacing:-.04em;color:var(--accent);text-wrap:balance}
+h3{margin:0;font:500 clamp(24px,2.2vw,30px)/1.12 var(--sans);letter-spacing:-.025em;color:var(--accent);text-wrap:balance}
+.soft{color:var(--muted)}
+.lede{margin:12px 0 0;font:400 16px/1.55 var(--sans);color:var(--muted);max-width:40ch}
+section{padding-top:clamp(56px,6vw,88px)}
+
+/* hero */
+.hero{position:relative;aspect-ratio:1280/724;max-height:92svh;width:100%;overflow:hidden;background:#6e8fb5;color:#fff}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;max-width:none}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(18,14,8,.55),rgba(18,14,8,0) 45%);pointer-events:none}
+.hero .copy{position:absolute;left:0;right:0;bottom:clamp(30px,6vh,72px);z-index:1}
+.hero p{margin:clamp(14px,1.6vw,24px) 0 0;max-width:32ch;font:400 clamp(16px,1.5vw,21px)/1.4 var(--sans);color:rgba(255,255,255,.94);text-shadow:0 1px 14px rgba(20,16,10,.5)}
+@media(max-width:640px){.hero{aspect-ratio:auto;height:72svh}}
+
+.mini{position:fixed;left:0;right:0;top:0;z-index:30;transform:translateY(-110%);transition:transform .5s var(--ease);background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.mini.on{transform:none}
+.mini .wrap{display:flex;align-items:center;height:54px}
+.mini a{text-decoration:none;font-size:14px;font-weight:600}
+.mini a span{color:var(--muted);font-weight:400;margin-left:10px}
+
+/* brief */
+.brief{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,80px);align-items:end}
+@media(max-width:820px){.brief{grid-template-columns:1fr}}
+.nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,1.4vw,16px)}
+.n{background:var(--paper);border-radius:var(--r);padding:22px 20px 24px}
+.n b{display:block;font:500 clamp(38px,4.6vw,64px)/1 var(--sans);letter-spacing:-.04em;color:var(--accent)}
+.n span{display:block;margin-top:10px;font-size:14px;line-height:1.4;color:var(--muted)}
+.role{margin-top:clamp(18px,2vw,26px);display:flex;flex-wrap:wrap;gap:8px}
+.role span{background:var(--card);border-radius:999px;padding:7px 14px;font:500 14px var(--sans);color:var(--ink)}
+
+/* atlas */
+.atlas{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(12px,1.6vw,20px);margin-top:clamp(22px,2.6vw,34px);align-items:start}
+@media(max-width:900px){.atlas{grid-template-columns:1fr}}
+.map{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:1477/1065;background:var(--card)}
+.map img{width:100%;height:100%;object-fit:cover}
+.map .shade{position:absolute;inset:0;background:rgba(17,17,20,.32);pointer-events:none;transition:opacity .5s;-webkit-mask:var(--hole);mask:var(--hole)}
+.zone{position:absolute;border:4px solid var(--accent);border-radius:10px;background:transparent;cursor:pointer;padding:0;opacity:0;transition:opacity .4s}
+.zone.on{opacity:1;box-shadow:0 0 0 6px rgba(217,112,10,.18)}
+.zone:hover{opacity:.7}
+.zone.on:hover{opacity:1}
+.view{display:grid;gap:14px}
+.screen{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:16/9;background:#000}
+.screen video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s}
+.screen video.on{opacity:1}
+.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+@media(max-width:520px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tabs button{appearance:none;border:1.5px solid var(--line);background:var(--paper);color:var(--ink);border-radius:14px;padding:12px 12px 13px;text-align:left;cursor:pointer;font:500 15px/1.2 var(--sans);transition:border-color .3s,background .3s}
+.tabs button span{display:block;margin-top:4px;font:400 13px/1.35 var(--sans);color:var(--muted)}
+.tabs button[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--paper))}
+.tabs button[aria-pressed="true"] b{color:var(--accent)}
+.tabs b{font-weight:500}
+.zdesc{margin:0;font-size:15px;color:var(--muted);min-height:2.6em}
+
+/* discovery */
+.disc{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.6fr);gap:clamp(24px,4vw,56px);align-items:center;margin-top:clamp(22px,2.6vw,34px)}
+@media(max-width:820px){.disc{grid-template-columns:1fr}}
+.disc .screen video{opacity:1}
+.seq{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.seq li{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);font:500 18px/1.2 var(--sans);letter-spacing:-.01em}
+.seq li:first-child{border-top:1px solid var(--line)}
+.seq li i{width:10px;height:10px;border-radius:50%;background:var(--accent);flex:none}
+.seq li:last-child i{background:transparent;border:2px solid var(--accent)}
+
+/* closing */
+.closing{margin-block:clamp(56px,6vw,88px);border-radius:var(--r);overflow:hidden;position:relative;background:var(--panel);color:#fff;padding:clamp(30px,4vw,56px);display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;isolation:isolate}
+.closing::before{content:"";position:absolute;right:-10%;top:-60%;width:70%;height:220%;background:radial-gradient(closest-side,rgba(217,112,10,.5),transparent);z-index:-1}
+.closing h3{color:#fff;max-width:28ch}
+.closing h3 .soft{color:rgba(255,255,255,.6)}
+.closing p{margin:12px 0 0;max-width:52ch;font-size:15px;color:rgba(255,255,255,.7)}
+.btn{display:inline-flex;align-items:center;gap:10px;background:#fff;color:#111;border-radius:999px;padding:14px 22px;font:500 15px var(--sans);text-decoration:none;transition:transform .3s var(--ease)}
+.btn:hover{transform:translateY(-2px)}
+footer{padding-block:0 60px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:26px}
+footer a{text-decoration:none;color:var(--ink)}
+
+.reveal{transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.reveal.pre{opacity:0;transform:translateY(24px)}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+
+<header class="hero" id="top">
+  <video src="a/hero.mp4" poster="a/hero.jpg" autoplay muted loop playsinline aria-label="Flying over the virtual city, past the fountain plaza and shopping streets"></video>
+  <div class="copy wrap">
+    <h1>Urban</h1>
+    <p>A city built in Unity, designed to be a fair comparison to a nature VR world.</p>
+  </div>
+</header>
+
+<div class="mini" id="mini"><div class="wrap"><a href="../">Urban<span>← Showroom</span></a></div></div>
+
+<main class="wrap">
+  <section>
+    <div class="brief">
+      <div class="reveal">
+        <h2>The brief<br><span class="soft">Change the content, keep the rest.</span></h2>
+        <p class="lede">A planned study of nature-based VR during pediatric chemotherapy needed a city to compare against. I built it to match the nature world's layout and interaction, so only the content differs.</p>
+        <div class="role"><span>Unity development</span><span>Environment design</span><span>Research assistant</span></div>
+      </div>
+      <div class="nums reveal">
+        <div class="n"><b>4</b><span>Zones, matched to the nature world</span></div>
+        <div class="n"><b>16</b><span>Objects in the discovery task</span></div>
+        <div class="n"><b>1</b><span>Shared interaction sequence</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="atlas">
+    <h2 class="reveal">The city<br><span class="soft">Four zones, one connected map.</span></h2>
+    <div class="atlas reveal">
+      <div class="map" id="map">
+        <img src="a/map.jpg" alt="Illustrated top-down map of the city: an amusement park, a shopping street, residential blocks and a fountain plaza">
+        <button class="zone" data-z="0" aria-label="Amusement park" style="left:5.5%;top:7.5%;width:34%;height:83.5%"></button>
+        <button class="zone" data-z="1" aria-label="Fountain plaza" style="left:83.5%;top:12.5%;width:16%;height:36%"></button>
+        <button class="zone" data-z="2" aria-label="Shopping street" style="left:44.5%;top:12.5%;width:16.5%;height:78%"></button>
+        <button class="zone" data-z="3" aria-label="Residential street" style="left:64.3%;top:12.5%;width:16.5%;height:36%"></button>
+        <button class="zone" data-z="3" aria-label="Residential street" style="left:64.3%;top:54%;width:35.5%;height:33%" tabindex="-1"></button>
+      </div>
+      <div class="view">
+        <div class="screen">
+          <video data-z="0" src="a/park.mp4" poster="a/park.jpg" muted loop playsinline preload="metadata" class="on" aria-label="Walking through the amusement park"></video>
+          <video data-z="1" src="a/fountain.mp4" poster="a/fountain.jpg" muted loop playsinline preload="none" aria-label="Moving around the fountain plaza"></video>
+          <video data-z="2" src="a/shopping.mp4" poster="a/shopping.jpg" muted loop playsinline preload="none" aria-label="Walking down the shopping street"></video>
+          <video data-z="3" src="a/residential.mp4" poster="a/residential.jpg" muted loop playsinline preload="none" aria-label="Walking along the residential street"></video>
+        </div>
+        <div class="tabs" role="group" aria-label="Zones">
+          <button type="button" data-z="0" aria-pressed="true"><b>Amusement park</b><span>Play</span></button>
+          <button type="button" data-z="1" aria-pressed="false"><b>Fountain plaza</b><span>Water</span></button>
+          <button type="button" data-z="2" aria-pressed="false"><b>Shopping street</b><span>Commerce</span></button>
+          <button type="button" data-z="3" aria-pressed="false"><b>Residential</b><span>Neighborhood</span></button>
+        </div>
+        <p class="zdesc" id="zdesc">Ferris wheel, rollercoaster and winding paths.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="reveal">Discovery<br><span class="soft">Find an object, choose to watch.</span></h2>
+    <div class="disc">
+      <div class="screen reveal"><video src="a/discovery.mp4" poster="a/discovery.jpg" muted loop playsinline preload="metadata" data-auto aria-label="Approaching a car brings up a prompt asking whether to watch a video"></video></div>
+      <div class="reveal">
+        <ul class="seq">
+          <li><i></i>Walk the city</li>
+          <li><i></i>Approach an object</li>
+          <li><i></i>A video prompt appears</li>
+          <li><i></i>Watch, or keep exploring</li>
+        </ul>
+        <p class="lede">Mirrors the bird discovery in the nature world, so both versions ask the same thing of the player.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="closing reveal">
+    <div>
+      <h3>Ready for the study.<br><span class="soft">Tablet build, in Brazilian Portuguese.</span></h3>
+      <p>Prepared for use in a Brazilian hospital. The trial is planned; this page makes no claim about patient outcomes.</p>
+    </div>
+    <a class="btn" href="#atlas">Explore the map ↑</a>
+  </div>
+</main>
+
+<footer><div class="wrap"><a href="../">← Back to the showroom</a><span>Unity · Research project with Tara Pearson</span></div></footer>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)}, $$=function(s){return [].slice.call(document.querySelectorAll(s))};
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hero=$('.hero'), mini=$('#mini');
+  window.addEventListener('scroll',function(){mini.classList.toggle('on',window.scrollY>hero.offsetHeight-80)},{passive:true});
+  if(!reduce&&'IntersectionObserver' in window){
+    var els=$$('.reveal').filter(function(el){return el.getBoundingClientRect().top>window.innerHeight*.9});
+    els.forEach(function(el){el.classList.add('pre')});
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.remove('pre');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
+    els.forEach(function(el){io.observe(el)});
+  }
+  function play(v){if(reduce)return; var p=v.play(); if(p&&p.catch)p.catch(function(){})}
+  if(reduce){var hv=hero.querySelector('video'); hv.removeAttribute('autoplay'); hv.pause()}
+  if('IntersectionObserver' in window){
+    var vo=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting) play(e.target); else e.target.pause()})},{threshold:.25});
+    $$('video[data-auto]').forEach(function(v){vo.observe(v)});
+  }
+
+  /* atlas: map zones ↔ zone videos */
+  var desc=['Ferris wheel, rollercoaster and winding paths.','A fountain with seating and a pool beside it.','Shopfronts, signs and street details.','Tree-lined sidewalks past neighborhood buildings.'];
+  var vids=$$('.screen video[data-z]'), tabs=$$('.tabs button'), zones=$$('.zone'), cur=0, inView=false, touched=false, timer=0;
+  function setZone(z){
+    cur=z;
+    vids.forEach(function(v){var on=+v.dataset.z===z; v.classList.toggle('on',on); if(on){ if(v.preload==='none') v.preload='metadata'; if(inView) play(v) } else v.pause()});
+    tabs.forEach(function(b){b.setAttribute('aria-pressed',+b.dataset.z===z?'true':'false')});
+    zones.forEach(function(b){b.classList.toggle('on',+b.dataset.z===z)});
+    $('#zdesc').textContent=desc[z];
+  }
+  function pick(z){touched=true; clearInterval(timer); setZone(z)}
+  tabs.forEach(function(b){b.addEventListener('click',function(){pick(+b.dataset.z)})});
+  zones.forEach(function(b){b.addEventListener('click',function(){pick(+b.dataset.z)})});
+  setZone(0);
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      inView=es[0].isIntersecting; var v=vids[cur];
+      if(inView){play(v); if(!touched&&!reduce&&!timer) timer=setInterval(function(){setZone((cur+1)%4)},9000)}
+      else{v.pause(); clearInterval(timer); timer=0}
+    },{threshold:.3}).observe($('#atlas .screen'));
+  }
+})();
+</script>
+
+</body>
+</html>
