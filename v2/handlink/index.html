@@ -13,7 +13,7 @@
 /* Layout: a quiet product page. One accent (the LED's blue-violet), long horizontal media cards, numbered steps that walk down the page. */
 :root{
   --bg:#f5f5f7; --card:#ebebef; --paper:#ffffff; --ink:#111114; --muted:#6e6e77; --line:rgba(17,17,20,.12);
-  --accent:#4b37ff; --accent-2:#8b7fff; --tint:#ecebff; --panel:#0c0b14;
+  --accent:#2f6fd6; --accent-2:#8b7fff; --tint:#ecebff; --panel:#0c0b14;
   --sans:'Geist','Helvetica Neue',Helvetica,Arial,sans-serif;
   --mono:'Geist Mono',ui-monospace,Menlo,Consolas,monospace;
   --ease:cubic-bezier(.22,1,.36,1);
@@ -316,7 +316,7 @@ h2 .soft,h3 .soft{color:var(--muted)}
   <video class="main" src="a/hero.mp4" poster="a/hero-poster.jpg" autoplay muted loop playsinline aria-label="A hand moves a small 3D-printed object on a desk while its virtual twin moves on the screen"></video>
   <div class="copy wrap">
     <h1>Sensorless<br>Tangible VR</h1>
-    <p>Touch real objects inside VR. No sensors on the props, only your hands, tracked by the headset.</p>
+    <p>A sensor-light pipeline for manipulating uninstrumented physical objects in VR. Independent mixed-reality project, 2026 — present.</p>
   </div>
 </header>
 
@@ -336,22 +336,22 @@ h2 .soft,h3 .soft{color:var(--muted)}
   <div class="wrap rows">
     <div class="feat reveal">
       <div class="media wide"><video src="a/align.mp4" poster="a/align-poster.jpg" muted loop playsinline preload="metadata" data-auto aria-label="Holding a printed object on the desk moves the virtual cube on the screen"></video></div>
-      <div class="txt"><span class="big">01</span><div><h3>Hold the real object.<br><span class="soft">Its twin moves in VR.</span></h3><p class="small">A 3D-printed prop on the desk has a virtual twin. Mixed-reality passthrough lines the two up.</p></div></div>
+      <div class="txt"><span class="big">01</span><div><h3>Hold the real object.<br><span class="soft">Its twin moves in VR.</span></h3><p class="small">MR-assisted calibration registers a 3D-printed prop to its virtual twin, so physical and virtual objects share one position.</p></div></div>
     </div>
     <div class="feat flip reveal">
       <div class="media wide"><video src="a/push.mp4" poster="a/push-poster.jpg" muted loop playsinline preload="metadata" data-auto aria-label="Tracked virtual hands push blocks across a table in VR"></video></div>
-      <div class="txt"><span class="big">02</span><div><h3>Push with your hand.<br><span class="soft">No controller.</span></h3><p class="small">Colliders on the tracked hand push virtual objects the way a real hand would.</p></div></div>
+      <div class="txt"><span class="big">02</span><div><h3>Push with your hand.<br><span class="soft">No controller.</span></h3><p class="small">A physics-based virtual hand models contact, so pushing the twin behaves like pushing the real object.</p></div></div>
     </div>
     <div class="feat reveal">
       <div class="media wide"><video src="a/pinch.mp4" poster="a/pinch-poster.jpg" muted loop playsinline preload="metadata" data-auto aria-label="A pinch gesture picks up and places small blocks in VR"></video></div>
-      <div class="txt"><span class="big">03</span><div><h3>Pinch to pick up.<br><span class="soft">Grasping comes next.</span></h3><p class="small">Pinch tests pick up and place small parts. Natural, whole-hand grasping is the next step.</p></div></div>
+      <div class="txt"><span class="big">03</span><div><h3>Pinch to pick up.<br><span class="soft">Toward full grasping.</span></h3><p class="small">Pinch grasps pick up and place small parts, with mass and gravity modeled on the twin. Whole-hand grasping is in development.</p></div></div>
     </div>
   </div>
 
   <div class="wrap logic">
     <div class="head reveal">
       <div><h2>Design logic<br><span class="soft">From hand to object.</span></h2></div>
-      <p class="lede">The headset already sees your hands, so the props need no electronics. Hand joints become colliders, and the colliders move the virtual twin. Try it: move across the panel.</p>
+      <p class="lede">The headset already tracks the hands, so props need no electronics. Tracked joints drive a physics hand, and its contacts move the virtual twin. Move across the panel to try it.</p>
     </div>
 
     <div class="lab-card reveal">
@@ -383,7 +383,7 @@ h2 .soft,h3 .soft{color:var(--muted)}
         <h4>Collide</h4><p>Hand colliders push the twin, so touch feels physical.</p></div>
       <div class="step reveal">
         <svg viewBox="0 0 44 44" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M8 32 C14 14 24 30 36 12"/><circle cx="36" cy="12" r="3" fill="var(--accent)"/></svg>
-        <h4>Estimate</h4><p>Next: infer the prop's motion from the grasp alone.</p></div>
+        <h4>Estimate</h4><p>Real-time trajectory prediction keeps the twin aligned as the prop moves.</p></div>
     </div>
   </div>
 
@@ -399,7 +399,7 @@ h2 .soft,h3 .soft{color:var(--muted)}
 
 <section id="uses">
   <div class="chapter wrap">
-    <div class="sechead reveal"><h2>Uses<br><span class="soft">Where touch matters.</span></h2></div>
+    <div class="sechead reveal"><h2>Directions<br><span class="soft">Where touch matters.</span></h2></div>
   </div>
   <div class="wrap">
     <div class="hw-grid three">
@@ -415,7 +415,7 @@ h2 .soft,h3 .soft{color:var(--muted)}
     </div>
 
     <div class="closing reveal">
-      <h3>Touch something real, inside VR.<br><span class="soft">An ongoing research prototype.</span></h3>
+      <h3>Touch something real, inside VR.<br><span class="soft">Ongoing independent research.</span></h3>
       <button class="btn" type="button" id="playFilm">Watch the hand test <span aria-hidden="true">▶</span></button>
     </div>
   </div>

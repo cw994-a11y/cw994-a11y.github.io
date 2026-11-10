@@ -120,7 +120,7 @@ dialog .x{position:absolute;right:-6px;top:-46px;background:none;border:0;color:
   <video src="a/hero.mp4" poster="a/hero.jpg" autoplay muted loop playsinline aria-label="Objects on a desk are outlined, the monitor is selected, and the room fades to VR leaving only the real monitor"></video>
   <div class="copy wrap">
     <h1>Selective<br>Passthrough</h1>
-    <p>Go into VR, but keep the real things you choose.</p>
+    <p>AI-segmented selective passthrough: enter VR while keeping the real objects you choose. Independent mixed-reality project, 2026 — present.</p>
   </div>
 </header>
 
@@ -145,11 +145,11 @@ dialog .x{position:absolute;right:-6px;top:-46px;background:none;border:0;color:
     <h2 class="reveal">How it works<br><span class="soft">Detect, select, show.</span></h2>
     <div class="trio">
       <figure class="reveal" style="--c:var(--outline)"><div class="sq"><video src="a/detect.mp4" poster="a/detect.jpg" muted loop playsinline preload="metadata" data-auto aria-label="Yellow outlines appear around objects on the desk"></video></div>
-        <figcaption><span class="key"><i></i>Yellow outline</span><h3>Detect.</h3><p class="lede">SAM 2.1 traces every object the headset camera sees.</p></figcaption></figure>
+        <figcaption><span class="key"><i></i>Yellow outline</span><h3>Detect.</h3><p class="lede">SAM 2, Meta's promptable segmentation model, extracts the contours of real objects in the headset camera view.</p></figcaption></figure>
       <figure class="reveal" style="--c:var(--accent)"><div class="sq"><video src="a/select.mp4" poster="a/select.jpg" muted loop playsinline preload="metadata" data-auto aria-label="The monitor outline turns green when selected"></video></div>
-        <figcaption><span class="key"><i></i>Green outline</span><h3>Select.</h3><p class="lede">Tap Next until the object you want turns green.</p></figcaption></figure>
+        <figcaption><span class="key"><i></i>Green outline</span><h3>Select.</h3><p class="lede">The user cycles through segmented objects until the one they want is selected in green.</p></figcaption></figure>
       <figure class="reveal" style="--c:#4f8fe0"><div class="sq"><video src="a/show.mp4" poster="a/show.jpg" muted loop playsinline preload="metadata" data-auto aria-label="The room fades to VR and only the real monitor remains"></video></div>
-        <figcaption><span class="key"><i></i>VR</span><h3>Show in VR.</h3><p class="lede">The room disappears. The selected object stays, live.</p></figcaption></figure>
+        <figcaption><span class="key"><i></i>VR</span><h3>Show in VR.</h3><p class="lede">Its contour is projected into 3D with depth and anchored to the room. The rest becomes VR; the object stays live.</p></figcaption></figure>
     </div>
   </section>
 
