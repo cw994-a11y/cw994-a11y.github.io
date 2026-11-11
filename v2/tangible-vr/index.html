@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Sensorless Tangible VR — touch real 3D-printed objects in VR using headset hand tracking, with no sensors on the props.">
+<meta name="description" content="Sensorless Tangible VR — a physics-based hand and MR alignment let you pick up uninstrumented 3D-printed objects in VR.">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Sensorless Tangible VR</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -296,9 +296,6 @@ h2 .soft,h3 .soft{color:var(--muted)}
 
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 </style>
-</head>
-<body>
-
 <style>
 /* page-specific additions on top of the shared Droplet system */
 .hw-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -308,8 +305,28 @@ h2 .soft,h3 .soft{color:var(--muted)}
 .use-card b{font:500 16px/1.3 var(--sans);letter-spacing:-.01em;color:var(--ink)}
 .use-card p{margin:0;font:400 15px/1.5 var(--sans);color:var(--muted)}
 .hand-svg{width:min(100%,300px);height:auto}
-#handbox{cursor:none}
+.duo2{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr);gap:10px;background:none;border-radius:20px}
+.duo2.one{grid-template-columns:1fr}
+.duo2 .vid{border-radius:20px;overflow:hidden;background:#000;aspect-ratio:1/1}
+.duo2 .vid video{width:100%;height:100%;object-fit:cover}
+.handcard,.aligncard{position:relative;border-radius:20px;background:var(--card);display:grid;place-items:center;padding:24px;min-height:100%}
+.aligncard{background:#141419;aspect-ratio:16/10}
+.aligncard svg{width:100%;height:auto}
+.twin{animation:align 4.5s var(--ease) infinite}
+.ok{opacity:0;animation:ok 4.5s ease infinite}
+@keyframes align{0%,12%{transform:translate(-120px,-62px) rotate(-14deg)}55%,100%{transform:none}}
+@keyframes ok{0%,55%{opacity:0}62%,92%{opacity:1}100%{opacity:0}}
+.twin{transform-box:fill-box;transform-origin:center}
+.hc-lab{position:absolute;left:20px;bottom:18px;font:400 13px var(--sans);color:var(--muted)}
+.media.tall{aspect-ratio:720/928;max-height:78vh;justify-self:center;width:100%;background:#000}
+.media.tall video{object-fit:cover}
+.feat .tools{margin:16px 0 0;font:500 13px var(--sans);color:var(--ink)}
+@media(max-width:820px){.duo2{grid-template-columns:1fr}}
+
 </style>
+
+</head>
+<body>
 
 <!-- hero: original demo footage, blurred extension on the left, one line of copy -->
 <header class="hero" id="top">
@@ -323,76 +340,43 @@ h2 .soft,h3 .soft{color:var(--muted)}
 <div class="mini" id="mini">
   <div class="wrap">
     <a class="back" href="../">Sensorless Tangible VR<span>← Showroom</span></a>
-    <nav aria-label="Sections"><a href="#function" data-sec="function">Function</a><a href="#uses" data-sec="uses">Uses</a></nav>
+    <nav aria-label="Sections"><a href="#how" data-sec="how">How it works</a><a href="#uses" data-sec="uses">Directions</a></nav>
   </div>
 </div>
 
 <main>
-<section id="function">
+<section id="how">
   <div class="chapter wrap">
-    <div class="sechead reveal"><h2>Function<br><span class="soft">Hold, push, pinch.</span></h2></div>
+    <div class="sechead reveal"><h2>How it works<br><span class="soft">A physics hand and an aligned twin.</span></h2></div>
   </div>
 
   <div class="wrap rows">
-    <div class="feat reveal">
-      <div class="media wide"><video src="a/align.mp4" poster="a/align-poster.jpg" muted loop playsinline preload="metadata" data-auto aria-label="Holding a printed object on the desk moves the virtual cube on the screen"></video></div>
-      <div class="txt"><span class="big">01</span><div><h3>Hold the real object.<br><span class="soft">Its twin moves in VR.</span></h3><p class="small">MR-assisted calibration registers a 3D-printed prop to its virtual twin, so physical and virtual objects share one position.</p></div></div>
-    </div>
     <div class="feat flip reveal">
-      <div class="media wide"><video src="a/push.mp4" poster="a/push-poster.jpg" muted loop playsinline preload="metadata" data-auto aria-label="Tracked virtual hands push blocks across a table in VR"></video></div>
-      <div class="txt"><span class="big">02</span><div><h3>Push with your hand.<br><span class="soft">No controller.</span></h3><p class="small">A physics-based virtual hand models contact, so pushing the twin behaves like pushing the real object.</p></div></div>
+      <div class="media duo2">
+        <div class="handcard"><svg class="hand-svg" viewBox="0 0 300 300" role="img" aria-label="Tracked hand skeleton; every joint is a rigid body with mass">
+          <g stroke="var(--muted)" stroke-width="3" stroke-linecap="round" fill="none" id="bones"></g><g id="joints"></g></svg>
+          <span class="hc-lab">Each joint: rigid body · mass · collider</span></div>
+        <div class="vid"><video src="a/hand.mp4" poster="a/hand.jpg" muted loop playsinline preload="metadata" data-auto aria-label="The physics hand grasps, lifts and places virtual blocks"></video></div>
+      </div>
+      <div class="txt"><span class="big">01</span><div><h3>A physics hand.<br><span class="soft">Every joint has mass.</span></h3><p class="small">The headset tracks every hand joint. I rebuilt the hand as rigid bodies — each joint with its own mass and collider — pulled toward the tracked pose. It pushes, grasps and lifts objects instead of passing through them.</p></div></div>
     </div>
+
     <div class="feat reveal">
-      <div class="media wide"><video src="a/pinch.mp4" poster="a/pinch-poster.jpg" muted loop playsinline preload="metadata" data-auto aria-label="A pinch gesture picks up and places small blocks in VR"></video></div>
-      <div class="txt"><span class="big">03</span><div><h3>Pinch to pick up.<br><span class="soft">Toward full grasping.</span></h3><p class="small">Pinch grasps pick up and place small parts, with mass and gravity modeled on the twin. Whole-hand grasping is in development.</p></div></div>
-    </div>
-  </div>
-
-  <div class="wrap logic">
-    <div class="head reveal">
-      <div><h2>Design logic<br><span class="soft">From hand to object.</span></h2></div>
-      <p class="lede">The headset already tracks the hands, so props need no electronics. Tracked joints drive a physics hand, and its contacts move the virtual twin. Move across the panel to try it.</p>
-    </div>
-
-    <div class="lab-card reveal">
-      <div class="sensor">
-        <svg class="hand-svg" viewBox="0 0 300 300" role="img" aria-label="Hand-tracking skeleton with joints marked">
-          <g stroke="var(--muted)" stroke-width="3" stroke-linecap="round" fill="none" id="bones"></g>
-          <g id="joints"></g>
-        </svg>
-        <div class="readout" aria-live="off"><span>joints <b>26</b></span><span>contacts <b id="contacts">0</b></span></div>
-      </div>
-      <div class="ledbox" id="handbox" tabindex="0" aria-label="Interactive table. Move the pointer or use arrow keys to push the virtual objects with a tracked hand.">
-        <canvas id="table" width="960" height="480"></canvas>
-        <div class="ledbar">
-          <span class="hint">Move to push</span>
-          <button class="filmlink" type="button" id="resetTable" style="color:#fff;border-color:rgba(255,255,255,.3)">Reset objects</button>
-        </div>
-      </div>
+      <div class="media duo2 one"><div class="aligncard" aria-hidden="true">
+        <svg viewBox="0 0 480 300">
+          <rect x="40" y="196" width="400" height="14" rx="3" fill="#2a2a33"/>
+          <text x="40" y="240" fill="#8e8e98" font-size="13" font-family="Geist,Arial">Real desk and printed prop (passthrough)</text>
+          <rect x="196" y="126" width="70" height="70" rx="8" fill="#e9e9ee"/>
+          <g class="twin"><rect x="196" y="126" width="70" height="70" rx="8" fill="var(--accent)" fill-opacity=".35" stroke="var(--accent)" stroke-width="2.5"/>
+            <circle cx="290" cy="161" r="7" fill="#36d0e0"/></g>
+          <text class="ok" x="196" y="104" fill="var(--accent)" font-size="14" font-weight="600" font-family="Geist,Arial">Aligned</text>
+        </svg></div></div>
+      <div class="txt"><span class="big">02</span><div><h3>Align with MR.<br><span class="soft">No extra sensors.</span></h3><p class="small">In passthrough, I pinch a handle to move the virtual table and twin onto the real desk and prop. Physical and virtual objects then share one coordinate frame, without trackers or sensors on the object.</p></div></div>
     </div>
 
-    <div class="steps">
-      <div class="step reveal">
-        <svg viewBox="0 0 44 44" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M6 18c0-5 4-8 8-8h16c4 0 8 3 8 8v4c0 3-2 5-5 5h-5l-3-3h-6l-3 3h-5c-3 0-5-2-5-5z"/><circle cx="15" cy="19" r="2" fill="var(--accent)"/><circle cx="29" cy="19" r="2" fill="var(--accent)"/></svg>
-        <h4>Track</h4><p>Headset cameras follow every hand joint.</p></div>
-      <div class="step reveal">
-        <svg viewBox="0 0 44 44" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="8" y="14" width="16" height="16" rx="2"/><rect x="20" y="10" width="16" height="16" rx="2" stroke-dasharray="3 3"/></svg>
-        <h4>Align</h4><p>Passthrough lines the virtual twin up with the printed prop.</p></div>
-      <div class="step reveal">
-        <svg viewBox="0 0 44 44" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><circle cx="15" cy="22" r="7"/><rect x="24" y="15" width="14" height="14" rx="2"/><path d="M22 22h2"/></svg>
-        <h4>Collide</h4><p>Hand colliders push the twin, so touch feels physical.</p></div>
-      <div class="step reveal">
-        <svg viewBox="0 0 44 44" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M8 32 C14 14 24 30 36 12"/><circle cx="36" cy="12" r="3" fill="var(--accent)"/></svg>
-        <h4>Estimate</h4><p>Real-time trajectory prediction keeps the twin aligned as the prop moves.</p></div>
-    </div>
-  </div>
-
-  <div class="wrap hw">
-    <div class="sechead reveal"><h2>Hardware<br><span class="soft">What it runs on.</span></h2></div>
-    <div class="hw-grid three" style="margin-top:24px">
-      <div class="hw-card reveal"><div class="ill"><svg viewBox="0 0 160 120" role="img" aria-label="VR headset"><path d="M30 48c0-10 8-16 18-16h64c10 0 18 6 18 16v20c0 8-6 14-14 14h-22l-10-10h-12l-10 10H44c-8 0-14-6-14-14z" fill="var(--ink)"/><rect x="44" y="44" width="28" height="18" rx="6" fill="#3a3a46"/><rect x="88" y="44" width="28" height="18" rx="6" fill="#3a3a46"/><circle cx="40" cy="40" r="3" fill="var(--accent)"/><circle cx="120" cy="40" r="3" fill="var(--accent)"/><circle cx="58" cy="76" r="2.5" fill="var(--accent)"/><circle cx="102" cy="76" r="2.5" fill="var(--accent)"/></svg></div><b>PICO 4 Ultra</b></div>
-      <div class="hw-card reveal"><div class="ill"><svg viewBox="0 0 160 120" role="img" aria-label="3D-printed prop"><path d="M80 26l36 18v38L80 100 44 82V44z" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/><path d="M44 44l36 18 36-18M80 62v38" stroke="var(--ink)" stroke-width="2" fill="none"/><g stroke="var(--muted)" stroke-width="1"><path d="M48 52l28 14M48 60l28 14M48 68l28 14M84 66l28-14M84 74l28-14M84 82l28-14"/></g></svg></div><b>3D-printed props</b></div>
-      <div class="hw-card reveal"><div class="ill"><svg viewBox="0 0 160 120" role="img" aria-label="Laptop running Unity"><rect x="34" y="28" width="92" height="58" rx="5" fill="var(--ink)"/><rect x="40" y="34" width="80" height="46" rx="2" fill="#3a3a46"/><path d="M80 44l14 8v16l-14 8-14-8V52z" fill="none" stroke="var(--accent-2)" stroke-width="2"/><path d="M24 90h112l-6 8H30z" fill="var(--ink)"/></svg></div><b>Unity</b></div>
+    <div class="feat flip reveal">
+      <div class="media tall"><video src="a/pickup.mp4" poster="a/pickup.jpg" muted loop playsinline preload="metadata" data-auto aria-label="Picking a printed prop up from the desk moves its virtual twin on the screen"></video></div>
+      <div class="txt"><span class="big">03</span><div><h3>Pick up the real object.<br><span class="soft">Its twin follows in VR.</span></h3><p class="small">Combined, the two let me lift an uninstrumented prop from the desk while its virtual twin moves with it. Real-time trajectory prediction keeps the twin in step.</p><p class="tools">Unity · PICO 4 Ultra</p></div></div>
     </div>
   </div>
 </section>
@@ -403,20 +387,12 @@ h2 .soft,h3 .soft{color:var(--muted)}
   </div>
   <div class="wrap">
     <div class="hw-grid three">
-      <div class="use-card reveal">
-        <svg viewBox="0 0 44 44" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><path d="M14 30v-9a3 3 0 0 1 6 0v-6a3 3 0 0 1 6 0v6a3 3 0 0 1 6 0v9c0 5-4 8-9 8s-9-3-9-8z"/></svg>
-        <b>Rehabilitation</b><p>Practise grasping with real objects while VR guides and measures the motion.</p></div>
-      <div class="use-card reveal">
-        <svg viewBox="0 0 44 44" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><circle cx="13" cy="16" r="5"/><circle cx="31" cy="16" r="5"/><path d="M5 34c1-6 5-9 8-9s7 3 8 9M23 34c1-6 5-9 8-9s7 3 8 9"/></svg>
-        <b>Remote collaboration</b><p>Two people hold matching props and see each other move the same object.</p></div>
-      <div class="use-card reveal">
-        <svg viewBox="0 0 44 44" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"><rect x="8" y="12" width="28" height="20" rx="3"/><path d="M15 22l5 5 9-10"/></svg>
-        <b>Training</b><p>Learn a hands-on task on a cheap printed replica before touching the real thing.</p></div>
+      <div class="use-card reveal"><b>Rehabilitation</b><p>Practise grasping with real objects while VR guides and measures the motion.</p></div>
+      <div class="use-card reveal"><b>Remote collaboration</b><p>Two people hold matching props and see each other move the same object.</p></div>
+      <div class="use-card reveal"><b>Training</b><p>Learn a hands-on task on a cheap printed replica before touching the real thing.</p></div>
     </div>
-
     <div class="closing reveal">
       <h3>Touch something real, inside VR.<br><span class="soft">Ongoing independent research.</span></h3>
-      <button class="btn" type="button" id="playFilm">Watch the hand test <span aria-hidden="true">▶</span></button>
     </div>
   </div>
 </section>
@@ -425,14 +401,9 @@ h2 .soft,h3 .soft{color:var(--muted)}
 <footer>
   <div class="wrap">
     <a href="../">← Back to the showroom</a>
-    <span>Independent research · Virtual–physical prototyping · Ongoing</span>
+    <span>Independent research · Unity · PICO 4 Ultra</span>
   </div>
 </footer>
-
-<dialog id="film" aria-label="Hand test recording">
-  <button class="x" type="button" id="closeFilm">Close ✕</button>
-  <video id="filmVideo" src="a/film.mp4" controls playsinline preload="none" poster="a/push-poster.jpg"></video>
-</dialog>
 
 <script>
 (function(){
@@ -443,7 +414,7 @@ h2 .soft,h3 .soft{color:var(--muted)}
   function onScroll(){
     mini.classList.toggle('on',window.scrollY>hero.offsetHeight-80);
     var y=window.scrollY+window.innerHeight*.4, act='';
-    ['function','uses'].forEach(function(id){var el=document.getElementById(id); if(el.offsetTop<=y) act=id});
+    ['how','uses'].forEach(function(id){var el=document.getElementById(id); if(el.offsetTop<=y) act=id});
     links.forEach(function(a){a.classList.toggle('on',a.dataset.sec===act)});
   }
   window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
@@ -469,93 +440,6 @@ h2 .soft,h3 .soft{color:var(--muted)}
   J.forEach(function(p,i){var tip=[4,8,12,16,20].indexOf(i)>=0; joints+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="'+(tip?9:6)+'" fill="'+(tip?'var(--accent)':'var(--paper)')+'" stroke="var(--accent)" stroke-width="2.5"/>'});
   $('#bones').innerHTML=bones; $('#joints').innerHTML=joints;
 
-  /* ---------- the table: a tracked hand pushes virtual objects ---------- */
-  var cv=$('#table'), ctx=cv.getContext('2d'), box=$('#handbox');
-  var W=cv.width, H=cv.height, TX=70, TY=60, TW=W-140, TH=H-120;
-  var objs;
-  function reset(){
-    objs=[{x:TX+TW*.3,y:TY+TH*.5,s:62,vx:0,vy:0,a:.2,va:0,c:'#e08a3c',k:'box'},{x:TX+TW*.5,y:TY+TH*.55,s:26,vx:0,vy:0,a:0,va:0,c:'#4caf6e',k:'ball'},{x:TX+TW*.72,y:TY+TH*.45,s:52,vx:0,vy:0,a:-.3,va:0,c:'#b36bd6',k:'box'}];
-  }
-  reset();
-  var hx=W*.12, hy=H*.75, thx=hx, thy=hy, lastInput=0, contacts=0, hvx=0, hvy=0;
-  var fingers=[[-34,-28],[-14,-44],[6,-48],[24,-42],[38,-22]];
-  function collide(){
-    contacts=0;
-    var pts=[[hx,hy,26]].concat(fingers.map(function(f){return [hx+f[0],hy+f[1],9]}));
-    objs.forEach(function(o){
-      var rad=o.k==='ball'?o.s:o.s*.62, hit=false;
-      pts.forEach(function(p){
-        var dx=o.x-p[0], dy=o.y-p[1], d=Math.hypot(dx,dy), m=rad+p[2];
-        if(d<m&&d>.01){ var nx=dx/d, ny=dy/d, pen=m-d; o.x+=nx*pen*.9; o.y+=ny*pen*.9; o.vx+=nx*pen*.35+hvx*.25; o.vy+=ny*pen*.35+hvy*.25; o.va+=(nx*hvy-ny*hvx)*.002; hit=true }
-      });
-      if(hit) contacts++;
-    });
-    for(var i=0;i<objs.length;i++)for(var j=i+1;j<objs.length;j++){
-      var a=objs[i], b=objs[j], ra=a.k==='ball'?a.s:a.s*.62, rb=b.k==='ball'?b.s:b.s*.62, dx=b.x-a.x, dy=b.y-a.y, d=Math.hypot(dx,dy), m=ra+rb;
-      if(d<m&&d>.01){var nx=dx/d, ny=dy/d, p=(m-d)/2; a.x-=nx*p; a.y-=ny*p; b.x+=nx*p; b.y+=ny*p; var rv=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny; if(rv<0){a.vx+=rv*nx*.5;a.vy+=rv*ny*.5;b.vx-=rv*nx*.5;b.vy-=rv*ny*.5}}
-    }
-  }
-  function physics(){
-    objs.forEach(function(o){
-      o.x+=o.vx; o.y+=o.vy; o.a+=o.va; o.vx*=.9; o.vy*=.9; o.va*=.9;
-      var rad=o.k==='ball'?o.s:o.s*.5;
-      if(o.x<TX+rad){o.x=TX+rad;o.vx=Math.abs(o.vx)*.4} if(o.x>TX+TW-rad){o.x=TX+TW-rad;o.vx=-Math.abs(o.vx)*.4}
-      if(o.y<TY+rad){o.y=TY+rad;o.vy=Math.abs(o.vy)*.4} if(o.y>TY+TH-rad){o.y=TY+TH-rad;o.vy=-Math.abs(o.vy)*.4}
-    });
-  }
-  function shade(hex,f){var n=parseInt(hex.slice(1),16),r=n>>16,g=n>>8&255,b=n&255;return 'rgb('+Math.round(r*f)+','+Math.round(g*f)+','+Math.round(b*f)+')'}
-  function draw(){
-    ctx.fillStyle='#0c0b14'; ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='#1b1a26'; ctx.beginPath(); ctx.roundRect?ctx.roundRect(TX,TY,TW,TH,18):ctx.rect(TX,TY,TW,TH); ctx.fill();
-    ctx.strokeStyle='rgba(255,255,255,.05)'; ctx.lineWidth=1;
-    for(var gx=TX+40;gx<TX+TW;gx+=40){ctx.beginPath();ctx.moveTo(gx,TY);ctx.lineTo(gx,TY+TH);ctx.stroke()}
-    for(var gy=TY+40;gy<TY+TH;gy+=40){ctx.beginPath();ctx.moveTo(TX,gy);ctx.lineTo(TX+TW,gy);ctx.stroke()}
-    objs.forEach(function(o){
-      ctx.save(); ctx.translate(o.x,o.y);
-      ctx.fillStyle='rgba(0,0,0,.35)'; ctx.beginPath(); ctx.ellipse(6,10,o.k==='ball'?o.s:o.s*.62,o.k==='ball'?o.s*.7:o.s*.45,0,0,6.283); ctx.fill();
-      if(o.k==='ball'){var g=ctx.createRadialGradient(-o.s*.35,-o.s*.35,2,0,0,o.s); g.addColorStop(0,'#9fe0b4'); g.addColorStop(1,o.c); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(0,0,o.s,0,6.283); ctx.fill()}
-      else{ctx.rotate(o.a); ctx.fillStyle=shade(o.c,.7); ctx.fillRect(-o.s/2+5,-o.s/2+5,o.s,o.s); ctx.fillStyle=o.c; ctx.fillRect(-o.s/2,-o.s/2,o.s,o.s); ctx.strokeStyle='rgba(255,255,255,.25)'; ctx.strokeRect(-o.s/2+.5,-o.s/2+.5,o.s-1,o.s-1)}
-      ctx.restore();
-    });
-    /* tracked hand */
-    ctx.save(); ctx.globalAlpha=.9;
-    ctx.strokeStyle='rgba(139,127,255,.55)'; ctx.lineWidth=3;
-    fingers.forEach(function(f){ctx.beginPath();ctx.moveTo(hx,hy);ctx.lineTo(hx+f[0],hy+f[1]);ctx.stroke()});
-    ctx.fillStyle='rgba(139,127,255,.18)'; ctx.beginPath(); ctx.arc(hx,hy,26,0,6.283); ctx.fill();
-    ctx.strokeStyle='#8b7fff'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(hx,hy,26,0,6.283); ctx.stroke();
-    ctx.fillStyle='#fff'; fingers.forEach(function(f){ctx.beginPath();ctx.arc(hx+f[0],hy+f[1],7,0,6.283);ctx.fill()});
-    ctx.restore();
-  }
-  function fromPointer(e){
-    var r=cv.getBoundingClientRect();
-    thx=(e.clientX-r.left)/r.width*W; thy=(e.clientY-r.top)/r.height*H; lastInput=performance.now();
-  }
-  box.addEventListener('pointermove',fromPointer);
-  box.addEventListener('pointerdown',function(e){box.setPointerCapture(e.pointerId);fromPointer(e)});
-  box.addEventListener('keydown',function(e){
-    var d=30;
-    if(e.key==='ArrowLeft')thx-=d; else if(e.key==='ArrowRight')thx+=d; else if(e.key==='ArrowUp')thy-=d; else if(e.key==='ArrowDown')thy+=d; else return;
-    e.preventDefault(); lastInput=performance.now();
-  });
-  $('#resetTable').addEventListener('click',function(e){e.stopPropagation();reset()});
-
-  var visible=false, raf=0, t0=performance.now();
-  function tick(t){
-    if(performance.now()-lastInput>3500){ var s=(t-t0)/1000; thx=W*.5+Math.sin(s*.6)*W*.36; thy=H*.52+Math.sin(s*1.1)*H*.2 }
-    var px=hx, py=hy; hx+=(thx-hx)*.2; hy+=(thy-hy)*.2; hvx=hx-px; hvy=hy-py;
-    collide(); physics(); draw(); $('#contacts').textContent=contacts;
-    raf=visible?requestAnimationFrame(tick):0;
-  }
-  if(reduce){ draw() }
-  else if('IntersectionObserver' in window){
-    new IntersectionObserver(function(es){visible=es[0].isIntersecting; if(visible&&!raf) raf=requestAnimationFrame(tick)},{threshold:.05}).observe(box);
-  } else { visible=true; raf=requestAnimationFrame(tick) }
-  draw();
-
-  var dlg=$('#film'), fv=$('#filmVideo');
-  $('#playFilm').addEventListener('click',function(){ if(dlg.showModal){dlg.showModal(); var p=fv.play(); if(p&&p.catch)p.catch(function(){})} });
-  $('#closeFilm').addEventListener('click',function(){fv.pause();dlg.close()});
-  dlg.addEventListener('close',function(){fv.pause()});
 })();
 </script>
 

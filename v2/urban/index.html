@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Urban — a Unity city built as the matched comparison condition for a nature VR study.">
+<meta name="description" content="Urban VR Environment — a Unity city built as the control condition for a Cornell PhD study on VR for children during chemotherapy.">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Urban</title>
+<title>Urban VR Environment</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -52,7 +52,7 @@ section{padding-top:clamp(56px,6vw,88px)}
 /* brief */
 .brief{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,80px);align-items:end}
 @media(max-width:820px){.brief{grid-template-columns:1fr}}
-.nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,1.4vw,16px)}
+.nums{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(10px,1.4vw,16px)}
 .n{background:var(--paper);border-radius:var(--r);padding:22px 20px 24px}
 .n b{display:block;font:500 clamp(38px,4.6vw,64px)/1 var(--sans);letter-spacing:-.04em;color:var(--accent)}
 .n span{display:block;margin-top:10px;font-size:14px;line-height:1.4;color:var(--muted)}
@@ -108,38 +108,37 @@ footer a{text-decoration:none;color:var(--ink)}
 .reveal.pre{opacity:0;transform:translateY(24px)}
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 </style>
+
 </head>
 <body>
-
 
 <header class="hero" id="top">
   <video src="a/hero.mp4" poster="a/hero.jpg" autoplay muted loop playsinline aria-label="Flying over the virtual city, past the fountain plaza and shopping streets"></video>
   <div class="copy wrap">
-    <h1>Urban</h1>
-    <p>The urban comparison condition for an international study of interactive 3D environments for pediatric patients during chemotherapy. Cornell Lab of Ornithology, 2026.</p>
+    <h1>Urban VR<br>Environment</h1>
+    <p>A city I built in Unity as the control condition for a PhD study on VR for children during chemotherapy. Cornell Lab of Ornithology, 2026.</p>
   </div>
 </header>
 
-<div class="mini" id="mini"><div class="wrap"><a href="../">Urban<span>← Showroom</span></a></div></div>
+<div class="mini" id="mini"><div class="wrap"><a href="../">Urban VR Environment<span>← Showroom</span></a></div></div>
 
 <main class="wrap">
   <section>
     <div class="brief">
       <div class="reveal">
-        <h2>The brief<br><span class="soft">Change the content, keep the rest.</span></h2>
-        <p class="lede">A Cornell PhD study, run with Botucatu Medical School (UNESP, Brazil) and Cornell's Virtual Embodiment Lab, compares natural and urban environments. I translated the nature world into a matched Unity city — same scale, pathways, proportions and four zones — so only the environment differs.</p>
+        <h2>The task<br><span class="soft">Build the control condition for a PhD study.</span></h2>
+        <p class="lede">A Cornell PhD study, run with Botucatu Medical School (UNESP, Brazil) and Cornell's Virtual Embodiment Lab, compares a nature VR world with a city. I built the city in Unity to match the nature world in scale, paths, layout and four zones, so the type of environment is the only thing that changes.</p>
         <div class="role"><span>Unity development</span><span>Environment design</span><span>Research assistant</span></div>
       </div>
       <div class="nums reveal">
         <div class="n"><b>4</b><span>Zones, matched to the nature world</span></div>
         <div class="n"><b>16</b><span>Objects in the discovery task</span></div>
-        <div class="n"><b>1</b><span>Shared interaction sequence</span></div>
       </div>
     </div>
   </section>
 
   <section id="atlas">
-    <h2 class="reveal">The city<br><span class="soft">Four zones, one connected map.</span></h2>
+    <h2 class="reveal">The city<br><span class="soft">Four zones, matched to the nature world.</span></h2>
     <div class="atlas reveal">
       <div class="map" id="map">
         <img src="a/map.jpg" alt="Illustrated top-down map of the city: an amusement park, a shopping street, residential blocks and a fountain plaza">
@@ -168,7 +167,7 @@ footer a{text-decoration:none;color:var(--ink)}
   </section>
 
   <section>
-    <h2 class="reveal">Discovery<br><span class="soft">Find an object, choose to watch.</span></h2>
+    <h2 class="reveal">The same task<br><span class="soft">Find an object, watch a short video.</span></h2>
     <div class="disc">
       <div class="screen reveal"><video src="a/discovery.mp4" poster="a/discovery.jpg" muted loop playsinline preload="metadata" data-auto aria-label="Approaching a car brings up a prompt asking whether to watch a video"></video></div>
       <div class="reveal">
@@ -178,14 +177,14 @@ footer a{text-decoration:none;color:var(--ink)}
           <li><i></i>A video prompt appears</li>
           <li><i></i>Watch, or keep exploring</li>
         </ul>
-        <p class="lede">Mirrors the bird discovery in the nature world, so both versions ask the same thing of the player.</p>
+        <p class="lede">The bird-finding task from the nature world, rebuilt with city objects, so children in both groups do the same thing.</p>
       </div>
     </div>
   </section>
 
   <div class="closing reveal">
     <div>
-      <h3>Ready for the study.<br><span class="soft">Tablet build, in Brazilian Portuguese.</span></h3>
+      <h3>Ready for the study.<br><span class="soft">Built in Unity, in Brazilian Portuguese.</span></h3>
       <p>First-person navigation, object-triggered video, a real-time map and Brazilian Portuguese localization, prepared for planned use in Brazil. This page makes no claim about patient outcomes.</p>
     </div>
     <a class="btn" href="#atlas">Explore the map ↑</a>

@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Inside Out — turn a real object into a window to VR, or keep it real inside VR.">
+<meta name="description" content="Object Portals — SAM 2 segmentation plus MR-to-VR portals turn any real object into a portal; study in different environments while the real screen stays usable.">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
-<title>Inside Out</title>
+<title>Object Portals</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -126,27 +126,28 @@ dialog .x{position:absolute;right:-6px;top:-46px;background:none;border:0;color:
 .worlds3 figure{margin:0}
 .worlds3 .p{border-radius:var(--r);overflow:hidden;aspect-ratio:4/3;outline:2px solid var(--accent);outline-offset:-2px}
 .worlds3 img{width:100%;height:100%;object-fit:cover}
+.lede a.src{color:var(--accent);text-decoration:none;font-weight:500;border-bottom:1px solid currentColor}
 .worlds3 figcaption{margin-top:10px;font:500 16px/1.3 var(--sans)}
 </style>
+
 </head>
 <body>
-
 
 <header class="hero" id="top">
   <video src="a/hero.mp4" poster="a/hero.jpg" autoplay muted loop playsinline aria-label="A real monitor becomes a window into other worlds, then the room turns to VR with only the monitor left real"></video>
   <div class="copy wrap">
-    <h1>Inside Out</h1>
-    <p>Reveal a virtual scene inside a real object, or keep that object while the room becomes virtual. Independent mixed-reality project, 2026.</p>
+    <h1>Object Portals</h1>
+    <p>Any real object can become a portal between MR and VR. A new project built by combining two of my earlier ones. Independent mixed-reality project, 2026.</p>
   </div>
 </header>
 
-<div class="mini" id="mini"><div class="wrap"><a href="../">Inside Out<span>← Showroom</span></a></div></div>
+<div class="mini" id="mini"><div class="wrap"><a href="../">Object Portals<span>← Showroom</span></a></div></div>
 
 <main class="wrap">
   <section>
     <div class="headrow reveal">
-      <h2>Two directions<br><span class="soft">One outlined object.</span></h2>
-      <p class="lede">Combines selective passthrough with spatial portals. SAM 2 segments the monitor and anchors it in 3D; the user chooses which side of its contour stays real.</p>
+      <h2>Two projects, combined<br><span class="soft">SAM 2 + a portal.</span></h2>
+      <div><p class="lede">From <a class="src" href="../selective-passthrough/">Selective Passthrough</a>: SAM 2 outlines a real object, here a monitor, and anchors its contour in 3D. From <a class="src" href="../mr-vr-portal/">MR to VR Portal</a>: that contour becomes a portal. The user chooses which side of it stays real.</p></div>
     </div>
     <div class="two">
       <figure class="reveal"><div class="v"><video src="a/vr-in-real.mp4" poster="a/vr-in-real.jpg" muted loop playsinline preload="metadata" data-auto aria-label="In the real room, the monitor screen shows a sky, a city and an office"></video></div>
@@ -157,21 +158,24 @@ dialog .x{position:absolute;right:-6px;top:-46px;background:none;border:0;color:
   </section>
 
   <section>
-    <h2 class="reveal">Inside the screen<br><span class="soft">Pick a world.</span></h2>
+    <div class="headrow reveal">
+      <h2>Potential application<br><span class="soft">Study in different environments.</span></h2>
+      <p class="lede">The room changes; the real screen does not. A student keeps working on the same computer, now in an open landscape, a lively city or a quiet office.</p>
+    </div>
     <div class="worlds3">
-      <figure class="reveal"><div class="p"><img src="a/w-sky.jpg" alt="The real monitor showing a sky over water"></div><figcaption>Cloudy sky</figcaption></figure>
-      <figure class="reveal"><div class="p"><img src="a/w-city.jpg" alt="The real monitor showing a night city square"></div><figcaption>Night square</figcaption></figure>
-      <figure class="reveal"><div class="p"><img src="a/w-office.jpg" alt="The real monitor showing a warm office"></div><figcaption>Office interior</figcaption></figure>
+      <figure class="reveal"><div class="p"><img src="a/env-sky.jpg" alt="The real monitor, still showing its own content, standing in a VR landscape of sky and water"></div><figcaption>Open landscape</figcaption></figure>
+      <figure class="reveal"><div class="p"><img src="a/env-city.jpg" alt="The real monitor in a VR city square at night"></div><figcaption>City square</figcaption></figure>
+      <figure class="reveal"><div class="p"><img src="a/env-office.jpg" alt="The real monitor in a VR office"></div><figcaption>Quiet office</figcaption></figure>
     </div>
   </section>
 
   <div class="closing reveal">
-    <h3>Any object, either way.<br><span class="soft">Real outside, virtual inside, or the reverse.</span></h3>
+    <h3>Any object can be a portal.<br><span class="soft">Real outside, virtual inside, or the reverse.</span></h3>
     <button class="btn" type="button" id="playFilm">Watch the full demo <span aria-hidden="true">▶</span></button>
   </div>
 </main>
 
-<footer><div class="wrap"><a href="../">← Back to the showroom</a><span>SAM 2.1 · Unity · PICO 4 Ultra</span></div></footer>
+<footer><div class="wrap"><a href="../">← Back to the showroom</a><span>SAM 2 · Unity · PICO 4 Ultra</span></div></footer>
 
 <dialog id="film" aria-label="Full demo">
   <button class="x" type="button" id="closeFilm">Close ✕</button>
