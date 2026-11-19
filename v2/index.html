@@ -233,7 +233,7 @@ a{color:inherit}
 
 <script>
 (function(){
-  var LINK={tangible:'tangible-vr/',portals:'mr-vr-portal/',passthrough:'selective-passthrough/',insideout:'object-portals/',urban:'urban/',loomi:'loomi/',droplet:'droplet/'};
+  var LINK={tangible:'tangible-vr/',portals:'mr-vr-portal/',passthrough:'selective-passthrough/',insideout:'object-portals/',guardian:'ai-guardian/',voice3d:'voice-to-3d/',urban:'urban/',loomi:'loomi/',droplet:'droplet/'};
   var works=[
     {k:'tangible',a:'#2f6fd6',t:'Sensorless Tangible VR',s:'Sensor-less tangible interaction',m:'Independent MR project · 2026 — present',
      d:'A sensor-light pipeline for manipulating uninstrumented physical objects in VR: MR-assisted physical–virtual calibration, a physics-based virtual hand that models contact, grasp, mass and gravity, and real-time prediction of object trajectories.'},
@@ -243,6 +243,10 @@ a{color:inherit}
      d:'Object-aware passthrough using SAM 2. Real-object contours are segmented, projected into 3D with depth and anchored to the room, so a chosen physical object stays visible while the rest of the space becomes virtual.'},
     {k:'insideout',a:'#0a8f9e',t:'Object Portals',s:'Selective Passthrough + MR to VR Portal',m:'Independent MR project · 2026',
      d:'Combines SAM 2 segmentation with spatial portals: any real object, such as a monitor, becomes a portal. The room can turn into a different study environment while the real screen stays usable.'},
+    {k:'guardian',a:'#e8650f',t:'AI Reality Guardian',s:'Event- and question-driven passthrough',m:'Independent MR project · 2026',
+     d:'VR that reveals the real world only when it matters. YOLO11n and Qwen3-VL watch the room; a hand-aware gate opens a live passthrough window when a real object moves, and local Whisper lets the user ask where something is.'},
+    {k:'voice3d',a:'#6a4cf0',t:'Voice to 3D',s:'Speech-generated objects in MR',m:'Independent MR project · 2026',
+     d:'Speech creates, copies and controls 3D objects. An intent router sends imagined objects to Shap-E and objects in view through Qwen3-VL, SAM 2.1 and Hunyuan3D; the result can then be moved, spun or duplicated by hand or voice.'},
     {k:'urban',a:'#d9700a',t:'Urban VR Environment',s:'Control condition for a PhD study',m:'Cornell Lab of Ornithology · 2026',
      d:'A Unity city matched in scale, pathways and zones to a nature environment, for a study of interactive 3D environments for pediatric patients during chemotherapy. Includes navigation, object-triggered video, a live map and Portuguese localization.'},
     {k:'loomi',a:'#d6336c',t:'LooMi',s:'Interactive lighting for long-distance connection',m:'Human-centered design study · 2025',

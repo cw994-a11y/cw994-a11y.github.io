@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Reality Guardian · Chunho Wong</title>
+<meta name="description" content="VR that opens a live passthrough window only when a real object moves or the user asks a spatial question: YOLO11n, Qwen3-VL, Whisper and a hand-aware event gate.">
+<meta property="og:title" content="AI Reality Guardian">
+<meta property="og:description" content="VR that opens a live passthrough window only when a real object moves or the user asks a spatial question: YOLO11n, Qwen3-VL, Whisper and a hand-aware event gate.">
+<meta property="og:image" content="a/hero.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../mr/demo.css">
+<style>:root{--accent:#e8650f}@media (prefers-color-scheme: dark){:root{--accent:#ff8a3d}}</style>
+</head>
+<body>
+<header class="bar"><div class="wrap">
+  <a class="home" href="../">← Chunho Wong</a>
+  <nav aria-label="Mixed reality demos"><a href="../tangible-vr/">Tangible VR</a><a href="../selective-passthrough/">Selective Passthrough</a><a href="../mr-vr-portal/">MR to VR Portal</a><a href="../object-portals/">Object Portals</a><a href="../ai-guardian/" aria-current=page>AI Reality Guardian</a><a href="../voice-to-3d/">Voice to 3D</a></nav>
+  <button class="film" type="button" data-film>▶ Full demo</button>
+</div></header>
+<main class="wrap">
+  <div class="head">
+    <div>
+      <div class="kicker">Demo 05 / 06 <span>· Event- and question-driven passthrough</span></div>
+      <h1>AI Reality Guardian</h1>
+      <p class="sub">Reality appears only when it becomes relevant: a real object moves, or the user asks where something is.</p>
+      <p class="sum">A fast YOLO11n path gives immediate object awareness while Qwen3-VL adds richer scene interpretation on its own slower schedule. Consecutive observations are compared to find external object displacement; current and previous hand regions are rejected, and passthrough opens only after two coherent frames agree. The window shows continuous native passthrough, expands with a ripple, and fades two seconds after motion stops. A local Whisper interface answers spoken questions such as “where is the keyboard?” and opens the window at that object.</p>
+      <div class="tags"><span>YOLO11n (CPU)</span><span>Qwen3-VL 2B</span><span>Whisper Small EN</span><span>Native PICO passthrough</span><span>GuardianRipple shader</span><span>Unity 6.3 LTS</span></div>
+      <div class="stats"><div class="stat"><b>27–31 ms</b><span>YOLO11n warm inference (34–41 ms via loopback HTTP)</span></div><div class="stat"><b>2 frames</b><span>coherent displacement needed to open</span></div><div class="stat"><b>2 s</b><span>window persists after motion ends</span></div><div class="stat"><b>~0.30 s</b><span>Whisper speech endpointing</span></div></div>
+    </div>
+    <div class="headmedia">
+      <div class="media" style="--ar:1"><video src="a/film.mp4" poster="a/hero.jpg" muted loop playsinline preload="none" data-auto aria-hidden="true"></video></div>
+      <div class="play"><span>Voice shown as captions; replies were spoken by the PC.</span><button class="btn" type="button" data-film>▶ Full demo · 0:49</button></div>
+    </div>
+  </div>
+
+  <section id="pipeline">
+    <div class="sh"><h2><i>01</i>Pipeline</h2><p>Detection, description and speech run on separate clocks so slow reasoning never blocks the safety path.</p></div>
+    <ol class="flow" style="--fc:4"><li class=dev><b>Observe</b><span>Unity streams compact camera frames and projected left/right hand positions while the user stays in VR.</span><em>PICO → PC</em></li><li class=dev><b>Detect</b><span>YOLO11n on CPU at 320×240; latest boxes are cached for speech questions.</span><em>27–31 ms</em></li><li class=dev><b>Reject hands</b><span>Frame differencing + tracked displacement; current hand, previous hand and a palm halo are ignored.</span><em>Event gate</em></li><li class=dev><b>Confirm</b><span>An event qualifies only after two coherent frames show an external object moved.</span><em>2 frames</em></li><li class=dev><b>Localise</b><span>Event box unprojected with camera intrinsics and estimated depth; NativeGuardianWindow sizes the aperture.</span><em>Unity</em></li><li class=dev><b>Open</b><span>GuardianRipple animates an organic opening of live passthrough; motion refreshes it, then 2 s fade.</span><em>Shader</em></li><li class=dev><b>Listen</b><span>Local Whisper detects start/end of speech; cached boxes answer common questions, Qwen3-VL the hard ones.</span><em>~0.30 s</em></li><li class=dev><b>Answer</b><span>Reply is spoken on the PC and opens the window at the requested object for at least 3 s.</span><em>≥ 3 s</em></li></ol>
+  </section>
+
+  <section id="functions">
+    <div class="sh"><h2><i>02</i>What it does</h2><p>Three behaviours from one session; captions and the voice bar show what was said and answered.</p></div>
+    <div class="fns" style="--cols:3"><article class="fn" style="--far:1"><div class="media"><video src="a/event.mp4" poster="a/event.jpg" muted loop playsinline preload="none" data-auto aria-hidden="true"></video></div><div class="body"><div class="k">01 Event gate</div><h3>A real object moves.</h3><p>Lifting the bottle displaces a real object, so a live window opens around it. Ordinary hand gestures in VR do not open passthrough.</p></div></article><article class="fn" style="--far:1"><div class="media"><video src="a/narrate.mp4" poster="a/narrate.jpg" muted loop playsinline preload="none" data-auto aria-hidden="true"></video></div><div class="body"><div class="k">02 Narration</div><h3>Typing on the real keyboard.</h3><p>The fast path finds the desk objects; Qwen3-VL adds a short scene line (desk, laptop, monitor, keyboard; action: typing).</p></div></article><article class="fn" style="--far:1"><div class="media"><video src="a/ask.mp4" poster="a/ask.jpg" muted loop playsinline preload="none" data-auto aria-hidden="true"></video></div><div class="body"><div class="k">03 Ask</div><h3>“Where is the keyboard?”</h3><p>Whisper transcribes the question, cached detections locate the object, and the window opens on the keyboard, mouse or bottle with a spoken reply.</p></div></article></div>
+    
+  </section>
+
+  <section id="implementation">
+    <div class="sh"><h2><i>03</i>Implementation</h2><p>Components named as in the Unity project and Python service.</p></div>
+    <div class="two">
+      <div class="cell"><h3>Fast path and reasoning path</h3><table><thead><tr><th>Part</th><th>Role</th></tr></thead><tbody><tr><td>Fast awareness</td><td>320×240 frame → CPU YOLO11n → boxes and an immediate scene line; interactive rate.</td></tr><tr><td>Detailed reading</td><td>Current frame → Qwen3-VL 2B → richer description and uncommon relations; never blocks the fast path.</td></tr><tr><td>Targeted speech</td><td>PC mic → Whisper Small EN → question text; VLM called only when cached boxes can’t answer.</td></tr><tr><td>Passthrough policy</td><td>Displacement, hand masks, palm halo, speech target → aperture position, reason, lifetime, close rule.</td></tr><tr><td>NativeGuardianWindow</td><td>World-space live aperture sized from box dimensions and depth.</td></tr><tr><td>GuardianRipple</td><td>Fast organic opening; refresh on motion; 2 s persistence; ≥ 3 s for answers.</td></tr></tbody></table></div>
+      <div class="cell"><h3>Key design decisions</h3><ul><li><b>Live pixels, AI placement.</b> Earlier segmentation produced photo-like updates. Now AI decides where and when; pixels come from the live PICO compositor.</li><li><b>Detect fast, describe slow.</b> A VLM is too slow for event gating; YOLO gives spatial evidence, Qwen is kept for open questions.</li><li><b>Hand-aware gating.</b> Distinguishes hand motion from hand-caused displacement of an external object.</li><li><b>Timed visibility.</b> Two-frame confirmation and 2 s persistence trade false alarms against flashing.</li></ul></div>
+    </div>
+  </section>
+
+  <section id="contribution">
+    <div class="sh"><h2><i>04</i>Contribution, limits and next steps</h2></div>
+    <div class="three">
+      <div class="cell"><h3>Contribution</h3><ul><li>Semantics → compositing policy: passthrough treated as a resource with activation condition, extent, transition, minimum lifetime and closing rule.</li><li>A hand-aware event gate: reveal reality when the user’s action has consequences in the physical world, not whenever they move.</li><li>More than a VLM demo: sensing, confirmation, localisation, composition, persistence, query and spoken reply in one loop.</li></ul></div>
+      <div class="cell"><h3>Applications</h3><ul><li>Safety when an object falls, a person approaches or the user knocks something.</li><li>Immersive office work: keyboard, mouse or phone appear only when needed.</li><li>Accessible spatial assistance for questions about nearby objects.</li><li>Industrial training that exposes real controls at critical steps.</li></ul></div>
+      <div class="cell"><h3>Limits → next steps</h3><ul><li>YOLO11n has a fixed vocabulary → fuse audio, depth and tracks to tell falling, approaching, user-caused.</li><li>Qwen3-VL can be wrong or vague (wrong answers were cut from this video) → show confidence; learn user thresholds.</li><li>Depth estimate is enough for placement, not reconstruction → move fast detection to the headset NPU/GPU.</li><li>Latency measured on one laptop only → report capture, transfer, inference and render separately.</li></ul></div>
+    </div>
+    <div class="eval"><b>Evaluation plan</b><span>Report detection-to-aperture latency, false openings during ordinary hand gestures, missed external events, aperture localisation error, narration accuracy and close timing; compare persistent passthrough, alerts without imagery and Guardian windows on task performance, presence, trust and perceived safety.</span></div>
+    <p class="note">About the video: segments are trimmed and sped up where noted on screen. The prototype used a PC microphone and speaker, so the user’s questions and the spoken replies are shown as captions with a voice bar.</p>
+  </section>
+</main>
+<footer><div class="wrap">
+  <a href="../object-portals/">← Object Portals</a>
+  <span>YOLO11n · Qwen3-VL · Whisper · Unity · PICO 4 Ultra</span>
+  <a href="../voice-to-3d/">Voice to 3D →</a>
+</div></footer>
+<dialog id="film" aria-label="Full demo"><button class="x" id="closeFilm" type="button">Close ✕</button><video id="filmVideo" src="a/film.mp4" controls playsinline preload="none"></video></dialog>
+<script src="../mr/demo.js" defer></script>
+</body>
+</html>
