@@ -1,17 +1,17 @@
 /* MR demo story pages, v4.
    Cool grey ground with soft violet light, media raised on tinted shadows,
    rows that pair a short title column with content, horizontal and even. */
-
 :root{
-  --ground:#000; --ink:#f2f2f5; --soft:#a4a4b0; --rule:#26262d;
-  --accent:#8b72ff; --accent2:#3ccf86; --tint:#2a2350; --panel:#111115;
+  --ground:#e7e8ee; --ink:#15151b; --soft:#555562; --rule:#cbccd5;
+  --accent:#6a4cf0; --accent2:#22a564; --tint:#dcd5ff; --panel:#f3f3f7;
   --sans:'Geist','Helvetica Neue',Helvetica,Arial,sans-serif;
   --ease:cubic-bezier(.22,1,.36,1);
   --max:1200px;
-  --lift:0 40px 90px -40px rgba(124,92,255,.55),0 0 0 1px rgba(255,255,255,.06);
-  --lift-s:0 26px 60px -34px rgba(124,92,255,.45),0 0 0 1px rgba(255,255,255,.06);
-  color-scheme:dark;
+  --lift:0 40px 70px -34px rgba(64,44,190,.40),0 12px 24px -12px rgba(18,18,40,.26);
+  --lift-s:0 22px 44px -24px rgba(64,44,190,.34),0 6px 14px -8px rgba(18,18,40,.20);
 }
+@media (prefers-color-scheme: dark){:root{--ground:#121218;--ink:#ececf2;--soft:#a6a6b2;--rule:#2c2c36;--tint:#2b2452;--panel:#1b1b23;
+  --lift:0 40px 70px -34px rgba(0,0,0,.8),0 12px 24px -12px rgba(0,0,0,.6);--lift-s:0 22px 44px -24px rgba(0,0,0,.75),0 6px 14px -8px rgba(0,0,0,.5);color-scheme:dark}}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--ground);color:var(--ink);font:400 17px/1.62 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -28,7 +28,7 @@ main{position:relative;overflow-x:clip}
 .light .a{width:640px;height:640px;right:-200px;top:0;background:radial-gradient(circle,#b9a9ff,rgba(185,169,255,0) 70%)}
 .light .b{width:560px;height:560px;left:-240px;top:1700px;background:radial-gradient(circle,#c3cfff,rgba(195,207,255,0) 70%)}
 .light .c{width:700px;height:700px;right:-280px;top:3400px;background:radial-gradient(circle,#d3c8ff,rgba(211,200,255,0) 70%)}
-.light i{opacity:.22}
+@media (prefers-color-scheme: dark){.light i{opacity:.16}}
 main>section{position:relative;z-index:1}
 
 /* top bar */
@@ -61,7 +61,7 @@ main>section{position:relative;z-index:1}
 .tools b{color:#fff;font-weight:500}
 .tools span{color:rgba(255,255,255,.7)}
 .play{appearance:none;cursor:pointer;display:inline-flex;align-items:center;gap:10px;border:0;border-radius:999px;padding:11px 18px 11px 12px;font:500 15px var(--sans);color:#111;background:#fff;white-space:nowrap}
-.play:hover{background:#e6e3ff}
+.play:hover{background:#efeef8}
 .play i{width:26px;height:26px;border-radius:50%;background:var(--accent);display:grid;place-items:center}
 .play i::after{content:"";border-left:8px solid #fff;border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:2px}
 .play small{font:400 14px var(--sans);color:#666}
