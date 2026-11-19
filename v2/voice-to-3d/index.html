@@ -4,74 +4,340 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Voice to 3D · Chunho Wong</title>
-<meta name="description" content="Speech creates, copies and controls 3D objects in MR: an intent router chooses Shap-E for imagined objects or Qwen3-VL + SAM 2.1 + Hunyuan3D for objects in view.">
+<meta name="description" content="Speak a sentence and a 3D object appears in mixed reality: imagined objects are generated from words, objects in view are copied from one camera frame, and the result answers to hands and voice.">
 <meta property="og:title" content="Voice to 3D">
-<meta property="og:description" content="Speech creates, copies and controls 3D objects in MR: an intent router chooses Shap-E for imagined objects or Qwen3-VL + SAM 2.1 + Hunyuan3D for objects in view.">
 <meta property="og:image" content="a/hero.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../mr/demo.css">
-<style>:root{--accent:#6a4cf0}@media (prefers-color-scheme: dark){:root{--accent:#9a85ff}}</style>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../mr/story.css">
 </head>
 <body>
-<header class="bar"><div class="wrap">
+
+<header class="top" id="top"><div class="wrap">
   <a class="home" href="../">← Chunho Wong</a>
-  <nav aria-label="Mixed reality demos"><a href="../tangible-vr/">Tangible VR</a><a href="../selective-passthrough/">Selective Passthrough</a><a href="../mr-vr-portal/">MR to VR Portal</a><a href="../object-portals/">Object Portals</a><a href="../ai-guardian/">AI Reality Guardian</a><a href="../voice-to-3d/" aria-current=page>Voice to 3D</a></nav>
-  <button class="film" type="button" data-film>▶ Full demo</button>
+  <nav aria-label="Mixed reality demos">
+    <a href="../tangible-vr/">Tangible VR</a>
+    <a href="../selective-passthrough/">Selective Passthrough</a>
+    <a href="../mr-vr-portal/">MR to VR Portal</a>
+    <a href="../object-portals/">Object Portals</a>
+    <a href="../ai-guardian/">AI Reality Guardian</a>
+    <a href="../voice-to-3d/" aria-current="page">Voice to 3D</a>
+  </nav>
 </div></header>
-<main class="wrap">
-  <div class="head">
-    <div>
-      <div class="kicker">Demo 06 / 06 <span>· Generative objects in MR</span></div>
-      <h1>Voice to 3D</h1>
-      <p class="sub">Say what you want: imagined objects are generated from text; “the bottle in front of me” is copied from reality.</p>
-      <p class="sum">An intent router separates imagined objects from objects in view. “I want a fire extinguisher” goes to text-only Shap-E. “Generate the green water bottle in front of me” takes one camera frame: Qwen3-VL finds and describes the target, SAM 2.1 isolates it, and Hunyuan3D-2 Mini Turbo infers a full mesh from that single view. Appearance comes either from the object’s own masked pixels (SAM Precise Colors) or from Qwen-generated PBR parameters (AI Prompt Material). The mobile-optimised result appears in front of the user and responds to hands and voice.</p>
-      <div class="tags"><span>Whisper Small EN</span><span>Intent router</span><span>Shap-E</span><span>Qwen3-VL</span><span>SAM 2.1</span><span>Hunyuan3D-2 Mini Turbo</span><span>Unity 6.3 LTS</span></div>
-      <div class="stats"><div class="stat"><b>2 paths</b><span>free generation vs. reality copy, chosen from the sentence</span></div><div class="stat"><b>~350 ms</b><span>of silence ends a spoken request</span></div><div class="stat"><b>~45k</b><span>face ceiling for mobile meshes</span></div><div class="stat"><b>2.2 cm</b><span>touch tolerance before a pinch grabs</span></div></div>
+
+<main>
+<section class="hero" aria-label="Voice to 3D">
+  <video src="a/hero.mp4" poster="a/hero.jpg" autoplay muted loop playsinline aria-hidden="true"></video>
+  <div class="glass"><div class="wrap">
+    <div class="panel">
+      <div>
+        <div class="which">Mixed reality demo 06 of 06</div>
+        <h1>Voice to 3D</h1>
+        <p class="bg">Say a sentence and a 3D object appears in mixed reality. Ask for something imagined and it is generated from your words. Point to something on your desk and the headset copies it from a single camera view. Once it exists, you move, spin or duplicate it by hand or by voice.</p>
+        <div class="acts">
+          <button class="play" type="button" data-film><i></i>Watch the full demo · 2:35</button>
+          <a class="ghost" href="#how">How it works</a>
+        </div>
+      </div>
+      <dl class="meta">
+        <dt>ROLE</dt><dd><div class="chips"><span>DESIGNER</span><span>DEVELOPER</span></div></dd>
+        <dt>TEAM</dt><dd>Individual project</dd>
+        <dt>DEVICE</dt><dd>PICO 4 Ultra, tethered to an RTX 4060 laptop</dd>
+        <dt>TOOLS</dt><dd><div class="chips"><span>UNITY 6.3</span><span>WHISPER</span><span>QWEN3-VL</span><span>SAM 2.1</span><span>HUNYUAN3D-2</span><span>SHAP-E</span></div></dd>
+      </dl>
     </div>
-    <div class="headmedia">
-      <div class="media" style="--ar:1"><video src="a/hero.mp4" poster="a/hero.jpg" muted loop playsinline preload="none" data-auto aria-hidden="true"></video></div>
-      <div class="play"><span>Waits sped up (badge on screen); speech shown as captions.</span><button class="btn" type="button" data-film>▶ Full demo · 2:35</button></div>
+  </div></div>
+</section>
+
+<section id="say">
+  <div class="wrap">
+    <div class="lead">
+      <h2>Three things you can say</h2>
+      <p>Speech is the only input needed. The sentence itself decides whether the camera is used.</p>
+    </div>
+    <div class="board">
+      <div class="shot">
+        <span class="node n1"></span><span class="node n2"></span><span class="node n3"></span><span class="node n4"></span>
+        <figure><span class="num" aria-hidden="true">01</span>
+          <video src="a/free.mp4" poster="a/free.jpg" muted loop playsinline preload="none" data-auto aria-label="Asking for a fire extinguisher; it is generated and placed on the desk"></video></figure>
+        <div class="txt">
+          <p class="say"><q>I want a fire extinguisher.</q></p>
+          <p class="what">Something imagined is generated from words alone. No camera image is read, and the object stays anchored on the real desk when you switch to passthrough.</p>
+          <span class="tag">Text to 3D · Shap-E</span>
+        </div>
+      </div>
+      <div class="shot flip">
+        <span class="node n3"></span><span class="node n4"></span>
+        <figure><span class="num" aria-hidden="true">02</span>
+          <video src="a/material.mp4" poster="a/material.jpg" muted loop playsinline preload="none" data-auto aria-label="Asking to copy the green bottle; a 3D copy appears next to it"></video></figure>
+        <div class="txt">
+          <p class="say"><q>Generate the green water bottle in front of me.</q></p>
+          <p class="what">“In front of me” points at the room, so one camera frame is taken. The bottle is found, cut out and rebuilt in 3D, including the back the camera never saw.</p>
+          <span class="tag">Qwen3-VL → SAM 2.1 → Hunyuan3D-2</span>
+        </div>
+      </div>
+      <div class="shot">
+        <span class="node n3"></span><span class="node n4"></span>
+        <figure><span class="num" aria-hidden="true">03</span>
+          <video src="a/voice.mp4" poster="a/voice.jpg" muted loop playsinline preload="none" data-auto aria-label="Voice commands spin, move, duplicate and shrink a generated car"></video></figure>
+        <div class="txt">
+          <p class="say"><q>Spin the car.</q> <q>Duplicate the car.</q> <q>Make it smaller.</q></p>
+          <p class="what">After an object exists, speech keeps working as a controller next to your hands. Each copy gets its own mesh, collider and controls.</p>
+          <span class="tag">Command parser · pinch within 2.2 cm</span>
+        </div>
+      </div>
     </div>
   </div>
+</section>
 
-  <section id="pipeline">
-    <div class="sh"><h2><i>01</i>Pipeline</h2><p>Language decides whether the camera is read at all, then which models run, then how the result can be controlled.</p></div>
-    <ol class="flow" style="--fc:4"><li class=dev><b>Listen</b><span>One control starts PC-mic listening; ~350 ms of sentence-end silence submits to Whisper.</span><em>Whisper</em></li><li class=dev><b>Command?</b><span>If an object exists, a fast parser checks move, rotate, spin, orbit, scale, stop, duplicate.</span><em>Parser</em></li><li class=dev><b>Route</b><span>Plain wishes → free generation. “this”, “on my desk”, “in front of me” → request one camera frame.</span><em>Intent router</em></li><li class=dev><b>Ground</b><span>Qwen3-VL returns a tight box, an object-only description and PBR suggestions.</span><em>Qwen3-VL</em></li><li class=dev><b>Isolate</b><span>SAM 2.1 picks the mask that best matches the VLM box; crop uses object pixels only.</span><em>SAM 2.1</em></li><li class=dev><b>Generate</b><span>Hunyuan3D-2 Mini Turbo infers hidden back and underside from one view (or Shap-E from text).</span><em>RTX 4060</em></li><li class=dev><b>Optimise</b><span>Simplified to ~45k faces; vertices, triangles, colours/material and status returned.</span><em>Server</em></li><li class=dev><b>Place</b><span>Unity builds mesh and collider, places it in front, adds GeneratedObjectManipulator.</span><em>PICO</em></li></ol>
-  </section>
-
-  <section id="functions">
-    <div class="sh"><h2><i>02</i>What it does</h2><p>Four clips: two ways to create, two ways to colour a copy, then voice control of the result.</p></div>
-    <div class="fns" style="--cols:4"><article class="fn" style="--far:1"><div class="media"><video src="a/free.mp4" poster="a/free.jpg" muted loop playsinline preload="none" data-auto aria-hidden="true"></video></div><div class="body"><div class="k">Free generation</div><h3>“I want a fire extinguisher.”</h3><p>No camera pixels read. Transcript → cleaned prompt → Shap-E; the object stays anchored on the real desk when switched to AR.</p></div></article><article class="fn" style="--far:1"><div class="media"><video src="a/material.mp4" poster="a/material.jpg" muted loop playsinline preload="none" data-auto aria-hidden="true"></video></div><div class="body"><div class="k">Reality copy · AI material</div><h3>“The green bottle in front of me.”</h3><p>Geometry from Hunyuan3D; appearance from Qwen’s base, accent and top colours, metallic and roughness. Zero camera pixels used for colour.</p></div></article><article class="fn" style="--far:1"><div class="media"><video src="a/precise.mp4" poster="a/precise.jpg" muted loop playsinline preload="none" data-auto aria-hidden="true"></video></div><div class="body"><div class="k">Reality copy · SAM colours</div><h3>Label and colour from the real object.</h3><p>The SAM mask is eroded to drop background fringe; only pixels of the bottle are projected onto the mesh.</p></div></article><article class="fn" style="--far:1"><div class="media"><video src="a/voice.mp4" poster="a/voice.jpg" muted loop playsinline preload="none" data-auto aria-hidden="true"></video></div><div class="body"><div class="k">Voice control</div><h3>Spin, move, duplicate, scale.</h3><p>After generation, speech and hands are interchangeable: “spin the car”, “move it to the left”, “duplicate the car”, “make it smaller”.</p></div></article></div>
-    
-  </section>
-
-  <section id="implementation">
-    <div class="sh"><h2><i>03</i>Implementation</h2><p>Components named as in the Unity project and Python service.</p></div>
-    <div class="two">
-      <div class="cell"><h3>Two generation modes</h3><table><thead><tr><th>Part</th><th>Role</th></tr></thead><tbody><tr><td>Free generation</td><td>Imagined object (“a red apple”): Whisper → prompt → Shap-E. No headset image read.</td></tr><tr><td>Reality copy</td><td>Deictic language: Qwen3-VL box + description → SAM 2.1 mask → Hunyuan3D-2 Mini Turbo.</td></tr><tr><td>SAM Precise Colors</td><td>Eroded mask; nearest valid foreground colours fill projection gaps; no desk or matte pixels.</td></tr><tr><td>AI Prompt Material</td><td>Qwen PBR parameters applied as a light procedural material; cleaner when the view is partial.</td></tr><tr><td>Progress polling</td><td>Headset polls a background job: speech, target, model load, geometry, optimisation, transfer.</td></tr><tr><td>Manipulator</td><td>Pinch only on collider contact; one hand moves/rotates, two hands scale with reduced gain.</td></tr></tbody></table></div>
-      <div class="cell"><h3>Key design decisions</h3><ul><li><b>Not every request reads the camera.</b> Routing imagined vs. situated referents matters for privacy, latency and fidelity.</li><li><b>Geometry and appearance are separate choices.</b> A copy can keep visual evidence, keep only semantic identity, or both.</li><li><b>Show the wait.</b> Generation takes minutes; named stages make it visible and failures diagnosable.</li><li><b>Language keeps working after creation.</b> Commands are parsed before generation, so speech edits the scene.</li></ul></div>
+<section id="copy">
+  <div class="wrap">
+    <div class="lead">
+      <h2>One bottle, two ways to colour the copy</h2>
+      <p>The shape always comes from the camera view. Where the colour comes from is your choice.</p>
     </div>
-  </section>
-
-  <section id="contribution">
-    <div class="sh"><h2><i>04</i>Contribution, limits and next steps</h2></div>
-    <div class="three">
-      <div class="cell"><h3>Contribution</h3><ul><li>An intent-aware generative pipeline: different model paths for imagined and situated objects.</li><li>Separation of geometry grounding from appearance grounding, exposed to the user as a choice.</li><li>Continuity from language to embodiment: generated, optimised, placed, touchable and voice-addressable in one loop.</li></ul></div>
-      <div class="cell"><h3>Applications</h3><ul><li>Spatial prototyping: describe props and handle them at full scale.</li><li>Accessible 3D authoring without modelling software.</li><li>Education: create an object, compare it with the real one, inspect inferred geometry.</li><li>Retail and interior previews from words or a visible product.</li></ul></div>
-      <div class="cell"><h3>Limits → next steps</h3><ul><li>One view cannot guarantee a replica → fuse naturally observed extra views.</li><li>Hunyuan is too slow for conversation → stream coarse-to-fine proxies to place early.</li><li>Shap-E geometry is low fidelity → test faster high-quality text-to-3D, report trade-offs.</li><li>English only, PC mic → conversational repair (“make the legs thinner”).</li></ul></div>
+    <div class="pair">
+      <figure>
+        <video src="a/precise_result.mp4" poster="a/precise_result.jpg" muted loop playsinline preload="none" data-auto aria-label="Copy with the real label and colours"></video>
+        <h3>SAM precise colours</h3>
+        <table class="spec"><tbody>
+          <tr><th>Colour comes from</th><td>The bottle’s own pixels, inside a shrunken mask</td></tr>
+          <tr><th>Camera pixels used</th><td>Only the object’s, never the desk</td></tr>
+          <tr><th>Best when</th><td>The label and exact look matter</td></tr>
+        </tbody></table>
+      </figure>
+      <figure style="--dot:#2fb36d">
+        <video src="a/material_result.mp4" poster="a/material_result.jpg" muted loop playsinline preload="none" data-auto aria-label="Copy with an AI-proposed material"></video>
+        <h3 style="--dot:#2fb36d">AI prompt material</h3>
+        <table class="spec"><tbody>
+          <tr><th>Colour comes from</th><td>Base, accent and top colour, metal and roughness proposed by Qwen3-VL</td></tr>
+          <tr><th>Camera pixels used</th><td>None</td></tr>
+          <tr><th>Best when</th><td>The view is partial and a clean asset matters more</td></tr>
+        </tbody></table>
+      </figure>
     </div>
-    <div class="eval"><b>Evaluation plan</b><span>Separate speech latency, intent-routing accuracy, target localisation, mask purity, geometry quality, material fidelity, generation and transfer time, and manipulation usability; compare asset search, text-only generation and reality-grounded generation on authoring speed, expressiveness, perceived control and trust in inferred geometry.</span></div>
-    <p class="note">About the video: long generation waits are sped up (×6–×8, shown on screen) and a failed reconstruction attempt and recognition errors were cut. Speech is shown as captions with a voice bar because it was captured by the PC microphone, not the headset recording.</p>
-  </section>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="lead">
+      <h2>How a sentence becomes an object</h2>
+      <p>The headset does the tracking and rendering. The models run on a laptop GPU, reached over a private USB link.</p>
+    </div>
+    <div class="sketch">
+      <svg viewBox="0 0 1180 420" role="img" aria-label="Pipeline: speech goes to an intent router. Imagined objects go to Shap-E. Objects in view go through a camera frame, Qwen3-VL, SAM 2.1 and Hunyuan3D-2. Both paths are simplified to about 45,000 faces and placed in the headset for hand and voice control.">
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 1 L9 5 L0 9" fill="none" stroke="currentColor" stroke-width="1.5"/></marker></defs>
+        <!-- connectors -->
+        <g class="ln" marker-end="url(#ar)">
+          <path d="M128 210 H206"/>
+          <path d="M298 196 C330 150 340 110 392 104"/>
+          <path d="M298 224 C330 270 340 312 378 316"/>
+          <path d="M498 104 H640"/>
+          <path d="M452 316 H496"/><path d="M602 316 H636"/><path d="M736 316 H770"/>
+          <path d="M752 104 C860 104 880 170 914 196"/>
+          <path d="M866 316 C900 316 900 250 916 226"/>
+          <path d="M1012 210 H1056"/>
+        </g>
+        <!-- 1 speak -->
+        <g transform="translate(78 210)">
+          <rect class="ln" x="-12" y="-34" width="24" height="40" rx="12"/>
+          <path class="ln" d="M-22 -8 a22 22 0 0 0 44 0 M0 14 v12 M-12 26 h24"/>
+          <g class="acc ln"><path d="M-44 -24 v20 M-36 -30 v32 M28 -30 v32 M36 -24 v20"/></g>
+        </g>
+        <text class="k" x="78" y="268" text-anchor="middle">You speak</text>
+        <text class="m" x="78" y="286" text-anchor="middle">Whisper</text>
+        <!-- 2 router -->
+        <path class="ln fillt" d="M252 170 L292 210 L252 250 L212 210 Z"/>
+        <text class="k" x="252" y="215" text-anchor="middle" style="font-size:20px">?</text>
+        <text class="k" x="252" y="282" text-anchor="middle">In view?</text>
+        <text class="m" x="252" y="300" text-anchor="middle">intent router</text>
+        <text class="t" x="446" y="62" text-anchor="middle" font-style="italic">“I want a fire extinguisher”</text>
+        <text class="t" x="414" y="262" text-anchor="middle" font-style="italic">“the bottle in front of me”</text>
+        <!-- upper: imagined -->
+        <g transform="translate(446 104)">
+          <rect class="ln" x="-46" y="-28" width="92" height="56" rx="6"/>
+          <path class="ln" d="M-32 -12 h52 M-32 0 h64 M-32 12 h38"/>
+        </g>
+        <text class="k" x="446" y="158" text-anchor="middle">A prompt</text>
+        <text class="m" x="446" y="176" text-anchor="middle">no camera image</text>
+        <g transform="translate(696 104)">
+          <path class="ln fillt" d="M0 -34 L32 -16 L32 20 L0 38 L-32 20 L-32 -16 Z"/>
+          <path class="ln" d="M-32 -16 L0 2 L32 -16 M0 2 V38"/>
+          <path class="acc ln" d="M40 -36 v14 M33 -29 h14 M-44 -26 v10 M-49 -21 h10"/>
+        </g>
+        <text class="k" x="696" y="166" text-anchor="middle">Text to 3D</text>
+        <text class="m" x="696" y="184" text-anchor="middle">Shap-E</text>
+        <!-- lower: in view -->
+        <g transform="translate(414 316)">
+          <rect class="ln" x="-36" y="-26" width="72" height="52" rx="5"/>
+          <circle class="ln" cx="0" cy="0" r="13"/><circle class="filla" cx="24" cy="-16" r="3"/>
+        </g>
+        <text class="k" x="414" y="368" text-anchor="middle">One frame</text>
+        <text class="m" x="414" y="386" text-anchor="middle">PICO camera</text>
+        <g transform="translate(548 316)">
+          <path class="ln" d="M-8 -30 h16 v8 c10 4 12 12 12 20 v32 h-40 v-32 c0 -8 2 -16 12 -20 z"/>
+          <rect class="acc ln dash" x="-30" y="-38" width="60" height="76" rx="2"/>
+        </g>
+        <text class="k" x="548" y="374" text-anchor="middle">Find it</text>
+        <text class="m" x="548" y="392" text-anchor="middle">Qwen3-VL box + look</text>
+        <g transform="translate(686 316)">
+          <path class="filla" d="M-8 -30 h16 v8 c10 4 12 12 12 20 v32 h-40 v-32 c0 -8 2 -16 12 -20 z" opacity=".85"/>
+          <rect class="ln" x="-32" y="-38" width="64" height="76" rx="2" opacity=".35"/>
+        </g>
+        <text class="k" x="686" y="374" text-anchor="middle">Cut it out</text>
+        <text class="m" x="686" y="392" text-anchor="middle">SAM 2.1 mask</text>
+        <g transform="translate(818 316)">
+          <path class="ln" d="M-8 -30 h16 v8 c10 4 12 12 12 20 v32 h-40 v-32 c0 -8 2 -16 12 -20 z"/>
+          <path class="ln" d="M-20 2 h40 M-20 16 h40 M0 -22 v52"/>
+          <path class="acc ln dash" d="M8 -22 c14 4 20 14 20 24 v32 h-8"/>
+        </g>
+        <text class="k" x="818" y="374" text-anchor="middle">Infer the back</text>
+        <text class="m" x="818" y="392" text-anchor="middle">Hunyuan3D-2 Mini Turbo</text>
+        <!-- merge: optimise -->
+        <g transform="translate(964 210)">
+          <path class="ln" d="M-34 26 L-10 -30 L20 -16 L34 26 Z M-10 -30 L0 26 M20 -16 L0 26 M-34 26 L20 -16"/>
+        </g>
+        <text class="k" x="964" y="270" text-anchor="middle">Slim it</text>
+        <text class="m" x="964" y="288" text-anchor="middle">~45k faces</text>
+        <!-- place -->
+        <g transform="translate(1110 206)">
+          <path class="ln fillt" d="M-6 -40 L18 -28 L18 -2 L-6 10 L-30 -2 L-30 -28 Z"/>
+          <path class="ln" d="M-30 -28 L-6 -16 L18 -28 M-6 -16 V10"/>
+          <path class="acc ln" d="M34 30 c-6 -14 -10 -22 -14 -28 M8 34 c4 -12 8 -22 12 -32"/>
+          <circle class="filla" cx="20" cy="2" r="4"/>
+          <path class="ln dash" d="M-40 26 q-6 -6 0 -12 M-48 32 q-12 -12 0 -24" opacity=".7"/>
+        </g>
+        <text class="k" x="1110" y="276" text-anchor="middle">Touch &amp; talk</text>
+        <text class="m" x="1110" y="294" text-anchor="middle">Unity on PICO</text>
+        <!-- device bands -->
+        <path class="ln dash" d="M30 30 H1020" opacity=".5"/><path class="ln dash" d="M1060 30 H1160" opacity=".5"/>
+        <text class="m" x="525" y="22" text-anchor="middle">laptop GPU · reached over USB loopback :8765</text>
+        <text class="m" x="1110" y="22" text-anchor="middle">headset</text>
+      </svg>
+    </div>
+    <div class="notes">
+      <p><b>The camera is opt-in by language</b>Plain wishes never read a frame. Only words that point at the room, like “this” or “on my desk”, request one.</p>
+      <p><b>The wait is visible</b>Generation can take minutes, so the headset polls a background job and names each stage instead of freezing.</p>
+      <p><b>Commands are checked first</b>If an object exists, short commands such as spin, move or duplicate are caught before anything new is generated.</p>
+    </div>
+  </div>
+</section>
+
+<section id="hood">
+  <div class="wrap">
+    <div class="lead"><h2>Under the hood</h2><p>Measured or configured on the development setup.</p></div>
+    <div class="hood">
+      <table class="spec"><tbody>
+        <tr><th>Speech</th><td>Whisper Small, English<small>sends after ~350 ms of silence</small></td></tr>
+        <tr><th>Routing</th><td>Deterministic intent router<small>command parser runs first</small></td></tr>
+        <tr><th>Grounding</th><td>Qwen3-VL<small>target box, object-only description, PBR values</small></td></tr>
+        <tr><th>Segmentation</th><td>SAM 2.1<small>mask that best matches the box</small></td></tr>
+        <tr><th>Geometry</th><td>Hunyuan3D-2 Mini Turbo · Shap-E<small>single view · text only</small></td></tr>
+      </tbody></table>
+      <table class="spec"><tbody>
+        <tr><th>Mesh budget</th><td>~45,000 faces<small>vertices, triangles and colour sent to the headset</small></td></tr>
+        <tr><th>Grab</th><td>Fingertip within 2.2 cm of the collider<small>one hand moves, two hands scale</small></td></tr>
+        <tr><th>Link</th><td>USB ADB reverse tunnel<small>loopback HTTP, no cloud upload</small></td></tr>
+        <tr><th>Headset</th><td>PICO 4 Ultra · Unity 6.3 LTS</td></tr>
+        <tr><th>Edge PC</th><td>RTX 4060 laptop · Python, PyTorch</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+</section>
+
+<section id="uses">
+  <div class="wrap">
+    <div class="lead"><h2>Where it could go</h2><p>Directions this pipeline opens up. None of them are tested yet.</p></div>
+    <div class="uses">
+      <div class="use">
+        <svg viewBox="0 0 240 180" aria-hidden="true">
+          <path class="ln" d="M10 150 H230" opacity=".4"/>
+          <path class="ln dash" d="M120 150 L60 178 M120 150 L200 178" opacity=".4"/>
+          <path class="fillt" d="M128 104 L206 110 L204 122 L132 118 Z"/>
+          <g class="ln acc">
+            <path d="M128 104 L206 110 L204 122 L132 118 Z"/>
+            <path d="M128 104 L114 46 M114 46 L126 44 L140 104"/>
+            <path d="M136 118 L126 150 M198 122 L210 150 M122 82 L196 88 L200 110"/>
+          </g>
+          <circle class="ln" cx="48" cy="72" r="11"/>
+          <path class="ln" d="M48 84 V122 M48 122 L38 150 M48 122 L58 150 M48 96 L66 106 M48 96 L32 110"/>
+          <path class="ln" d="M64 38 h54 a8 8 0 0 1 8 8 v12 a8 8 0 0 1 -8 8 h-40 l-10 10 v-10 h-4 a8 8 0 0 1 -8 -8 v-12 a8 8 0 0 1 8 -8 z"/>
+          <path class="ln" d="M70 52 h44" opacity=".5"/>
+        </svg>
+        <h3>Spatial prototyping</h3><p>Describe a prop and judge it at full scale in the room.</p>
+      </div>
+      <div class="use">
+        <svg viewBox="0 0 240 180" aria-hidden="true">
+          <g class="ln acc"><path d="M24 90 v0 M36 78 v24 M48 66 v48 M60 80 v20 M72 60 v60 M84 74 v32 M96 84 v12"/></g>
+          <path class="ln" d="M110 90 H138" marker-end="url(#ar2)"/>
+          <defs><marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 1 L9 5 L0 9" fill="none" stroke="currentColor" stroke-width="1.5"/></marker></defs>
+          <path class="ln fillt" d="M184 46 L222 66 L222 112 L184 132 L146 112 L146 66 Z"/>
+          <path class="ln" d="M146 66 L184 86 L222 66 M184 86 V132"/>
+        </svg>
+        <h3>3D without modelling software</h3><p>People who cannot use CAD tools can still make and arrange objects.</p>
+      </div>
+      <div class="use">
+        <svg viewBox="0 0 240 180" aria-hidden="true">
+          <path class="fillt" d="M64 40 h20 v12 c14 6 18 16 18 28 v66 h-56 v-66 c0 -12 4 -22 18 -28 z"/>
+          <path class="ln" d="M64 40 h20 v12 c14 6 18 16 18 28 v66 h-56 v-66 c0 -12 4 -22 18 -28 z"/>
+          <rect class="ln" x="46" y="92" width="56" height="22" opacity=".6"/>
+          <path class="ln" d="M156 40 h20 v12 c14 6 18 16 18 28 v66 h-56 v-66 c0 -12 4 -22 18 -28 z"/>
+          <path class="ln" d="M138 80 h56 M138 100 h56 M138 120 h56 M166 52 v94 M150 60 v86 M182 60 v86" opacity=".55"/>
+          <path class="acc ln dash" d="M176 52 c14 6 26 16 26 28 v66 h-8"/>
+          <text class="m" x="74" y="170" text-anchor="middle" style="font:400 11px var(--mono);fill:var(--soft)">real</text>
+          <text class="m" x="166" y="170" text-anchor="middle" style="font:400 11px var(--mono);fill:var(--soft)">inferred</text>
+        </svg>
+        <h3>Learning by comparison</h3><p>Hold the real object next to its copy and see which parts were guessed.</p>
+      </div>
+      <div class="use">
+        <svg viewBox="0 0 240 180" aria-hidden="true">
+          <path class="ln" d="M120 20 V120 M120 120 L20 160 M120 120 L220 160" opacity=".45"/>
+          <rect class="ln" x="150" y="44" width="40" height="30" opacity=".45"/>
+          <path d="M50 76 h128 v62 h-128 z" fill="var(--ground)"/>
+          <path class="fillt" d="M58 108 h112 v28 h-112 z"/>
+          <g class="ln acc">
+            <path d="M58 108 h112 v28 h-112 z"/>
+            <path d="M58 108 v-24 a8 8 0 0 1 8 -8 h96 a8 8 0 0 1 8 8 v24"/>
+            <path d="M50 100 h12 v38 h-12 z M166 100 h12 v38 h-12 z M66 136 v10 M162 136 v10"/>
+          </g>
+          <path class="ln" d="M40 30 h62 a8 8 0 0 1 8 8 v10 a8 8 0 0 1 -8 8 h-44 l-10 10 v-10 h-8 a8 8 0 0 1 -8 -8 v-10 a8 8 0 0 1 8 -8 z"/>
+          <path class="ln" d="M48 43 h48" opacity=".5"/>
+        </svg>
+        <h3>Retail and interiors</h3><p>Copy a product you see, or describe one, and place it in your own room.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="next">
+  <div class="wrap">
+    <div class="lead"><h2>Limits, and what comes next</h2><p>What the current prototype cannot do yet.</p></div>
+    <div class="next">
+      <div><span>One view cannot guarantee an exact replica</span><i>→</i><span>Fuse extra views when the user naturally looks around</span></div>
+      <div><span>Hunyuan3D is too slow for conversation</span><i>→</i><span>Stream a coarse proxy first, refine in place</span></div>
+      <div><span>Shap-E geometry is low detail</span><i>→</i><span>Test faster high-quality text-to-3D and report the trade-off</span></div>
+      <div><span>English only, PC microphone</span><i>→</i><span>Conversational repair: “make the legs thinner”</span></div>
+    </div>
+  </div>
+</section>
 </main>
+
 <footer><div class="wrap">
   <a href="../ai-guardian/">← AI Reality Guardian</a>
-  <span>Whisper · Qwen3-VL · SAM 2.1 · Hunyuan3D-2 · Shap-E · Unity · PICO 4 Ultra</span>
-  <a href="../tangible-vr/">Tangible VR →</a>
+  <span>Edited demo: waits sped up ×6–×8 (shown on screen), failed attempts cut, speech shown as captions.</span>
+  <a href="../tangible-vr/">Sensorless Tangible VR →</a>
 </div></footer>
-<dialog id="film" aria-label="Full demo"><button class="x" id="closeFilm" type="button">Close ✕</button><video id="filmVideo" src="a/film.mp4" controls playsinline preload="none"></video></dialog>
+
+<dialog id="film" aria-label="Full demo">
+  <button class="x" id="closeFilm" type="button">Close ✕</button>
+  <video id="filmVideo" src="a/film.mp4" controls playsinline preload="none"></video>
+</dialog>
 <script src="../mr/demo.js" defer></script>
+<script>
+(function(){var t=document.getElementById('top'),h=document.querySelector('.hero');
+function f(){t.classList.toggle('solid',window.scrollY>h.offsetHeight-70)}addEventListener('scroll',f,{passive:true});f();})();
+</script>
 </body>
 </html>
