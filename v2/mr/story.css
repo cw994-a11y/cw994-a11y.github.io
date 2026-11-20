@@ -238,3 +238,4 @@ dialog .x{position:absolute;right:0;top:-44px;background:none;border:0;color:#ff
 .compact .board svg{max-width:1000px;margin:0 auto}
 .compact .board{padding:16px 24px}
 .compact .grid2 .fn:first-child video{object-position:50% 90%}
+.compact .hero .vid video{object-position:50% 70%}
