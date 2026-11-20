@@ -282,3 +282,5 @@ dialog .x{position:absolute;right:0;top:-44px;background:none;border:0;color:#ff
 .uses.photos .use h3{margin:14px 16px 0}
 .uses.photos .use p{margin:5px 16px 16px}
 .credit{margin:10px 0 0;font-size:12.5px;color:var(--soft)}
+.intro .acts{margin-top:18px}
+.intro .play{border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);box-shadow:var(--lift-s)}
