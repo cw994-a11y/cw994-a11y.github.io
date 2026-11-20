@@ -31,7 +31,7 @@
   <div class="bar"><div class="wrap">
     <div class="glass2">
       <div class="g-l"><h1>Voice to 3D</h1><p>Say a sentence and a 3D object appears in mixed reality, imagined from words or <b>copied from a real object in view</b>. Say another and it moves.</p></div>
-      <div class="g-r"><button class="play" type="button" data-film><i></i>Full demo <small>2:35</small></button><dl><dt class="solo">Independent work</dt><dt>Hardware</dt><dd>PICO 4 Ultra + a computer that runs the AI</dd><dt>Built with</dt><dd><div class="chips3"><span>Unity 6.3</span><span>Whisper</span><span>Qwen3-VL</span><span>SAM 2.1</span><span>Hunyuan3D-2</span><span>Shap-E</span></div></dd></dl></div>
+      <div class="g-r"><div class="g-top"><span>Independent work</span><button class="play" type="button" data-film><i></i>Full demo <small>2:35</small></button></div><dl><dt>Hardware</dt><dd>PICO 4 Ultra + a computer that runs the AI</dd><dt>Built with</dt><dd><div class="chips3"><span>Unity 6.3</span><span>Whisper</span><span>Qwen3-VL</span><span>SAM 2.1</span><span>Hunyuan3D-2</span><span>Shap-E</span></div></dd></dl></div>
     </div>
   </div></div>
 </section>
@@ -51,7 +51,7 @@
       <p>There are two ways to ask. Name <b>anything you can imagine</b>, or point at <b>a real object in view</b> and get a 3D copy of it. For a copy, you also choose where its surface comes from.</p>
     </div>
   </div>
-  <div class="grid3 full">
+  <div class="grid3 full tall">
     <div class="group">Copy a real object in view</div>
     <article class="fn">
       <div class="plate lift"><video src="a/free.mp4" poster="a/free.jpg" muted loop playsinline preload="none" data-auto aria-label="Asking for a fire extinguisher; it is generated and stays on the real desk"></video></div>
@@ -76,34 +76,34 @@
 
 <!-- Function 2 -->
 <section class="sec" id="control"><div class="wrap">
-  <div class="row">
-    <div class="ttl"><span class="lab">Function 2</span><h2>Control it without touching</h2></div>
-    <div class="body"><p>Once an object exists, <b>your voice becomes the controller</b>. Short commands move, spin, copy or resize it, and your hands still work at the same time.</p></div>
-  </div>
-  <div class="split full">
+  <div class="split full lr">
     <div class="plate lift"><video src="a/voice.mp4" poster="a/voice.jpg" muted loop playsinline preload="none" data-auto aria-label="Voice commands spin, stop, move, duplicate and shrink a generated car"></video></div>
-    <ul class="cmds">
-      <li><q>Spin the car.</q><span>Starts a continuous spin</span></li>
-      <li><q>Stop spin.</q><span>Stops all movement</span></li>
-      <li><q>Move the car to the left.</q><span>Slides it in that direction</span></li>
-      <li><q>Duplicate the car.</q><span>Makes an independent copy</span></li>
-      <li><q>Make the car smaller.</q><span>Scales it down</span></li>
-    </ul>
+    <div class="side">
+      <div class="ttl"><span class="lab">Function 2</span><h2>Control it without touching</h2></div>
+      <p>Once an object exists, <b>your voice becomes the controller</b>. Short commands move, spin, copy or resize it, and your hands still work at the same time.</p>
+      <ul class="cmds">
+        <li><q>Spin the car.</q><span>Starts a continuous spin</span></li>
+        <li><q>Stop spin.</q><span>Stops all movement</span></li>
+        <li><q>Move the car to the left.</q><span>Slides it in that direction</span></li>
+        <li><q>Duplicate the car.</q><span>Makes an independent copy</span></li>
+        <li><q>Make the car smaller.</q><span>Scales it down</span></li>
+      </ul>
+    </div>
   </div>
 </div></section>
 
 <!-- Summary -->
 <section class="sec" id="summary"><div class="wrap">
   <div class="row">
-    <div class="ttl"><span class="lab">At a glance</span><h2>Four ways to use your voice</h2></div>
+    <div class="ttl"><span class="lab">Summary</span><h2>Four ways to use your voice</h2></div>
     <div class="body tblwrap">
       <table class="tbl">
         <thead><tr><th></th><th>You say</th><th>Uses the camera</th><th>Shape from</th><th>Surface from</th></tr></thead>
         <tbody>
-          <tr><th>Create anything</th><td>“I want a fire extinguisher.”</td><td>No</td><td>Shap-E, from text</td><td>Shap-E</td></tr>
-          <tr><th>Copy, AI material</th><td>“… the bottle in front of me.”</td><td class="y">One frame</td><td>Hunyuan3D-2, one view</td><td>Colours suggested by Qwen3-VL</td></tr>
-          <tr><th>Copy, real colours</th><td>“… the bottle in front of me.”</td><td class="y">One frame</td><td>Hunyuan3D-2, one view</td><td>The object’s own pixels, via SAM 2.1</td></tr>
-          <tr><th>Voice control</th><td>“Duplicate the car.”</td><td>No</td><td colspan="2">Changes an object that already exists</td></tr>
+          <tr><th><div class="cellf"><img class="shot" src="a/sum-1.jpg" alt=""><span>Create anything</span></div></th><td>“I want a fire extinguisher.”</td><td>No</td><td>Shap-E, from text</td><td>Shap-E</td></tr>
+          <tr><th><div class="cellf"><img class="shot" src="a/sum-2.jpg" alt=""><span>Copy, AI material</span></div></th><td>“… the bottle in front of me.”</td><td class="y">One frame</td><td>Hunyuan3D-2, one view</td><td>Colours suggested by Qwen3-VL</td></tr>
+          <tr><th><div class="cellf"><img class="shot" src="a/sum-3.jpg" alt=""><span>Copy, real colours</span></div></th><td>“… the bottle in front of me.”</td><td class="y">One frame</td><td>Hunyuan3D-2, one view</td><td>The object’s own pixels, via SAM 2.1</td></tr>
+          <tr><th><div class="cellf"><img class="shot" src="a/sum-4.jpg" alt=""><span>Voice control</span></div></th><td>“Duplicate the car.”</td><td>No</td><td colspan="2">Changes an object that already exists</td></tr>
         </tbody>
       </table>
     </div>
