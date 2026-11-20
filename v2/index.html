@@ -231,7 +231,7 @@ a{color:inherit}
   /* scroll → position. Intro, then one step per project with a short hold on each */
   var INTRO=.7,STEP=.62,END=.5,vw,vh,G={};
   function layout(){
-    vw=stage.clientWidth;vh=stage.clientHeight;
+    vw=stage.clientWidth||innerWidth||1280;vh=stage.clientHeight||innerHeight||800;   // a preview frame can report 0 while it is still hidden
     var phone=vw<720;
     // the viewer stands close to a curved wall, in front of its axis: the centre card is far and small,
     // and cards towards the sides swing in, grow and lean hard — the tension of a wraparound screen
@@ -254,7 +254,7 @@ a{color:inherit}
   function hold(t){var n=Math.round(t),d=t-n,a=Math.abs(d);return n+(d<0?-1:1)*.5*sm(cl((a-.22)/.28))}
 
   var cur=0,target=0,raf=0,act=-1,playing=null;
-  function readScroll(){target=Math.max(0,-scroller.getBoundingClientRect().top)/vh}
+  function readScroll(){var t=Math.max(0,-scroller.getBoundingClientRect().top)/vh;target=isFinite(t)?t:0;if(!isFinite(cur))cur=target}
   function render(p){
     var intro=cl(p/INTRO);                 // 0 → 1 while the name steps aside
     var t=Math.max(0,(p-INTRO)/STEP);
@@ -264,7 +264,7 @@ a{color:inherit}
     hello.style.transform='translateY('+(-sm(intro)*40).toFixed(1)+'px)';
     cue.style.opacity=intro<.05?'1':'0';
     var focus=sm(cl((intro-.45)/.55));     // how much the centre card is allowed to light up
-    var ri=sm(intro);ring.style.transform='translate3d(0,'+((1-ri)*vh*G.drop).toFixed(1)+'px,0) scale('+(G.s0+(1-G.s0)*ri).toFixed(4)+')';
+    var ri=sm(intro);ring.style.transform='translate3d(0,'+((1-ri)*Math.min(vh*G.drop,170)).toFixed(1)+'px,0) scale('+(G.s0+(1-G.s0)*ri).toFixed(4)+')';
     stage.style.setProperty('--glow',(focus*.12).toFixed(3));
     var part=focus*sm(cl(1-Math.abs(off-Math.round(off))*2.2));   // neighbours only part while a card is settled
     var best=-1,bd=9;
@@ -329,6 +329,8 @@ a{color:inherit}
   function kick(){readScroll();if(!raf)raf=requestAnimationFrame(tick)}
   addEventListener('scroll',kick,{passive:true});
   addEventListener('resize',function(){layout();kick()});
+  if('ResizeObserver' in window) new ResizeObserver(function(){layout();readScroll();cur=target;render(cur)}).observe(stage);
+  addEventListener('load',function(){layout();readScroll();cur=target;render(cur)});
   layout();
 
   /* coming back from a project lands on that project */
