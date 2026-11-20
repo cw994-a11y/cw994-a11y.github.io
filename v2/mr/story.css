@@ -211,3 +211,6 @@ dialog .x{position:absolute;right:0;top:-44px;background:none;border:0;color:#ff
 .strip img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:10px;box-shadow:var(--lift-s)}
 .strip figcaption{margin-top:8px;font-size:14.5px;color:var(--soft)}
 @media(max-width:620px){.strip{grid-template-columns:1fr}}
+
+.body p.claim{font-size:19px;line-height:1.5;color:var(--ink);max-width:60ch}
+#contribution.sec{padding-top:clamp(56px,6vw,80px)}
