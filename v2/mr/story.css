@@ -342,8 +342,18 @@ dialog .x{position:absolute;right:0;top:-44px;background:none;border:0;color:#ff
 .lr2 .side p b{color:var(--ink)}
 .lr2 .grid3.tall{max-width:none;margin:0}
 .lr2 .grid3 .group{margin-top:0}
-@media(max-width:900px){.lr2{grid-template-columns:1fr}}
+@media(max-width:680px){.lr2{grid-template-columns:1fr}}
 /* how it works copy runs the full width instead of leaving a gap on the right */
 .compact #how .body p{max-width:none}
 .split.lr .side p{color:var(--soft)}
 .split.lr .side p b{color:var(--ink)}
+
+/* the stress-test clip gets its own heading */
+.split .side .subt{margin:0 0 12px;font:600 21px/1.2 var(--sans);letter-spacing:-.01em}
+/* a single model card lies on its side */
+.models.one{grid-template-columns:minmax(0,640px)}
+.models.one .model{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);align-items:center}
+.models.one .model .art{height:100%}
+@media(max-width:620px){.models.one .model{grid-template-columns:1fr}}
+/* the side-by-side function rows stay side by side in a narrow preview panel */
+@media(max-width:820px) and (min-width:681px){.split.lr{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
