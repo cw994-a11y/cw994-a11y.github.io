@@ -332,3 +332,18 @@ dialog .x{position:absolute;right:0;top:-44px;background:none;border:0;color:#ff
 .tbl th .cellf{display:flex;align-items:center;gap:14px}
 .tbl tbody th{vertical-align:middle}
 .tbl tbody td{vertical-align:middle}
+
+/* real model pictures */
+.model .art.photo{background:#fff}
+.model .art.photo img{object-fit:cover}
+/* title + sentence on the left, clips on the right */
+.lr2{display:grid;grid-template-columns:minmax(0,3.2fr) minmax(0,8.8fr);gap:clamp(24px,3vw,44px);align-items:start}
+.lr2 .side p{margin:0;font-size:17px;line-height:1.55;color:var(--soft)}
+.lr2 .side p b{color:var(--ink)}
+.lr2 .grid3.tall{max-width:none;margin:0}
+.lr2 .grid3 .group{margin-top:0}
+@media(max-width:900px){.lr2{grid-template-columns:1fr}}
+/* how it works copy runs the full width instead of leaving a gap on the right */
+.compact #how .body p{max-width:none}
+.split.lr .side p{color:var(--soft)}
+.split.lr .side p b{color:var(--ink)}
