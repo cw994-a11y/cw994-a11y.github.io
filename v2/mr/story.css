@@ -239,3 +239,24 @@ dialog .x{position:absolute;right:0;top:-44px;background:none;border:0;color:#ff
 .compact .board{padding:16px 24px}
 .compact .grid2 .fn:first-child video{object-position:50% 90%}
 .compact .hero .vid video{object-position:50% 70%}
+
+/* split hero: info pane on the left third, video on the right two thirds, glass pane overlapping the seam */
+.hero.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);background:radial-gradient(120% 90% at 0% 100%,color-mix(in srgb,var(--accent) 38%,#14121f) 0,#121219 55%)}
+.hero.split .vid{position:relative;inset:auto;grid-column:2;grid-row:1}
+.hero.split .vid::after{background:linear-gradient(90deg,rgba(18,18,25,.75) 0,rgba(18,18,25,0) 22%),linear-gradient(180deg,rgba(0,0,0,.35) 0,rgba(0,0,0,0) 14%)}
+.hero.split .side{grid-column:1;grid-row:1;position:relative;z-index:2;display:flex;align-items:center;padding:84px 0 40px max(40px,env(safe-area-inset-left,0px));margin-right:-110px}
+.pane{padding:30px 30px 28px;border-radius:20px;background:rgba(28,26,40,.42);backdrop-filter:blur(26px) saturate(1.3);-webkit-backdrop-filter:blur(26px) saturate(1.3);border:1px solid rgba(255,255,255,.16);color:#fff;animation:rise 1s var(--ease) .15s both}
+.pane .kick{font-size:14px;color:rgba(255,255,255,.7)}
+.pane h1{margin:8px 0 0;font:500 clamp(34px,3.4vw,48px)/1.04 var(--sans);letter-spacing:-.035em}
+.pane .pitch{margin:14px 0 0;font-size:18px;line-height:1.5;color:rgba(255,255,255,.9)}
+.pane .pitch b{color:#fff}
+.facts{margin:22px 0 0;display:grid;gap:12px}
+.facts div{display:grid;grid-template-columns:118px 1fr;gap:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.14)}
+.facts dt{font-size:14px;color:rgba(255,255,255,.62)}
+.facts dd{margin:0;font-size:15.5px;line-height:1.45}
+.pane .acts{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}
+.pane .more{display:inline-flex;align-items:center;padding:10px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.4);color:#fff;text-decoration:none;font:500 14.5px var(--sans)}
+.pane .more:hover{background:rgba(255,255,255,.1)}
+@media(max-width:900px){.hero.split{display:block;height:auto}.hero.split .vid{aspect-ratio:4/3}.hero.split .side{margin:0;padding:20px}.pane{animation:none}}
+.hero.split .vid{height:100%;overflow:hidden}
+.hero.split .vid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
