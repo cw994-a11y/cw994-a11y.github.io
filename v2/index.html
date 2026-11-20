@@ -33,15 +33,13 @@ a{color:inherit}
 #ring{position:absolute;left:50%;top:var(--ry,47%);width:0;height:0;transform-style:preserve-3d;will-change:transform}
 .card{position:absolute;left:0;top:0;display:block;border-radius:18px;overflow:hidden;background:#d9d9de;
   text-decoration:none;backface-visibility:hidden;will-change:transform;cursor:pointer;
-  box-shadow:0 30px 60px -30px rgba(20,16,50,.35)}
+  box-shadow:0 18px 30px -22px rgba(20,16,50,.45)}
 .card img,.card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.card img{filter:saturate(calc(1 - .72*var(--h,1))) contrast(calc(1 + .08*var(--h,1))) brightness(calc(1 - .04*var(--h,1)))}
+.card .mut{will-change:opacity}
+
 .card video{opacity:0;transition:opacity .5s}
 .card.play video{opacity:1}
-.card .ht{position:absolute;inset:0;pointer-events:none;opacity:var(--h,1);
-  background:radial-gradient(circle,rgba(14,12,24,0) 0 1.15px,rgba(14,12,24,.42) 1.85px) 0 0/4.5px 4.5px}
-.card .tint{position:absolute;inset:0;pointer-events:none;opacity:calc(var(--h,1)*.35);background:linear-gradient(180deg,rgba(243,243,245,.35),rgba(20,16,40,.25))}
-.card.on{box-shadow:0 0 0 1px rgba(255,255,255,.7) inset,0 40px 80px -30px rgba(70,40,200,.55)}
+.card.on{box-shadow:0 30px 60px -28px rgba(70,40,200,.55)}
 
 /* words */
 #hud{position:absolute;z-index:20;left:0;right:0;top:0;display:flex;justify-content:space-between;align-items:center;gap:16px;
@@ -216,7 +214,7 @@ a{color:inherit}
 
   var cards=works.map(function(w,i){
     var a=document.createElement('a');a.className='card';a.href=w.href;a.setAttribute('role','listitem');a.setAttribute('aria-label',w.t);
-    a.innerHTML='<img src="home/c/'+w.k+'.jpg" alt="" style="object-position:'+w.pos+'"'+(i>3?' loading="lazy"':'')+'><video muted loop playsinline preload="none" style="object-position:'+w.pos+'"></video><span class="tint"></span><span class="ht"></span>';
+    a.innerHTML='<img class="col" src="home/c/'+w.k+'.jpg" alt="" style="object-position:'+w.pos+'" loading="lazy"><video muted loop playsinline preload="none" style="object-position:'+w.pos+'"></video><img class="mut" src="home/c/'+w.k+'-m.jpg" alt="" style="object-position:'+w.pos+'">';
     a.addEventListener('click',function(e){
       if(e.metaKey||e.ctrlKey||e.shiftKey) return;
       e.preventDefault();
@@ -224,7 +222,7 @@ a{color:inherit}
     });
     ring.appendChild(a);
     rail.appendChild(document.createElement('i'));
-    return {el:a,img:a.querySelector('img'),vid:a.querySelector('video'),w:w};
+    return {el:a,mut:a.querySelector('.mut'),vid:a.querySelector('video'),w:w,lw:0};
   });
   var railEls=rail.children;
 
@@ -233,20 +231,19 @@ a{color:inherit}
   function layout(){
     vw=stage.clientWidth||innerWidth||1280;vh=stage.clientHeight||innerHeight||800;   // a preview frame can report 0 while it is still hidden
     var phone=vw<720;
-    // the viewer stands close to a curved wall, in front of its axis: the centre card is far and small,
-    // and cards towards the sides swing in, grow and lean hard — the tension of a wraparound screen
-    G.k=phone?.38:.29;                       // eye-to-centre distance as a share of the wall's radius
-    G.step=phone?.26:.19;G.lift=phone?.14:.3;G.part=phone?.12:.32;
-    G.fill=phone?.94:.95;
-    var target=phone?Math.min(vw*.5,210):Math.max(190,Math.min(vw*.15,vh*.28,290));
-    G.P=target*G.k/(2*Math.sin(G.step/2)*G.fill);
-    G.R=G.P/G.k*1.0;
-    G.cw=2*G.R*Math.sin(G.step/2)*G.fill;
+    // a ring of cards seen from just inside it, tipped slightly so the row bends like a band
+    G.k=phone?.8:.78;                       // eye distance to the centre card, as a share of the ring's radius
+    G.cw=phone?Math.min(vw*.46,200):Math.max(180,Math.min(vw*.145,vh*.27,270));
     G.ch=G.cw*1.25;
+    G.gap=G.cw*.05;
+    G.R=phone?G.cw*3.2:G.cw*3.9;            // smaller radius = more bend
+    G.P=G.R*G.k;                            // centre card shows at its true size
+    G.wide=phone?.3:.42;                    // the chosen card opens sideways to square / slightly landscape
+    G.tilt=phone?6:9;
     G.ry=phone?.44:.45;
     ring.style.setProperty('--ry',(G.ry*100)+'%');G.drop=phone?.12:.2;G.s0=phone?.82:.7;
     stage.style.perspective=G.P+'px';
-    cards.forEach(function(c){c.el.style.width=G.cw+'px';c.el.style.height=G.ch+'px';c.el.style.marginLeft=(-G.cw/2)+'px';c.el.style.marginTop=(-G.ch/2)+'px'});
+    cards.forEach(function(c){c.lw=0;c.el.style.height=G.ch+'px';c.el.style.marginTop=(-G.ch/2)+'px'});
     scroller.style.height=((INTRO+(N-1)*STEP+END)*100+100)+'vh';
   }
   function cl(x){return x<0?0:x>1?1:x}
@@ -264,20 +261,23 @@ a{color:inherit}
     hello.style.transform='translateY('+(-sm(intro)*40).toFixed(1)+'px)';
     cue.style.opacity=intro<.05?'1':'0';
     var focus=sm(cl((intro-.45)/.55));     // how much the centre card is allowed to light up
-    var ri=sm(intro);ring.style.transform='translate3d(0,'+((1-ri)*Math.min(vh*G.drop,170)).toFixed(1)+'px,0) scale('+(G.s0+(1-G.s0)*ri).toFixed(4)+')';
+    var ri=sm(intro);ring.style.transform='translate3d(0,'+((1-ri)*Math.min(vh*G.drop,170)).toFixed(1)+'px,0) scale('+(G.s0+(1-G.s0)*ri).toFixed(4)+') rotateX('+(-G.tilt)+'deg)';
     stage.style.setProperty('--glow',(focus*.12).toFixed(3));
     var part=focus*sm(cl(1-Math.abs(off-Math.round(off))*2.2));   // neighbours only part while a card is settled
     var best=-1,bd=9;
     for(var i=0;i<N;i++){
-      var c=cards[i],s=i-off;s-=Math.round(s/N)*N;var as=Math.abs(s),a=s*G.step+(s<0?-1:1)*Math.min(as,1)*part*G.step*G.part;   // wraps round; neighbours part to make room for the chosen card
-      if(Math.cos(a)-(1-G.k)<.17){c.el.style.visibility='hidden';continue}
+      var c=cards[i],s=i-off;s-=Math.round(s/N)*N;var as=Math.abs(s);
+      var e=sm(cl(1-as/.6))*focus;          // how far this card is opened
+      var pitch=G.cw+G.gap, push=(s<0?-1:1)*Math.min(as,1)*part*G.cw*G.wide*.5;
+      var a=(s*pitch+push)/G.R;             // place along the ring by arc length
+      if(Math.abs(a)>1.25){c.el.style.visibility='hidden';continue}
       c.el.style.visibility='visible';
-      var near=sm(cl(1-Math.abs(s)/.55));
-      var lift=near*focus;
-      var x=G.R*Math.sin(a), z=G.P-G.R*(Math.cos(a)-(1-G.k))+lift*G.R*G.k*G.lift, y=-lift*G.ch*.03;
-      c.el.style.transform='translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,'+z.toFixed(1)+'px) rotateY('+(-a).toFixed(4)+'rad)';
-      c.el.style.zIndex=String(100-Math.round(Math.abs(s)*10));
-      c.el.style.setProperty('--h',(1-lift).toFixed(3));
+      var w=G.cw*(1+G.wide*e);
+      if(Math.abs(w-c.lw)>.4){c.lw=w;c.el.style.width=w.toFixed(1)+'px';c.el.style.marginLeft=(-w/2).toFixed(1)+'px'}
+      var x=G.R*Math.sin(a), z=G.P-G.R*(Math.cos(a)-(1-G.k));
+      c.el.style.transform='translate3d('+x.toFixed(1)+'px,0,'+z.toFixed(1)+'px) rotateY('+(-a).toFixed(4)+'rad)';
+      c.el.style.zIndex=String(100-Math.round(as*10));
+      c.mut.style.opacity=(1-e).toFixed(3);
       if(Math.abs(s)<bd){bd=Math.abs(s);best=i}
     }
     var on=(focus>.6&&bd<.3)?best:-1;
