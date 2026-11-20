@@ -19,12 +19,18 @@
   <nav aria-label="Mixed reality demos"><a href="../tangible-vr/" aria-current=page>Tangible VR</a><a href="../selective-passthrough/">Selective Passthrough</a><a href="../mr-vr-portal/">MR to VR Portal</a><a href="../object-portals/">Object Portals</a><a href="../ai-guardian/">AI Reality Guardian</a><a href="../voice-to-3d/">Voice to 3D</a></nav>
 </div></header>
 
-<section class="hero clean" aria-label="Sensorless Tangible VR">
+<section class="hero g2" aria-label="Sensorless Tangible VR">
   <div class="vid"><video src="a/hero.mp4" poster="a/hero.jpg" autoplay muted loop playsinline aria-label="A real printed prop lifted by hand while its virtual twin follows in VR"></video></div>
+  <div class="bar"><div class="wrap">
+    <div class="glass2">
+      <div class="g-l"><h1>Sensorless Tangible VR</h1><p>Grab a real object on your desk and its virtual copy in VR moves with it. No trackers or electronics on the object.</p></div>
+      <div class="g-r"><dl><dt class="solo">Independent work</dt><dt>Hardware</dt><dd>PICO 4 Ultra</dd><dt>Built with</dt><dd><div class="chips3"><span>Unity 6.3</span><span>Rigidbody physics</span><span>Passthrough</span></div></dd></dl></div>
+    </div>
+  </div></div>
 </section>
-<section class="intro"><div class="wrap">
-  <div class="intro-l"><span class="ilab">BACKGROUND</span><h1>Sensorless Tangible VR</h1><p>Tangible VR usually depends on extra hardware: <b>haptic or data gloves</b>, props fitted with <b>trackers, markers or motion sensors</b>, or controllers strapped to objects. Every prop has to be instrumented, powered and calibrated.</p><p><b>My contribution is a sensorless approach.</b> Nothing is attached to the object or your hand; the headset’s own hand tracking is enough. A one-time alignment and a <b>physics hand I built in code</b> decide when you are really holding the object, so its virtual copy follows the real one.</p></div>
-  <dl class="intro-r"><dt>EXTRA SENSORS</dt><dd><span class="big">None</span></dd><dt>WORKS WITH</dt><dd>Everyday rigid objects on your desk</dd><dt>HARDWARE</dt><dd>PICO 4 Ultra</dd><dt>BUILT WITH</dt><dd><div class="chips2"><span>UNITY 6.3</span><span>RIGIDBODY PHYSICS</span><span>PER-FINGER COLLIDERS</span><span>C#</span></div></dd></dl>
+<section class="intro2"><div class="wrap">
+  <span class="ilab">Background</span>
+  <div class="cols"><p>Tangible VR usually depends on extra hardware: <b>haptic or data gloves</b>, props fitted with <b>trackers, markers or motion sensors</b>, or controllers strapped to objects. Every prop has to be instrumented, powered and calibrated.</p><p><b>My contribution is a sensorless approach built on prediction.</b> Nothing is attached to the object or your hand. I gave the tracked hand a <b>rigidbody physics model</b>, gave the object <b>gravity and colliders</b>, and use the hand’s motion to <b>predict where the real object is going</b>, so its virtual copy keeps matching the real one.</p></div>
 </div></section>
 
 <main>
