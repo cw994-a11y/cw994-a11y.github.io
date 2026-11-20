@@ -30,7 +30,7 @@
 </section>
 <section class="intro2"><div class="wrap">
   <span class="ilab">Background</span>
-  <div class="cols"><p>Tangible VR usually depends on extra hardware: <b>haptic or data gloves</b>, props fitted with <b>trackers, markers or motion sensors</b>, or controllers strapped to objects. Every prop has to be instrumented, powered and calibrated.</p><p><b>My contribution is a sensorless approach built on prediction.</b> Nothing is attached to the object or your hand. I gave the tracked hand a <b>rigidbody physics model</b>, gave the object <b>gravity and colliders</b>, and use the hand’s motion to <b>predict where the real object is going</b>, so its virtual copy keeps matching the real one.</p></div>
+  <div class="cols"><p>Using everyday objects as VR props is not new: systems such as <b>Annexing Reality</b> match real objects to virtual ones, but they rely on <b>depth cameras, trackers or markers</b> to follow the objects, or on gloves to sense the hand.</p><p><b>My contribution is a sensorless approach on a standalone headset.</b> Nothing is attached to the object or your hand, and no outside camera is used. After a one-time alignment, the headset’s own hand tracking drives a <b>rigidbody physics hand</b>; the object has <b>gravity and colliders</b> and only follows when your hand <b>really encloses it</b>. A short physics prediction shows <b>where the object is likely to go</b>.</p></div>
 </div></section>
 
 <main>

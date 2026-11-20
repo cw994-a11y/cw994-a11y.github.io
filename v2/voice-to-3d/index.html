@@ -31,13 +31,13 @@
   <div class="bar"><div class="wrap">
     <div class="glass2">
       <div class="g-l"><h1>Voice to 3D</h1><p>Say a sentence and a 3D object appears in mixed reality, imagined from words or <b>copied from a real object in view</b>. Say another and it moves.</p></div>
-      <div class="g-r"><div class="g-top"><span>Independent work</span><button class="play" type="button" data-film><i></i>Full demo <small>2:35</small></button></div><dl><dt>Hardware</dt><dd>PICO 4 Ultra + a computer that runs the AI</dd><dt>Built with</dt><dd><div class="chips3"><span>Unity 6.3</span><span>PICO Unity SDK</span><span>Whisper</span><span>Qwen3-VL</span><span>SAM 2.1</span><span>Hunyuan3D-2</span><span>Shap-E</span></div></dd></dl></div>
+      <div class="g-r"><div class="g-top"><span>Independent work</span><button class="play" type="button" data-film><i></i>Full demo <small>2:35</small></button></div><dl><dt>Hardware</dt><dd>PICO 4 Ultra + a computer that runs the AI</dd><dt>Built with</dt><dd><div class="chips3"><span>Unity 6.3</span><span>PICO Unity SDK</span><span>Whisper</span><span>Qwen3-VL</span><span>SAM 2.1</span><span>Hunyuan3D-2 Mini Turbo</span><span>Shap-E</span></div></dd></dl></div>
     </div>
   </div></div>
 </section>
 <section class="intro2"><div class="wrap">
   <span class="ilab">Background</span>
-  <div class="cols"><p>Making a 3D object for VR usually means <b>modelling software</b>, an <b>asset library</b>, or reaching through <b>controllers and menus</b>. A virtual world has no physical limits, yet we still mostly reach, grab and press buttons.</p><p><b>My contribution: 3D objects by voice alone.</b> Say what you want, or point at <b>something real in view</b>, and a usable 3D object appears in mixed reality. Naming something builds it from words; saying <b>“in front of me”</b> copies it from one camera frame. Once the object exists <b>your voice moves it</b>.</p></div>
+  <div class="cols"><p>Speaking a 3D object into existence has been shown before: systems such as <b>Matrix</b> and <b>Dream Mesh</b> turn speech into a model with text-to-3D. They can only <b>imagine</b> an object from words.</p><p><b>My contribution: copy a real object just by saying so.</b> Say “the bottle in front of me” and the system finds it in one camera frame (<b>Qwen3-VL</b>), cuts it out (<b>SAM 2.1</b>) and builds the full 3D shape (<b>Hunyuan3D-2 Mini Turbo</b>). You choose <b>its real colours or an AI material</b>, and then your voice moves, copies and resizes it. Text-only generation stays for things you imagine.</p></div>
 </div></section>
 
 <main>
@@ -101,8 +101,8 @@
         <thead><tr><th></th><th>You say</th><th>Uses the camera</th><th>Shape from</th><th>Surface from</th></tr></thead>
         <tbody>
           <tr><th><div class="cellf"><img class="shot" src="a/sum-1.jpg" alt=""><span>Create anything</span></div></th><td>“I want a fire extinguisher.”</td><td>No</td><td>Shap-E, from text</td><td>Shap-E</td></tr>
-          <tr><th><div class="cellf"><img class="shot" src="a/sum-2.jpg" alt=""><span>Copy, AI material</span></div></th><td>“… the bottle in front of me.”</td><td class="y">One frame</td><td>Hunyuan3D-2, one view</td><td>Colours suggested by Qwen3-VL</td></tr>
-          <tr><th><div class="cellf"><img class="shot" src="a/sum-3.jpg" alt=""><span>Copy, real colours</span></div></th><td>“… the bottle in front of me.”</td><td class="y">One frame</td><td>Hunyuan3D-2, one view</td><td>The object’s own pixels, via SAM 2.1</td></tr>
+          <tr><th><div class="cellf"><img class="shot" src="a/sum-2.jpg" alt=""><span>Copy, AI material</span></div></th><td>“… the bottle in front of me.”</td><td class="y">One frame</td><td>Hunyuan3D-2 Mini Turbo, one view</td><td>Colours suggested by Qwen3-VL</td></tr>
+          <tr><th><div class="cellf"><img class="shot" src="a/sum-3.jpg" alt=""><span>Copy, real colours</span></div></th><td>“… the bottle in front of me.”</td><td class="y">One frame</td><td>Hunyuan3D-2 Mini Turbo, one view</td><td>The object’s own pixels, via SAM 2.1</td></tr>
           <tr><th><div class="cellf"><img class="shot" src="a/sum-4.jpg" alt=""><span>Voice control</span></div></th><td>“Duplicate the car.”</td><td>No</td><td colspan="2">Changes an object that already exists</td></tr>
         </tbody>
       </table>
@@ -151,7 +151,7 @@
     </svg>
   </div>
   <div class="board full">
-    <svg viewBox="0 0 1100 330" role="img" aria-label="Pipeline: you speak and Whisper transcribes it. A router checks whether you refer to something in view. Imagined objects become a prompt for Shap-E. Objects in view use one camera frame: Qwen3-VL finds the object, SAM 2.1 cuts it out and Hunyuan3D-2 infers the back. The result is slimmed and placed in front of you.">
+    <svg viewBox="0 0 1100 330" role="img" aria-label="Pipeline: you speak and Whisper transcribes it. A router checks whether you refer to something in view. Imagined objects become a prompt for Shap-E. Objects in view use one camera frame: Qwen3-VL finds the object, SAM 2.1 cuts it out and Hunyuan3D-2 Mini Turbo infers the back. The result is slimmed and placed in front of you.">
       <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 1 L9 5 L0 9" fill="none" stroke="currentColor" stroke-width="1.6"/></marker></defs>
       <g class="ln" marker-end="url(#ar)">
         <path d="M100 170 H160"/>
@@ -191,7 +191,7 @@
     <div class="model"><div class="art photo"><img src="../mr/models/whisper.jpg" alt="Whisper, from its official repository"></div><div class="tx"><h3>Whisper</h3><p>Turns your speech into text. It <b>sends after about 350 ms of silence</b>, so you just stop talking.</p></div></div>
     <div class="model"><div class="art photo"><img src="../mr/models/qwen3vl.jpg" alt="Qwen3-VL, from its official repository"></div><div class="tx"><h3>Qwen3-VL</h3><p>Looks at the frame, <b>boxes the object you meant</b> and describes it, including colours for the AI material.</p></div></div>
     <div class="model"><div class="art photo"><img src="../mr/models/sam2.jpg" alt="SAM 2.1, from its official repository"></div><div class="tx"><h3>SAM 2.1</h3><p>Cuts the object out at the pixel level, so <b>the desk never ends up on the copy</b>.</p></div></div>
-    <div class="model"><div class="art photo"><img src="../mr/models/hunyuan3d2.jpg" alt="Hunyuan3D-2, from its official repository"></div><div class="tx"><h3>Hunyuan3D-2</h3><p>Builds a full 3D shape from one photo, <b>guessing the back the camera never saw</b>.</p></div></div>
+    <div class="model"><div class="art photo"><img src="../mr/models/hunyuan3d2.jpg" alt="Hunyuan3D-2, from its official repository"></div><div class="tx"><h3>Hunyuan3D-2 Mini Turbo</h3><p>Builds a full 3D shape from one photo, <b>guessing the back the camera never saw</b>.</p></div></div>
     <div class="model"><div class="art photo"><img src="../mr/models/shap-e.jpg" alt="Shap-E, from its official repository"></div><div class="tx"><h3>Shap-E</h3><p>Makes a 3D object <b>from text alone</b>, used for anything you only imagine.</p></div></div>
   </div>
   <p class="credit">Model images: each model’s official GitHub repository.</p>
