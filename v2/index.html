@@ -255,7 +255,7 @@ a{color:inherit}
   function render(p){
     var intro=cl(p/INTRO);                 // 0 → 1 while the name steps aside
     var t=Math.max(0,(p-INTRO)/STEP);
-    var off=reduce?Math.round(Math.min(t,N-1)):hold(Math.min(t,N-1));
+    var off=reduce?Math.round(Math.min(t,N-1)):Math.min(t,N-1);   // follows the finger continuously; settling is done by snapping the scroll
     off-=(1-sm(intro))*.5;                 // the wall turns a little as you start
     hello.style.opacity=(1-sm(cl(intro*1.6))).toFixed(3);
     hello.style.transform='translateY('+(-sm(intro)*40).toFixed(1)+'px)';
@@ -263,7 +263,7 @@ a{color:inherit}
     var focus=sm(cl((intro-.45)/.55));     // how much the centre card is allowed to light up
     var ri=sm(intro);ring.style.transform='translate3d(0,'+((1-ri)*Math.min(vh*G.drop,170)).toFixed(1)+'px,0) scale('+(G.s0+(1-G.s0)*ri).toFixed(4)+') rotateX('+(-G.tilt)+'deg)';
     stage.style.setProperty('--glow',(focus*.12).toFixed(3));
-    var part=focus*sm(cl(1-Math.abs(off-Math.round(off))*2.2));   // neighbours only part while a card is settled
+    var part=focus*sm(cl(1-Math.abs(off-Math.round(off))*2));   // neighbours only part while a card is settled
     var best=-1,bd=9;
     for(var i=0;i<N;i++){
       var c=cards[i],s=i-off;s-=Math.round(s/N)*N;var as=Math.abs(s);
@@ -325,8 +325,20 @@ a{color:inherit}
     if(e.key==='ArrowLeft'){e.preventDefault();goTo(Math.max(0,act-1))}
   });
 
-  function tick(){raf=0;var d=target-cur;cur+=d*(reduce?1:.12);if(Math.abs(d)<.0005)cur=target;render(cur);if(cur!==target)raf=requestAnimationFrame(tick)}
-  function kick(){readScroll();if(!raf)raf=requestAnimationFrame(tick)}
+  function tick(){raf=0;var d=target-cur;cur+=d*(reduce?1:.18);if(Math.abs(d)<.0005)cur=target;render(cur);if(cur!==target)raf=requestAnimationFrame(tick)}
+  function kick(){readScroll();if(!raf)raf=requestAnimationFrame(tick);clearTimeout(snapT);snapT=setTimeout(snap,160)}
+  /* when the scroll comes to rest, glide to the nearest project so a card is always settled */
+  var snapT=0,lastSnap=-1;
+  function snap(){
+    if(reduce||touching) return;
+    var p=target,top=scroller.getBoundingClientRect().top+scrollY,y;
+    if(p>INTRO+(N-1)*STEP+END*.5) return;                     // past the wall: leave the page alone
+    if(p<INTRO*.5) y=top; else{var i=Math.max(0,Math.min(N-1,Math.round((p-INTRO)/STEP)));y=yFor(i)}
+    if(Math.abs(y-scrollY)>2) scrollTo({top:y,behavior:'smooth'});
+  }
+  var touching=false;
+  addEventListener('touchstart',function(){touching=true},{passive:true});
+  addEventListener('touchend',function(){touching=false;clearTimeout(snapT);snapT=setTimeout(snap,220)},{passive:true});
   addEventListener('scroll',kick,{passive:true});
   addEventListener('resize',function(){layout();kick()});
   if('ResizeObserver' in window) new ResizeObserver(function(){layout();readScroll();cur=target;render(cur)}).observe(stage);
