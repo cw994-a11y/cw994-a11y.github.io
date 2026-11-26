@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Chunho Wong Portfolio</title>
-<meta name="description" content="Chunho Wong — mixed reality, cross-reality interaction and human-computer interaction. Portfolio for graduate study.">
+<meta name="description" content="Chunho Wong — VR interaction design and research. Projects that bring the physical world into virtual reality.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -13,8 +13,8 @@
    and only the one you scroll to comes through in full colour. Opening it grows that card into the project's own hero. */
 @view-transition{navigation:auto}
 :root{
-  --bg:#f3f3f5; --paper:#fff; --ink:#131317; --muted:#6c6c75; --line:rgba(19,19,23,.12);
-  --accent:#6a4cf0;
+  --bg:#F4F6F9; --paper:#FFFFFF; --ink:#2A2230; --muted:#6E6876; --line:rgba(42,34,48,.12);
+  --accent:#6a4cf0; --blue:#BDCFE2; --deep:#47394B;
   --sans:'Geist','Helvetica Neue',Helvetica,Arial,sans-serif;
   --ease:cubic-bezier(.22,1,.36,1);
 }
@@ -22,7 +22,7 @@
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
 a{color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+:focus-visible{outline:2px solid #4F6F90;outline-offset:3px}
 
 #scroller{position:relative}
 #stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--bg)}
@@ -31,11 +31,12 @@ a{color:inherit}
 
 /* the curved wall */
 #ring{position:absolute;left:50%;top:var(--ry,47%);width:0;height:0;transform-style:preserve-3d;will-change:transform}
-.card{position:absolute;left:0;top:0;display:block;border-radius:18px;overflow:hidden;background:#d9d9de;
+.card{position:absolute;left:0;top:0;display:block;border-radius:18px;overflow:hidden;background:#dcdfe6;
   text-decoration:none;backface-visibility:hidden;will-change:transform;cursor:pointer;
   box-shadow:0 18px 30px -22px rgba(20,16,50,.45)}
 .card img,.card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.card .mut{will-change:opacity}
+.card .mut{position:absolute;inset:0;will-change:opacity}
+.card .mut::after{content:"";position:absolute;inset:0;background:radial-gradient(circle,rgba(244,246,249,.5) .8px,transparent 1.2px) 0 0/3px 3px}
 
 .card video{opacity:0;transition:opacity .5s}
 .card.play video{opacity:1}
@@ -48,6 +49,8 @@ a{color:inherit}
 #hud nav{display:flex;gap:24px}
 #hud nav a{color:var(--muted)}#hud nav a:hover{color:var(--ink)}
 #hello{position:absolute;z-index:10;left:max(28px,env(safe-area-inset-left,0px));right:28px;top:13vh;pointer-events:none}
+#hello .meta{margin:0 0 18px;font:500 clamp(14px,1.1vw,17px)/1.4 var(--sans);color:var(--ink)}
+#hello .meta span{color:var(--muted)}
 #hello h1{margin:0;font:500 clamp(44px,6.4vw,104px)/.95 var(--sans);letter-spacing:-.045em}
 #hello p{margin:18px 0 0;max-width:34em;font-size:clamp(16px,1.25vw,19px);line-height:1.45;color:var(--muted)}
 #hello p b{color:var(--ink);font-weight:500}
@@ -57,7 +60,7 @@ a{color:inherit}
 #cap h2{margin:0;font:500 clamp(28px,2.6vw,40px)/1.05 var(--sans);letter-spacing:-.03em}
 #cap p{margin:10px 0 0;font-size:16px;line-height:1.45;color:var(--muted)}
 #cap .go{pointer-events:auto;display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:11px 18px 11px 14px;border-radius:999px;
-  background:var(--ink);color:#fff;font:500 14px/1 var(--sans);text-decoration:none;transition:background .25s}
+  background:var(--ink);color:var(--bg);font:500 14px/1 var(--sans);text-decoration:none;transition:background .25s}
 #cap .go:hover{background:var(--accent)}
 #cap .go i{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(106,76,240,.3)}
 #cap .go:hover i{background:#fff}
@@ -91,12 +94,12 @@ a{color:inherit}
 .grid3 .card h3{font:500 20px/1.2 var(--sans);margin:0 0 12px}
 .grid3 .card p{margin:0 0 8px;font-size:14.5px;line-height:1.55;color:var(--muted)}
 .grid3 .card p b{color:var(--ink);font-weight:500}
-.closing{margin:120px 0 0;background:#0e0d14;color:#f2f2f4;padding:110px 0 54px}
+.closing{margin:120px 0 0;background:var(--ink);color:var(--bg);padding:110px 0 54px}
 .closing h2{font:600 clamp(48px,8vw,120px)/.9 var(--sans);letter-spacing:-.035em;margin:0}
 .closing .row{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.3);font:500 14px/1 var(--sans);text-decoration:none;color:#f2f2f4;background:none;cursor:pointer}
-.btn:hover{background:#f2f2f4;color:#0e0d14}
-.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:90px;font-size:13px;color:#8d8d95}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.3);font:500 14px/1 var(--sans);text-decoration:none;color:var(--bg);background:none;cursor:pointer}
+.btn:hover{background:var(--blue);border-color:var(--blue);color:var(--deep)}
+.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:90px;font-size:13px;color:rgba(244,246,249,.65)}
 @media (max-width:820px){
   .xp>li{grid-template-columns:1fr;gap:14px}
   .grid3{grid-template-columns:1fr}
@@ -116,8 +119,9 @@ a{color:inherit}
       <nav aria-label="Primary"><a href="#" data-jump="work">Work</a><a href="#research">Research</a><a href="#contact">Contact</a></nav>
     </header>
     <div id="hello">
+      <p class="meta">Cornell University <span>/ Design + Environmental Analysis '27</span></p>
       <h1>Chunho Wong</h1>
-      <p>I design and study <b>mixed reality</b> at Cornell: how people move between real and virtual space, how real objects carry virtual interaction, and how AI decides <b>which parts of reality stay visible</b>.</p>
+      <p>I design VR interactions that <b>bring the physical world into virtual reality</b>, letting people see, touch and sense what is around them, and study how they shape <b>presence and behavior</b>.</p>
     </div>
     <div id="ring" role="list" aria-label="Projects"></div>
     <div id="cap" aria-live="polite"><div class="in"><h2></h2><p></p><a class="go" href="#"><i></i>Open project</a></div></div>
@@ -129,7 +133,7 @@ a{color:inherit}
 <section class="sec" id="research">
   <div class="wrap">
     <h2>Research experience <span>2024 — present</span></h2>
-    <p class="lede">Human-subject studies and immersive environments built for them, across four Cornell labs.</p>
+    <p class="lede">Human-subject studies and the virtual environments built for them, across four Cornell labs.</p>
     <ul class="xp">
       <li>
         <div><h3>Senior Honors Thesis</h3><p class="who">DUET Lab, Cornell University<br>Advisor: Prof. So-Yeon Yoon</p><p class="when">Jan 2026 — Present</p></div>
@@ -170,7 +174,7 @@ a{color:inherit}
     <div class="grid3">
       <div class="card"><h3>Education</h3>
         <p><b>Cornell University</b>, College of Human Ecology</p>
-        <p>B.S. Design + Environmental Analysis, expected May 2027 · GPA 3.55</p>
+        <p>B.S. Design + Environmental Analysis, expected May 2027</p>
         <p>Selected coursework: Virtual Experience of Designed Environments, Human-Centered Design Methods</p>
         <p>Experiential Learning Award, Cornell Lab of Ornithology, 2026</p></div>
       <div class="card"><h3>Teaching &amp; industry</h3>
@@ -216,7 +220,7 @@ a{color:inherit}
 
   var cards=works.map(function(w,i){
     var a=document.createElement('a');a.className='card';a.href=w.href;a.setAttribute('role','listitem');a.setAttribute('aria-label',w.t);
-    a.innerHTML='<img class="col" src="home/c/'+w.k+'.jpg" alt="" style="object-position:'+w.pos+'" loading="lazy"><video muted loop playsinline preload="none" style="object-position:'+w.pos+'"></video><img class="mut" src="home/c/'+w.k+'-m.jpg" alt="" style="object-position:'+w.pos+'">';
+    a.innerHTML='<img class="col" src="home/c/'+w.k+'.jpg" alt="" style="object-position:'+w.pos+'" loading="lazy"><video muted loop playsinline preload="none" style="object-position:'+w.pos+'"></video><span class="mut"><img src="home/c/'+w.k+'.jpg" alt="" style="object-position:'+w.pos+'"></span>';
     a.addEventListener('click',function(e){
       if(e.metaKey||e.ctrlKey||e.shiftKey) return;
       e.preventDefault();
