@@ -13,8 +13,8 @@
    and only the one you scroll to comes through in full colour. Opening it grows that card into the project's own hero. */
 @view-transition{navigation:auto}
 :root{
-  --bg:#EAE5D5; --paper:#F3EFE4; --ink:#47394B; --muted:#6B5F6E; --line:rgba(71,57,75,.16);
-  --accent:#47394B; --blue:#BDCFE2; --deep:#2E2431;
+  --bg:#EFEDF3; --paper:#FFFFFF; --ink:#241C2E; --muted:#6C6578; --line:rgba(36,28,46,.12);
+  --accent:#241C2E; --blue:#9FB8D6; --deep:#47394B;
   --sans:'Geist','Helvetica Neue',Helvetica,Arial,sans-serif;
   --ease:cubic-bezier(.22,1,.36,1);
 }
@@ -27,11 +27,11 @@ a{color:inherit}
 #scroller{position:relative}
 #stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--bg)}
 #stage::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(60% 50% at 50% 46%,rgba(189,207,226,calc(var(--glow,0)*5)) 0%,rgba(189,207,226,0) 70%)}
+  background:radial-gradient(60% 50% at 50% 46%,rgba(159,184,214,calc(var(--glow,0)*4)) 0%,rgba(159,184,214,0) 70%)}
 
 /* the curved wall */
 #ring{position:absolute;left:50%;top:var(--ry,47%);width:0;height:0;transform-style:preserve-3d;will-change:transform}
-.card{position:absolute;left:0;top:0;display:block;border-radius:18px;overflow:hidden;background:#d6d0c0;
+.card{position:absolute;left:0;top:0;display:block;border-radius:18px;overflow:hidden;background:#d9d6df;
   text-decoration:none;backface-visibility:hidden;will-change:transform;cursor:pointer;
   box-shadow:0 18px 30px -22px rgba(46,36,49,.5)}
 .card img,.card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
@@ -48,6 +48,8 @@ a{color:inherit}
 #hud nav{display:flex;gap:24px}
 #hud nav a{color:var(--muted)}#hud nav a:hover{color:var(--ink)}
 #hello{position:absolute;z-index:10;left:max(28px,env(safe-area-inset-left,0px));right:28px;top:13vh;pointer-events:none}
+#hello .meta{margin:0 0 18px;font:500 clamp(14px,1.1vw,17px)/1.4 var(--sans);color:var(--ink)}
+#hello .meta span{color:var(--muted)}
 #hello h1{margin:0;font:500 clamp(44px,6.4vw,104px)/.95 var(--sans);letter-spacing:-.045em}
 #hello p{margin:18px 0 0;max-width:34em;font-size:clamp(16px,1.25vw,19px);line-height:1.45;color:var(--muted)}
 #hello p b{color:var(--ink);font-weight:500}
@@ -59,7 +61,7 @@ a{color:inherit}
 #cap .go{pointer-events:auto;display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:11px 18px 11px 14px;border-radius:999px;
   background:var(--ink);color:var(--bg);font:500 14px/1 var(--sans);text-decoration:none;transition:background .25s}
 #cap .go:hover{background:var(--deep)}
-#cap .go i{width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px rgba(189,207,226,.35)}
+#cap .go i{width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px rgba(159,184,214,.35)}
 #cap .go:hover i{background:var(--bg)}
 #rail{position:absolute;z-index:10;left:50%;bottom:calc(3vh + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;gap:6px}
 #rail i{width:18px;height:2px;border-radius:2px;background:var(--ink);opacity:.15;transition:opacity .3s,width .3s}
@@ -94,9 +96,9 @@ a{color:inherit}
 .closing{margin:120px 0 0;background:var(--ink);color:var(--bg);padding:110px 0 54px}
 .closing h2{font:600 clamp(48px,8vw,120px)/.9 var(--sans);letter-spacing:-.035em;margin:0}
 .closing .row{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;border:1px solid rgba(234,229,213,.35);font:500 14px/1 var(--sans);text-decoration:none;color:var(--bg);background:none;cursor:pointer}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;border:1px solid rgba(239,237,243,.3);font:500 14px/1 var(--sans);text-decoration:none;color:var(--bg);background:none;cursor:pointer}
 .btn:hover{background:var(--blue);border-color:var(--blue);color:var(--deep)}
-.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:90px;font-size:13px;color:rgba(234,229,213,.7)}
+.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:90px;font-size:13px;color:rgba(239,237,243,.65)}
 @media (max-width:820px){
   .xp>li{grid-template-columns:1fr;gap:14px}
   .grid3{grid-template-columns:1fr}
@@ -116,6 +118,7 @@ a{color:inherit}
       <nav aria-label="Primary"><a href="#" data-jump="work">Work</a><a href="#research">Research</a><a href="#contact">Contact</a></nav>
     </header>
     <div id="hello">
+      <p class="meta">Cornell University <span>/ Design + Environmental Analysis '27</span></p>
       <h1>Chunho Wong</h1>
       <p>I design VR interactions that <b>bring the physical world into virtual reality</b>, letting people see, touch and sense what is around them, and study how they shape <b>presence and behavior</b>.</p>
     </div>
