@@ -4,44 +4,42 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Chunho Wong Portfolio</title>
-<meta name="description" content="Chunho Wong designs VR interactions that bring the physical world into virtual reality, and studies how they shape presence, perception and behavior.">
+<meta name="description" content="Chunho Wong — VR interaction design and research. Projects that bring the physical world into virtual reality.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* The home page behaves like Selective Passthrough: every project sits on a curved wall as a grey halftone,
    and only the one you scroll to comes through in full colour. Opening it grows that card into the project's own hero. */
 @view-transition{navigation:auto}
 :root{
-  /* oat cream, misty blue, deep plum */
-  --bg:#EAE5D5; --paper:#F3EFE4; --ink:#47394B; --deep:#2E2431; --muted:#6B5F6E; --line:rgba(71,57,75,.16);
-  --blue:#BDCFE2; --blue-ink:#4F6F90; --accent:#47394B;
+  --bg:#f3f3f5; --paper:#fff; --ink:#131317; --muted:#6c6c75; --line:rgba(19,19,23,.12);
+  --accent:#6a4cf0;
   --sans:'Geist','Helvetica Neue',Helvetica,Arial,sans-serif;
-  --serif:'Fraunces',Georgia,'Times New Roman',serif;
   --ease:cubic-bezier(.22,1,.36,1);
 }
 *{box-sizing:border-box}
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
 a{color:inherit}
-:focus-visible{outline:2px solid var(--blue-ink);outline-offset:3px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
 #scroller{position:relative}
 #stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:var(--bg)}
 #stage::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(60% 50% at 50% 46%,rgba(189,207,226,calc(var(--glow,0)*5)) 0%,rgba(189,207,226,0) 70%)}
+  background:radial-gradient(60% 50% at 50% 46%,rgba(106,76,240,var(--glow,0)) 0%,rgba(106,76,240,0) 70%)}
 
 /* the curved wall */
 #ring{position:absolute;left:50%;top:var(--ry,47%);width:0;height:0;transform-style:preserve-3d;will-change:transform}
-.card{position:absolute;left:0;top:0;display:block;border-radius:18px;overflow:hidden;background:#d6d0c0;
+.card{position:absolute;left:0;top:0;display:block;border-radius:18px;overflow:hidden;background:#d9d9de;
   text-decoration:none;backface-visibility:hidden;will-change:transform;cursor:pointer;
-  box-shadow:0 18px 30px -22px rgba(46,36,49,.5)}
+  box-shadow:0 18px 30px -22px rgba(20,16,50,.45)}
 .card img,.card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.card .mut{will-change:opacity;filter:sepia(.35) hue-rotate(175deg) saturate(.55) brightness(1.04) contrast(.92)}
+.card .mut{will-change:opacity}
 
 .card video{opacity:0;transition:opacity .5s}
 .card.play video{opacity:1}
-.card.on{box-shadow:0 30px 60px -28px rgba(46,36,49,.6)}
+.card.on{box-shadow:0 30px 60px -28px rgba(70,40,200,.55)}
 
 /* words */
 #hud{position:absolute;z-index:20;left:0;right:0;top:0;display:flex;justify-content:space-between;align-items:center;gap:16px;
@@ -50,93 +48,56 @@ a{color:inherit}
 #hud nav{display:flex;gap:24px}
 #hud nav a{color:var(--muted)}#hud nav a:hover{color:var(--ink)}
 #hello{position:absolute;z-index:10;left:max(28px,env(safe-area-inset-left,0px));right:28px;top:13vh;pointer-events:none}
-#hello h1{position:relative;margin:0;font:600 clamp(48px,7vw,116px)/.92 var(--serif);font-variation-settings:"opsz" 144;letter-spacing:-.025em;color:var(--ink)}
-#hello .blob{position:absolute;z-index:-1;left:clamp(110px,13vw,230px);top:-4vh;width:clamp(130px,14vw,240px);height:auto;pointer-events:none}
-#hello p{margin:20px 0 0;max-width:33em;font-size:clamp(16px,1.25vw,19px);line-height:1.45;color:var(--muted)}
+#hello h1{margin:0;font:500 clamp(44px,6.4vw,104px)/.95 var(--sans);letter-spacing:-.045em}
+#hello p{margin:18px 0 0;max-width:34em;font-size:clamp(16px,1.25vw,19px);line-height:1.45;color:var(--muted)}
 #hello p b{color:var(--ink);font-weight:500}
 #cap{position:absolute;z-index:10;left:0;right:0;bottom:calc(7vh + env(safe-area-inset-bottom,0px));text-align:center;pointer-events:none}
 #cap .in{display:inline-block;max-width:min(640px,88vw);transition:opacity .35s,transform .35s var(--ease)}
 #cap.swap .in{opacity:0;transform:translateY(8px)}
-#cap h2{margin:0;font:600 clamp(28px,2.6vw,40px)/1.05 var(--serif);letter-spacing:-.01em}
+#cap h2{margin:0;font:500 clamp(28px,2.6vw,40px)/1.05 var(--sans);letter-spacing:-.03em}
 #cap p{margin:10px 0 0;font-size:16px;line-height:1.45;color:var(--muted)}
 #cap .go{pointer-events:auto;display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:11px 18px 11px 14px;border-radius:999px;
-  background:var(--ink);color:var(--bg);font:500 14px/1 var(--sans);text-decoration:none;transition:background .25s}
-#cap .go:hover{background:var(--deep)}
-#cap .go i{width:8px;height:8px;border-radius:50%;background:var(--blue);box-shadow:0 0 0 4px rgba(189,207,226,.35)}
-#cap .go:hover i{background:var(--bg)}
+  background:var(--ink);color:#fff;font:500 14px/1 var(--sans);text-decoration:none;transition:background .25s}
+#cap .go:hover{background:var(--accent)}
+#cap .go i{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(106,76,240,.3)}
+#cap .go:hover i{background:#fff}
 #rail{position:absolute;z-index:10;left:50%;bottom:calc(3vh + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;gap:6px}
 #rail i{width:18px;height:2px;border-radius:2px;background:var(--ink);opacity:.15;transition:opacity .3s,width .3s}
 #rail i.on{opacity:.8;width:30px}
 #cue{position:absolute;z-index:10;left:50%;bottom:calc(5vh + env(safe-area-inset-bottom,0px));transform:translateX(-50%);font:500 13px/1 var(--sans);color:var(--muted)}
 
 /* the card that grows into a project */
-#zoom{position:fixed;z-index:100;overflow:hidden;pointer-events:none;background:var(--deep);border-radius:18px}
+#zoom{position:fixed;z-index:100;overflow:hidden;pointer-events:none;background:#000;border-radius:18px}
 #zoom img{width:100%;height:100%;object-fit:cover;display:block}
 
 /* ---------- sections below ---------- */
 .wrap{max-width:1180px;margin:0 auto;padding:0 max(24px,env(safe-area-inset-left,0px))}
 .sec{padding:120px 0 40px}
-.sec h2{font:600 clamp(38px,4.6vw,64px)/1 var(--serif);font-variation-settings:"opsz" 144;letter-spacing:-.02em;margin:0}
-.sec h2 span{color:var(--muted);font-weight:400}
+.sec h2{font:500 clamp(38px,4.6vw,64px)/1 var(--sans);letter-spacing:-.025em;margin:0}
+.sec h2 span{color:var(--muted)}
 .lede{font-size:16px;color:var(--muted);max-width:40em;margin:16px 0 0}
 .xp{list-style:none;margin:56px 0 0;padding:0}
 .xp>li{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:24px 56px;padding:34px 0;border-top:1px solid var(--line)}
 .xp>li:last-child{border-bottom:1px solid var(--line)}
-.xp h3{font:600 clamp(22px,2vw,27px)/1.15 var(--serif);margin:0}
+.xp h3{font:500 clamp(22px,2vw,27px)/1.15 var(--sans);letter-spacing:-.01em;margin:0}
 .xp .who{margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.45}
 .xp .when{margin:10px 0 0;font:500 13px/1 var(--sans);color:var(--muted)}
 .xp .t{margin:0 0 10px;font-weight:500;font-size:17px;line-height:1.4}
 .xp p{margin:0 0 10px;font-size:15px;line-height:1.6}
 .xp p:last-child{margin-bottom:0}
 .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:56px}
-.card2,.grid3 .card{background:var(--paper);border-radius:18px;padding:28px;box-shadow:0 20px 50px -34px rgba(46,36,49,.4)}
+.card2,.grid3 .card{background:var(--paper);border-radius:18px;padding:28px;box-shadow:0 20px 50px -34px rgba(70,40,200,.35)}
 .grid3 .card{position:static;overflow:visible;cursor:auto;will-change:auto}
-.grid3 .card h3{font:600 21px/1.2 var(--serif);margin:0 0 12px}
+.grid3 .card h3{font:500 20px/1.2 var(--sans);margin:0 0 12px}
 .grid3 .card p{margin:0 0 8px;font-size:14.5px;line-height:1.55;color:var(--muted)}
 .grid3 .card p b{color:var(--ink);font-weight:500}
-.closing{margin:120px 0 0;background:var(--ink);color:var(--bg);padding:110px 0 54px}
-.closing h2{font:600 clamp(48px,8vw,120px)/.9 var(--serif);font-variation-settings:"opsz" 144;letter-spacing:-.02em;margin:0}
+.closing{margin:120px 0 0;background:#0e0d14;color:#f2f2f4;padding:110px 0 54px}
+.closing h2{font:600 clamp(48px,8vw,120px)/.9 var(--sans);letter-spacing:-.035em;margin:0}
 .closing .row{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;border:1px solid rgba(234,229,213,.35);font:500 14px/1 var(--sans);text-decoration:none;color:var(--bg);background:none;cursor:pointer}
-.btn:hover{background:var(--blue);border-color:var(--blue);color:var(--deep)}
-.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:90px;font-size:13px;color:rgba(234,229,213,.7)}
-
-/* research: what I build and what I test */
-.q{margin:56px 0 0;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:32px 56px;align-items:start}
-.q h3{margin:0;font:500 clamp(22px,2.1vw,28px)/1.25 var(--serif);letter-spacing:-.005em}
-.chain{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;counter-reset:none}
-.chain li{position:relative;background:var(--paper);border-radius:16px;padding:20px 20px 22px}
-.chain li:nth-child(2){background:var(--blue)}
-.chain li:nth-child(3){background:var(--ink);color:var(--bg)}
-.chain li:not(:last-child)::after{content:"";position:absolute;right:-10px;top:50%;width:10px;height:2px;background:var(--ink);opacity:.5}
-.chain b{display:block;font:600 19px/1.15 var(--serif);margin:0 0 8px}
-.chain span{display:block;font-size:14px;line-height:1.5}
-.chain li:nth-child(3) span{color:rgba(234,229,213,.82)}
-.ways{list-style:none;margin:72px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
-.ways li{display:flex;flex-direction:column;background:var(--paper);border-radius:20px;overflow:hidden}
-.ways .pic{display:block;aspect-ratio:4/3;overflow:hidden;background:var(--blue)}
-.ways .pic img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s var(--ease)}
-.ways li:hover .pic img{transform:scale(1.03)}
-.ways .body{padding:24px 24px 26px;display:flex;flex-direction:column;gap:10px;flex:1}
-.ways .verb{font:500 13px/1 var(--sans);color:var(--blue-ink)}
-.ways h3{margin:0;font:600 23px/1.15 var(--serif)}
-.ways p{margin:0;font-size:15px;line-height:1.55}
-.ways p.test{color:var(--muted);font-size:14.5px}
-.ways a.more{margin-top:auto;padding-top:6px;font:500 14px/1 var(--sans);text-decoration:underline;text-decoration-color:var(--blue-ink);text-underline-offset:4px}
-.tool{margin:96px 0 0;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:32px 56px;padding:48px 0 0;border-top:1px solid var(--line)}
-.tool h3{margin:0;font:600 clamp(26px,2.6vw,36px)/1.1 var(--serif)}
-.tool .lead{margin:14px 0 0;color:var(--muted);font-size:15.5px;line-height:1.55;max-width:26em}
-.tool dl{margin:0;display:grid;gap:26px}
-.tool dt{font:600 19px/1.25 var(--serif);margin:0 0 6px}
-.tool dd{margin:0;font-size:15px;line-height:1.6}
-.loop{margin:72px 0 0;background:var(--blue);border-radius:24px;padding:clamp(28px,4vw,56px)}
-.loop p{margin:0;max-width:40em;font:500 clamp(20px,2vw,27px)/1.4 var(--serif);color:var(--deep)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.3);font:500 14px/1 var(--sans);text-decoration:none;color:#f2f2f4;background:none;cursor:pointer}
+.btn:hover{background:#f2f2f4;color:#0e0d14}
+.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:90px;font-size:13px;color:#8d8d95}
 @media (max-width:820px){
-  .q,.tool{grid-template-columns:1fr}
-  #hello .blob{left:118px;top:-1vh;width:96px}
-  .chain{grid-template-columns:1fr}
-  .chain li:not(:last-child)::after{right:auto;left:50%;top:auto;bottom:-10px;width:2px;height:10px}
-  .ways{grid-template-columns:1fr}
   .xp>li{grid-template-columns:1fr;gap:14px}
   .grid3{grid-template-columns:1fr}
   .sec{padding-top:90px}
@@ -144,7 +105,6 @@ a{color:inherit}
   #hello{top:11vh}
   #cap p{font-size:14.5px}
 }
-@media (max-width:480px){#hud nav a[href="#experience"]{display:none}#brand{white-space:nowrap}}
 @media (prefers-reduced-motion:reduce){#cap .in{transition:none}}
 </style>
 </head>
@@ -153,12 +113,11 @@ a{color:inherit}
   <div id="stage">
     <header id="hud">
       <a href="#top" id="brand">Chunho Wong</a>
-      <nav aria-label="Primary"><a href="#" data-jump="work">Work</a><a href="#research">Research</a><a href="#experience">Experience</a><a href="#contact">Contact</a></nav>
+      <nav aria-label="Primary"><a href="#" data-jump="work">Work</a><a href="#research">Research</a><a href="#contact">Contact</a></nav>
     </header>
     <div id="hello">
-      <svg class="blob" viewBox="0 0 200 240" aria-hidden="true"><path d="M100 6c48 0 86 40 86 92v118a18 18 0 0 1-18 18H32a18 18 0 0 1-18-18V98C14 46 52 6 100 6z" fill="#BDCFE2"/></svg>
-      <h1>Chunho<br>Wong</h1>
-      <p>I design VR interactions that <b>bring the physical world into virtual reality</b>, so people can see real objects, touch them and sense their surroundings, and I study whether these interactions make a virtual environment feel real.</p>
+      <h1>Chunho Wong</h1>
+      <p>I design VR interactions that <b>bring the physical world into virtual reality</b>, letting people see, touch and sense what is around them, and study how they shape <b>presence and behavior</b>.</p>
     </div>
     <div id="ring" role="list" aria-label="Projects"></div>
     <div id="cap" aria-live="polite"><div class="in"><h2></h2><p></p><a class="go" href="#"><i></i>Open project</a></div></div>
@@ -169,72 +128,8 @@ a{color:inherit}
 <main>
 <section class="sec" id="research">
   <div class="wrap">
-    <h2>Research</h2>
-    <p class="lede">I study VR as a medium. Today's headsets either place people fully in a virtual world or add virtual content to the real world. I believe other possibilities lie between them, and I design interactions that bring parts of the physical world into VR.</p>
-
-    <div class="q">
-      <h3>When the physical world comes into VR, does the virtual environment feel more real, and does that change how people perceive and act?</h3>
-      <ol class="chain" aria-label="Research question">
-        <li><b>Interaction</b><span>Seeing, touching and sensing real things inside VR.</span></li>
-        <li><b>Presence</b><span>The sense that a virtual environment is real.</span></li>
-        <li><b>Perception and action</b><span>How users perceive the people and environment around them, and their confidence in completing tasks.</span></li>
-      </ol>
-    </div>
-
-    <ul class="ways">
-      <li>
-        <a class="pic" href="selective-passthrough/" tabindex="-1" aria-hidden="true"><img src="home/c/passthrough.jpg" alt="" loading="lazy" style="object-position:45% 50%"></a>
-        <div class="body">
-          <span class="verb">Seeing real objects</span>
-          <h3>Selective Passthrough</h3>
-          <p>Shows chosen parts of reality inside fully immersive VR. Meta's SAM 2.1 model identifies and segments any real object in real time.</p>
-          <p class="test">Next: whether showing only a nearby person keeps both awareness of them and presence in VR.</p>
-          <a class="more" href="selective-passthrough/" aria-label="Open Selective Passthrough">Open project</a>
-        </div>
-      </li>
-      <li>
-        <a class="pic" href="tangible-vr/" tabindex="-1" aria-hidden="true"><img src="home/c/tangible.jpg" alt="" loading="lazy" style="object-position:60% 60%"></a>
-        <div class="body">
-          <span class="verb">Touching real objects</span>
-          <h3>Sensorless Tangible VR</h3>
-          <p>Camera-based hand tracking and physics-simulated virtual hands align 3D-printed objects with virtual ones, so users can grasp physical objects in VR without haptic gloves.</p>
-          <p class="test">Next: whether handling real tools in a firefighter training simulation raises presence and self-efficacy.</p>
-          <a class="more" href="tangible-vr/" aria-label="Open Sensorless Tangible VR">Open project</a>
-        </div>
-      </li>
-      <li>
-        <a class="pic" href="ai-guardian/" tabindex="-1" aria-hidden="true"><img src="home/c/guardian.jpg" alt="" loading="lazy" style="object-position:38% 40%"></a>
-        <div class="body">
-          <span class="verb">Perceiving one's surroundings</span>
-          <h3>AI Reality Guardian</h3>
-          <p>Users ask an AI what is around them. It answers in text and speech and opens a passthrough window onto the object, so they don't need to take the headset off.</p>
-          <p class="test">Next: whether conversation, compared with text or a window alone, increases trust in the AI and reduces headset removal.</p>
-          <a class="more" href="ai-guardian/" aria-label="Open AI Reality Guardian">Open project</a>
-        </div>
-      </li>
-    </ul>
-
-    <div class="tool">
-      <div>
-        <h3>VR as a research tool</h3>
-        <p class="lead">Virtual environments let researchers change a single stimulus while holding everything else constant. I use them to study how environments shape behavior and well-being.</p>
-      </div>
-      <dl>
-        <div><dt>Nature or city, for children in chemotherapy</dt>
-          <dd>With the Cornell Lab of Ornithology and the Virtual Embodiment Lab, I joined a study testing whether birdwatching in a virtual nature environment can improve quality of life and well-being for children with cancer. I built the urban comparison condition in Unity, matched to the nature environment in scale, zones and interactions. <a href="urban/">See the city</a></dd></div>
-        <div><dt>Realistic or surreal, in a virtual store</dt>
-          <dd>For my senior honors thesis, I designed a study testing how surreal versus realistic retail environments affect user engagement and purchase behavior, using two browser-based Unity stores with identical products and layouts.</dd></div>
-      </dl>
-    </div>
-
-    <div class="loop"><p>The two directions feed each other. Using VR as a tool showed me its limits; addressing them led me to design new interactions; and those interactions make VR a more credible tool, because virtual behavior reflects real-world behavior only when people feel present.</p></div>
-  </div>
-</section>
-
-<section class="sec" id="experience">
-  <div class="wrap">
-    <h2>Experience <span>2024 — present</span></h2>
-    <p class="lede">Human-subject studies and immersive environments built for them, across four Cornell labs.</p>
+    <h2>Research experience <span>2024 — present</span></h2>
+    <p class="lede">Human-subject studies and the virtual environments built for them, across four Cornell labs.</p>
     <ul class="xp">
       <li>
         <div><h3>Senior Honors Thesis</h3><p class="who">DUET Lab, Cornell University<br>Advisor: Prof. So-Yeon Yoon</p><p class="when">Jan 2026 — Present</p></div>
