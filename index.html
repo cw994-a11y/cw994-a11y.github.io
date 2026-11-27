@@ -100,15 +100,46 @@ a{color:inherit}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.3);font:500 14px/1 var(--sans);text-decoration:none;color:var(--bg);background:none;cursor:pointer}
 .btn:hover{background:var(--blue);border-color:var(--blue);color:var(--deep)}
 .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:90px;font-size:13px;color:rgba(244,246,249,.65)}
+
+/* project index: every project at a glance */
+.idx{padding:120px 0 0}
+.idx .head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap}
+.idx .head h2{font:500 clamp(38px,4.6vw,64px)/1 var(--sans);letter-spacing:-.025em;margin:0}
+.idx .head p{margin:0;color:var(--muted);font-size:16px;max-width:30em}
+.band{margin:72px 0 0;overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0;white-space:nowrap}
+.band .tk{display:inline-flex;gap:0;animation:tk 38s linear infinite}
+.band .tk span{font:500 clamp(40px,6vw,88px)/1 var(--sans);letter-spacing:-.035em;padding-right:.5em;display:inline-flex;align-items:center;gap:.5em}
+.band .tk span::after{content:"";width:.16em;height:.16em;border-radius:50%;background:var(--accent);display:inline-block}
+.band.alt .tk{animation-direction:reverse}
+@keyframes tk{to{transform:translateX(-50%)}}
+.vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.rows{list-style:none;margin:0;padding:0}
+.rows>li{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,5fr) minmax(0,8fr);gap:28px;padding:30px 0;border-bottom:1px solid var(--line)}
+.rows h4{margin:0;font:500 19px/1.25 var(--sans);letter-spacing:-.005em}
+.rows h4 a{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;text-decoration-color:var(--line)}
+.rows h4 a:hover{text-decoration-color:var(--ink)}
+.rows .yr{margin:6px 0 0;color:var(--muted);font-size:14px}
+.rows .tag{margin:14px 0 0;color:var(--muted);font-size:14px;line-height:1.45}
+.rows .d p{margin:0 0 10px;font-size:15.5px;line-height:1.55}
+.rows .d p.tools{color:var(--muted);font-size:14px;margin:0}
+.strip{display:flex;gap:8px;height:clamp(120px,11vw,168px);overflow:hidden;border-radius:6px}
+.strip img{height:100%;width:0;min-width:0;flex:var(--r,1) 1 0;object-fit:cover;display:block;border-radius:6px;background:#dcdfe6;transition:opacity .25s}
+a.strip:hover img{opacity:.88}
+.strip.none{height:auto;align-items:center;color:var(--muted);font-size:14px}
 @media (max-width:820px){
+  .rows>li{grid-template-columns:1fr;gap:14px}
+  .strip{height:auto;aspect-ratio:auto}
+  .strip img{height:auto;aspect-ratio:var(--r)}
+  .band{margin-top:56px}
   .xp>li{grid-template-columns:1fr;gap:14px}
   .grid3{grid-template-columns:1fr}
   .sec{padding-top:90px}
-  #hud nav{gap:16px}
+  #hud nav{gap:14px}
+  #brand{white-space:nowrap}
   #hello{top:11vh}
   #cap p{font-size:14.5px}
 }
-@media (prefers-reduced-motion:reduce){#cap .in{transition:none}}
+@media (prefers-reduced-motion:reduce){.band .tk{animation:none}#cap .in{transition:none}}
 </style>
 </head>
 <body>
@@ -116,7 +147,7 @@ a{color:inherit}
   <div id="stage">
     <header id="hud">
       <a href="#top" id="brand">Chunho Wong</a>
-      <nav aria-label="Primary"><a href="#" data-jump="work">Work</a><a href="#research">Research</a><a href="#contact">Contact</a></nav>
+      <nav aria-label="Primary"><a href="#" data-jump="work">Work</a><a href="#index">Index</a><a href="#research">Research</a><a href="#contact">Contact</a></nav>
     </header>
     <div id="hello">
       <p class="meta">Cornell University <span>/ Design + Environmental Analysis '27</span></p>
@@ -130,6 +161,85 @@ a{color:inherit}
   </div>
 </div>
 <main>
+<section class="idx" id="index" aria-labelledby="idx-h">
+  <div class="wrap head">
+    <h2 id="idx-h">All projects</h2>
+    <p>Every project in one place, grouped by what it is. Open any title for the full project page.</p>
+  </div>
+  <div class="band" aria-hidden="true"><div class="tk"><span>VR Interaction</span><span>VR Interaction</span><span>VR Interaction</span><span>VR Interaction</span><span>VR Interaction</span><span>VR Interaction</span><span>VR Interaction</span><span>VR Interaction</span></div></div>
+  <div class="wrap">
+    <h3 class="vh">VR Interaction</h3>
+    <ul class="rows">
+      <li>
+        <div><h4><a href="tangible-vr/">Sensorless Tangible VR</a></h4><p class="yr">2026</p><p class="tag">Independent work</p></div>
+        <div class="d"><p>Grab a real object on your desk and its virtual copy in VR moves with it, with no trackers or electronics on the object. After a one-time alignment, the headset’s own hand tracking drives a physics hand that holds the object.</p><p class="tools">Unity 6.3, PICO 4 Ultra, rigidbody physics, passthrough</p></div>
+        <a class="strip" href="tangible-vr/" tabindex="-1" aria-hidden="true"><img src="home/i/tangible-1.jpg" alt="" loading="lazy" style="--r:1.600"><img src="home/i/tangible-2.jpg" alt="" loading="lazy" style="--r:0.775"><img src="home/i/tangible-3.jpg" alt="" loading="lazy" style="--r:1.000"></a>
+      </li>
+      <li>
+        <div><h4><a href="selective-passthrough/">Selective Passthrough</a></h4><p class="yr">2026</p><p class="tag">Independent work</p></div>
+        <div class="d"><p>See the real objects you choose while staying in full VR. SAM 2.1 traces any object’s outline in the camera view, so it can be shown live inside the virtual world.</p><p class="tools">Unity 6.3, PICO 4 Ultra, SAM 2.1, passthrough</p></div>
+        <a class="strip" href="selective-passthrough/" tabindex="-1" aria-hidden="true"><img src="home/i/passthrough-1.jpg" alt="" loading="lazy" style="--r:1.778"><img src="home/i/passthrough-2.jpg" alt="" loading="lazy" style="--r:1.000"><img src="home/i/passthrough-3.jpg" alt="" loading="lazy" style="--r:1.000"></a>
+      </li>
+      <li>
+        <div><h4><a href="mr-vr-portal/">MR to VR Portal</a></h4><p class="yr">2026</p><p class="tag">Independent work</p></div>
+        <div class="d"><p>Pinch two corners in the air to draw a window into another world, look through it, then walk through it. Several portals can show different worlds, and the same gesture opens a way back to your room.</p><p class="tools">Unity 6.3, PICO 4 Ultra, hand tracking, stencil shader</p></div>
+        <a class="strip" href="mr-vr-portal/" tabindex="-1" aria-hidden="true"><img src="home/i/portal-1.jpg" alt="" loading="lazy" style="--r:1.778"><img src="home/i/portal-2.jpg" alt="" loading="lazy" style="--r:1.000"><img src="home/i/portal-3.jpg" alt="" loading="lazy" style="--r:1.000"></a>
+      </li>
+      <li>
+        <div><h4><a href="object-portals/">Object Portals</a></h4><p class="yr">2026</p><p class="tag">Independent work</p></div>
+        <div class="d"><p>A real object, like your monitor, becomes the window between your room and a virtual world. It combines Selective Passthrough with MR to VR Portal.</p><p class="tools">Unity 6.3, PICO 4 Ultra, SAM 2.1, passthrough</p></div>
+        <a class="strip" href="object-portals/" tabindex="-1" aria-hidden="true"><img src="home/i/objportal-1.jpg" alt="" loading="lazy" style="--r:1.675"><img src="home/i/objportal-2.jpg" alt="" loading="lazy" style="--r:1.333"><img src="home/i/objportal-3.jpg" alt="" loading="lazy" style="--r:1.333"></a>
+      </li>
+      <li>
+        <div><h4><a href="ai-guardian/">AI Reality Guardian</a></h4><p class="yr">2026</p><p class="tag">Independent work</p></div>
+        <div class="d"><p>Stay in full VR and still know what is around you. The AI describes the room in live text and opens a live window wherever a real object moves, or on any object you ask about.</p><p class="tools">Unity 6.3, PICO 4 Ultra, YOLO11n, Qwen3-VL, Whisper</p></div>
+        <a class="strip" href="ai-guardian/" tabindex="-1" aria-hidden="true"><img src="home/i/guardian-1.jpg" alt="" loading="lazy" style="--r:1.600"><img src="home/i/guardian-2.jpg" alt="" loading="lazy" style="--r:1.778"><img src="home/i/guardian-3.jpg" alt="" loading="lazy" style="--r:1.778"></a>
+      </li>
+      <li>
+        <div><h4><a href="voice-to-3d/">Voice to 3D</a></h4><p class="yr">2026</p><p class="tag">Independent work</p></div>
+        <div class="d"><p>Say a sentence and a 3D object appears in mixed reality, imagined from words or copied from a real object in view. Say another and it moves, spins or changes size.</p><p class="tools">Unity 6.3, PICO 4 Ultra, Whisper, Qwen3-VL, SAM 2.1, Hunyuan3D-2, Shap-E</p></div>
+        <a class="strip" href="voice-to-3d/" tabindex="-1" aria-hidden="true"><img src="home/i/voice3d-1.jpg" alt="" loading="lazy" style="--r:1.600"><img src="home/i/voice3d-2.jpg" alt="" loading="lazy" style="--r:1.778"><img src="home/i/voice3d-3.jpg" alt="" loading="lazy" style="--r:0.750"></a>
+      </li>
+    </ul>
+  </div>
+  <div class="band alt" aria-hidden="true"><div class="tk"><span>Product Design</span><span>Product Design</span><span>Product Design</span><span>Product Design</span><span>Product Design</span><span>Product Design</span><span>Product Design</span><span>Product Design</span></div></div>
+  <div class="wrap">
+    <h3 class="vh">Product Design</h3>
+    <ul class="rows">
+      <li>
+        <div><h4><a href="loomi/">LooMi</a></h4><p class="yr">Jan — May 2025</p><p class="tag">Independent human-centered design study</p></div>
+        <div class="d"><p>An interactive lighting device for long-distance emotional connection: light, short words on a tiny screen and one button. Refined over three iterations with five participants, reaching a System Usability Scale score of 81.5.</p><p class="tools">Arduino, LEDs, OLED display, 3D printing, cultural probes, think-aloud testing</p></div>
+        <a class="strip" href="loomi/" tabindex="-1" aria-hidden="true"><img src="home/i/loomi-1.jpg" alt="" loading="lazy" style="--r:1.778"><img src="home/i/loomi-2.jpg" alt="" loading="lazy" style="--r:2.483"><img src="home/i/loomi-3.jpg" alt="" loading="lazy" style="--r:0.750"></a>
+      </li>
+      <li>
+        <div><h4><a href="droplet/">Droplet</a></h4><p class="yr">DEA 3308</p><p class="tag">Team project with Jolin Li and Jordan Jennings</p></div>
+        <div class="d"><p>A curved LED object that makes daily water use visible. A motion sensor turns the way the object leans into gravity for 512 cells of virtual water on two LED panels.</p><p class="tools">Arduino, MPU6050, NeoPixel panels, rotary encoder, 3D printing</p></div>
+        <a class="strip" href="droplet/" tabindex="-1" aria-hidden="true"><img src="home/i/droplet-1.jpg" alt="" loading="lazy" style="--r:1.675"><img src="home/i/droplet-2.jpg" alt="" loading="lazy" style="--r:1.217"><img src="home/i/droplet-3.jpg" alt="" loading="lazy" style="--r:0.750"></a>
+      </li>
+      <li>
+        <div><h4>Human Resonance Campfire</h4><p class="yr">2026</p><p class="tag">Meta Design &amp; Technology Lab, Faculty Supervisor: Prof. Jay Yoon</p></div>
+        <div class="d"><p>An interactive campfire installation for Cornell’s Jill Stuart Gallery, built from concept to fabrication. A fan above ultrasonic mist draws it upward into a three-dimensional flame, lit by Arduino-controlled lighting.</p><p class="tools">Arduino, ultrasonic misters, 3D printing, laser cutting</p></div>
+        <div class="strip none">Project page in progress</div>
+      </li>
+    </ul>
+  </div>
+  <div class="band" aria-hidden="true"><div class="tk"><span>Research</span><span>Research</span><span>Research</span><span>Research</span><span>Research</span><span>Research</span><span>Research</span><span>Research</span></div></div>
+  <div class="wrap">
+    <h3 class="vh">Research</h3>
+    <ul class="rows">
+      <li>
+        <div><h4><a href="urban/">Urban VR Environment</a></h4><p class="yr">2026</p><p class="tag">Cornell Lab of Ornithology, with Botucatu Medical School (UNESP) and the Virtual Embodiment Lab</p></div>
+        <div class="d"><p>A city built in Unity as the comparison condition for a PhD study on VR for children with cancer during chemotherapy, matched to the nature world in scale, paths, layout and four zones.</p><p class="tools">Unity, first-person navigation, object-triggered video, Brazilian Portuguese localization</p></div>
+        <a class="strip" href="urban/" tabindex="-1" aria-hidden="true"><img src="home/i/urban-1.jpg" alt="" loading="lazy" style="--r:1.767"><img src="home/i/urban-2.jpg" alt="" loading="lazy" style="--r:1.386"><img src="home/i/urban-3.jpg" alt="" loading="lazy" style="--r:1.767"></a>
+      </li>
+      <li>
+        <div><h4>Realistic or Surreal?</h4><p class="yr">2026 — present</p><p class="tag">Senior Honors Thesis, DUET Lab, Advisor: Prof. So-Yeon Yoon</p></div>
+        <div class="d"><p>How surreal versus realistic virtual stores shape user engagement and purchase behavior. Matched Unity WebGL stores with identical products and layout for a two-site study in Hong Kong and the United States.</p><p class="tools">Unity WebGL, UES-SF, logged purchase behavior, linear mixed models</p></div>
+        <div class="strip none">Project page in progress</div>
+      </li>
+    </ul>
+  </div>
+</section>
 <section class="sec" id="research">
   <div class="wrap">
     <h2>Research experience <span>2024 — present</span></h2>
